@@ -29,7 +29,7 @@ struct MDBClient {
     
     // Default Parameters
     
-    let baseURL = "https://api.themoviedb.org/3/search/"
+    let baseURL = "https://api.themoviedb.org/3/"
     let apiKeyDefault = "af7c170463ea56b4a5142fc83ba863ba"
     let languageDefault = "en-US"
     let includeAdultDefault = "false"
@@ -49,7 +49,7 @@ struct MDBClient {
         var params = baseParameters
         params[query] = queryInput
         
-        Alamofire.request(baseURL + queryType, method: .get, parameters: params, encoding: URLEncoding.default, headers: nil).responseJSON { response in
+        Alamofire.request(baseURL + "search/" + queryType, method: .get, parameters: params, encoding: URLEncoding.default, headers: nil).responseJSON { response in
             
             guard response.result.isSuccess else {
                 // TODO: Handle error.
@@ -59,7 +59,7 @@ struct MDBClient {
             
             guard let responseJSON = response.result.value as? [String: AnyObject] else {
                 // TODO: Handle error.
-                print("MDBClient: Unable to parse Movie response.")
+                print("MDBClient: Unable to parse movie response.")
                 return
             }
             
@@ -69,6 +69,58 @@ struct MDBClient {
             } else {
                 // TODO: Handle error.
                 print("MDBClient: Nothing found for 'results' key.")
+            }
+        }
+    }
+    
+    func getCast(movieID: Int, completionHandler: @escaping (_ result: [Person]?, _ error: NSError?) -> Void) {
+        
+        Alamofire.request(baseURL + "movie/" + String(movieID) + "/credits", method: .get, parameters: baseParameters, encoding: URLEncoding.default, headers: nil).responseJSON { response in
+            
+            guard response.result.isSuccess else {
+                // TODO: Handle error.
+                print("MDBClient: Cast query was unsuccessful.")
+                return
+            }
+            
+            guard let responseJSON = response.result.value as? [String: AnyObject] else {
+                // TODO: Handle error.
+                print("MDBClient: Unable to parse cast response.")
+                return
+            }
+            
+            if let castData = responseJSON["cast"] as? [[String: AnyObject]] {
+                let cast = Person.peopleFromResults(results: castData)
+                completionHandler(cast, nil)
+            } else {
+                // TODO: Handle error.
+                print("MDBClient: Nothing found for 'cast' key.")
+            }
+        }
+    }
+    
+    func getFilmography(personID: Int, completionHandler: @escaping (_ result: [Movie]?, _ error: NSError?) -> Void) {
+        
+        Alamofire.request(baseURL + "person/" + String(personID) + "/movie_credits", method: .get, parameters: baseParameters, encoding: URLEncoding.default, headers: nil).responseJSON { response in
+            
+            guard response.result.isSuccess else {
+                // TODO: Handle error.
+                print("MDBClient: Filmography query was unsuccessful.")
+                return
+            }
+            
+            guard let responseJSON = response.result.value as? [String: AnyObject] else {
+                // TODO: Handle error.
+                print("MDBClient: Unable to parse filmography response.")
+                return
+            }
+            
+            if let filmographyData = responseJSON["cast"] as? [[String: AnyObject]] {
+                let cast = Movie.moviesFromResults(results: filmographyData)
+                completionHandler(cast, nil)
+            } else {
+                // TODO: Handle error.
+                print("MDBClient: Nothing found for 'cast' key (filmography).")
             }
         }
     }
