@@ -14,7 +14,7 @@
 		9F7B23051DD9B1510032F72A /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7B23041DD9B1510032F72A /* Person.swift */; };
 		9F99F8101DD9425A0050A40C /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F99F80F1DD9425A0050A40C /* Movie.swift */; };
 		9FE947381DD6BFA40024DBFA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FE947371DD6BFA40024DBFA /* AppDelegate.swift */; };
-		9FE9473A1DD6BFA40024DBFA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FE947391DD6BFA40024DBFA /* ViewController.swift */; };
+		9FE9473A1DD6BFA40024DBFA /* GameplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FE947391DD6BFA40024DBFA /* GameplayViewController.swift */; };
 		9FE9473D1DD6BFA40024DBFA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9FE9473B1DD6BFA40024DBFA /* Main.storyboard */; };
 		9FE947401DD6BFA40024DBFA /* MovieTrivia.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9FE9473E1DD6BFA40024DBFA /* MovieTrivia.xcdatamodeld */; };
 		9FE947421DD6BFA40024DBFA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9FE947411DD6BFA40024DBFA /* Assets.xcassets */; };
@@ -52,7 +52,7 @@
 		9F99F80F1DD9425A0050A40C /* Movie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
 		9FE947341DD6BFA40024DBFA /* MovieTrivia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieTrivia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FE947371DD6BFA40024DBFA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		9FE947391DD6BFA40024DBFA /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		9FE947391DD6BFA40024DBFA /* GameplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameplayViewController.swift; sourceTree = "<group>"; };
 		9FE9473C1DD6BFA40024DBFA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9FE9473F1DD6BFA40024DBFA /* MovieTrivia.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MovieTrivia.xcdatamodel; sourceTree = "<group>"; };
 		9FE947411DD6BFA40024DBFA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -136,7 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				9FE947371DD6BFA40024DBFA /* AppDelegate.swift */,
-				9FE947391DD6BFA40024DBFA /* ViewController.swift */,
+				9FE947391DD6BFA40024DBFA /* GameplayViewController.swift */,
 				9FE9473B1DD6BFA40024DBFA /* Main.storyboard */,
 				9FE947411DD6BFA40024DBFA /* Assets.xcassets */,
 				9FE947431DD6BFA40024DBFA /* LaunchScreen.storyboard */,
@@ -466,7 +466,7 @@
 				9F7B23051DD9B1510032F72A /* Person.swift in Sources */,
 				9F70C53D1DD6F5BC00BFF7B7 /* MDBClient.swift in Sources */,
 				9FE947401DD6BFA40024DBFA /* MovieTrivia.xcdatamodeld in Sources */,
-				9FE9473A1DD6BFA40024DBFA /* ViewController.swift in Sources */,
+				9FE9473A1DD6BFA40024DBFA /* GameplayViewController.swift in Sources */,
 				9FE947381DD6BFA40024DBFA /* AppDelegate.swift in Sources */,
 				9F99F8101DD9425A0050A40C /* Movie.swift in Sources */,
 			);
