@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		541C81829F97C88596F37F38 /* Pods_MovieTriviaTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A887F66E6EA16DE3D95DE748 /* Pods_MovieTriviaTests.framework */; };
 		925DAA88E58EE0FC36666809 /* Pods_MovieTriviaUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 209D0886FDE13ECF19A3EDB2 /* Pods_MovieTriviaUITests.framework */; };
+		9F0EE0B21DDD8D8C002B1FB3 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0EE0B11DDD8D8C002B1FB3 /* RadioButton.swift */; };
 		9F50EF7A1DD958A100D0F602 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 9F50EF791DD958A100D0F602 /* .gitignore */; };
 		9F70C53D1DD6F5BC00BFF7B7 /* MDBClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F70C53C1DD6F5BC00BFF7B7 /* MDBClient.swift */; };
 		9F7B23051DD9B1510032F72A /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7B23041DD9B1510032F72A /* Person.swift */; };
@@ -46,6 +47,7 @@
 		28BBE666AA05C99A36219AE1 /* Pods-MovieTriviaUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieTriviaUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MovieTriviaUITests/Pods-MovieTriviaUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		3D52F3A2E92331E25EC51D67 /* Pods-MovieTriviaUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieTriviaUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MovieTriviaUITests/Pods-MovieTriviaUITests.release.xcconfig"; sourceTree = "<group>"; };
 		68642F2C905EE4F02A214798 /* Pods-MovieTrivia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieTrivia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MovieTrivia/Pods-MovieTrivia.debug.xcconfig"; sourceTree = "<group>"; };
+		9F0EE0B11DDD8D8C002B1FB3 /* RadioButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
 		9F50EF791DD958A100D0F602 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		9F70C53C1DD6F5BC00BFF7B7 /* MDBClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDBClient.swift; sourceTree = "<group>"; };
 		9F7B23041DD9B1510032F72A /* Person.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
@@ -112,8 +114,8 @@
 		9FE9472B1DD6BFA40024DBFA = {
 			isa = PBXGroup;
 			children = (
-				9F50EF791DD958A100D0F602 /* .gitignore */,
 				9FE947361DD6BFA40024DBFA /* MovieTrivia */,
+				9F50EF791DD958A100D0F602 /* .gitignore */,
 				9FE9474E1DD6BFA40024DBFA /* MovieTriviaTests */,
 				9FE947591DD6BFA40024DBFA /* MovieTriviaUITests */,
 				9FE947351DD6BFA40024DBFA /* Products */,
@@ -145,6 +147,7 @@
 				9F70C53C1DD6F5BC00BFF7B7 /* MDBClient.swift */,
 				9F99F80F1DD9425A0050A40C /* Movie.swift */,
 				9F7B23041DD9B1510032F72A /* Person.swift */,
+				9F0EE0B11DDD8D8C002B1FB3 /* RadioButton.swift */,
 			);
 			path = MovieTrivia;
 			sourceTree = "<group>";
@@ -464,6 +467,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9F7B23051DD9B1510032F72A /* Person.swift in Sources */,
+				9F0EE0B21DDD8D8C002B1FB3 /* RadioButton.swift in Sources */,
 				9F70C53D1DD6F5BC00BFF7B7 /* MDBClient.swift in Sources */,
 				9FE947401DD6BFA40024DBFA /* MovieTrivia.xcdatamodeld in Sources */,
 				9FE9473A1DD6BFA40024DBFA /* GameplayViewController.swift in Sources */,

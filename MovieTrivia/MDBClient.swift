@@ -44,7 +44,7 @@ struct MDBClient {
     // MARK: API Methods
     //----------------------------------
     
-    func searchDatabase(queryInput: String, queryType: String, completionHandler: @escaping (_ result: [Movie]?, _ error: NSError?) -> Void) {
+    func searchDatabase(queryInput: String, queryType: String, completionHandler: @escaping (_ movies: [Movie]?, _ actors: [Person]?, _ error: NSError?) -> Void) {
         
         var params = baseParameters
         params[query] = queryInput
@@ -63,12 +63,25 @@ struct MDBClient {
                 return
             }
             
-            if let movieData = responseJSON["results"] as? [[String: AnyObject]] {
-                let movies = Movie.moviesFromResults(results: movieData)
-                completionHandler(movies, nil)
+            if queryType == MDBClient.movie {
+                
+                if let movieData = responseJSON["results"] as? [[String: AnyObject]] {
+                    let movies = Movie.moviesFromResults(results: movieData)
+                    completionHandler(movies, nil, nil)
+                } else {
+                    // TODO: Handle error.
+                    print("MDBClient: Nothing found for 'results' key.")
+                }
+                
             } else {
-                // TODO: Handle error.
-                print("MDBClient: Nothing found for 'results' key.")
+                
+                if let actorData = responseJSON["results"] as? [[String: AnyObject]] {
+                    let actors = Person.peopleFromResults(results: actorData)
+                    completionHandler(nil, actors, nil)
+                } else {
+                    // TODO: Handle error.
+                    print("MDBClient: Nothing found for 'results' key.")
+                }
             }
         }
     }

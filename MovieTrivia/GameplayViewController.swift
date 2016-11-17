@@ -15,6 +15,7 @@ class GameplayViewController: UIViewController {
     //----------------------------------
     
     var movies = [Movie]()
+    var actors = [Person]()
     
     //----------------------------------
     // MARK: Outlets
@@ -23,6 +24,8 @@ class GameplayViewController: UIViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var movieButton: RadioButton!
+    @IBOutlet weak var actorButton: RadioButton!
     
     //----------------------------------
     // MARK: Lifecycle
@@ -32,87 +35,107 @@ class GameplayViewController: UIViewController {
         
         super.viewDidLoad()
         
+        self.title = "Player 1"
         self.tableViewHeight.constant = 0
+        movieButton.isSelected = true
+        actorButton.isSelected = false
+    }
+    
+    //----------------------------------
+    // MARK: View Methods
+    //----------------------------------
+    
+    @IBAction func radioButtonTapped(sender: RadioButton) {
         
-//        MDBClient().getCast(movieID: 284052) { (cast, error) in
-//            
-//            guard error == nil else {
-//                // TODO: Handle error.
-//                return
-//            }
-//            
-//            guard let cast = cast else {
-//                // TODO: Handle error.
-//                return
-//            }
-//            
-//            for person in cast {
-//                print(person.name)
-//            }
-//        }
-//        
-//        MDBClient().getFilmography(personID: 71580) { (movies, error) in
-//            
-//            guard error == nil else {
-//                // TODO: Handle error.
-//                return
-//            }
-//            
-//            guard let movies = movies else {
-//                // TODO: Handle error.
-//                return
-//            }
-//            
-//            for movie in movies {
-//                if let releaseYear = movie.releaseYear {
-//                    print("\(movie.title) (\(releaseYear))")
-//                } else {
-//                    print(movie.title)
-//                }
-//            }
-//        }
+        if sender == movieButton {
+            movieButton.isSelected = true
+            actorButton.isSelected = false
+        } else {
+            actorButton.isSelected = true
+            movieButton.isSelected = false
+        }
+        
+        guard searchBar.text != "" else {
+            return
+        }
+        
+        updateTable(searchText: searchBar.text!)
+    }
+    
+    func updateTable(searchText: String) {
+        
+        if movieButton.isSelected {
+            
+            MDBClient().searchDatabase(queryInput: searchText, queryType: MDBClient.movie) { (movies, actors, error) in
+                
+                guard error == nil else {
+                    // TODO: Handle error.
+                    return
+                }
+                
+                guard let movies = movies else {
+                    // TODO: Handle error.
+                    return
+                }
+                
+                self.movies = [Movie]()
+                
+                for movie in movies {
+                    self.movies.append(movie)
+                }
+                
+                self.tableView.reloadData()
+            }
+            
+        } else {
+            
+            MDBClient().searchDatabase(queryInput: searchText, queryType: MDBClient.person) { (movies, actors, error) in
+                
+                guard error == nil else {
+                    // TODO: Handle error.
+                    return
+                }
+                
+                guard let actors = actors else {
+                    // TODO: Handle error.
+                    return
+                }
+                
+                self.actors = [Person]()
+                
+                for actor in actors {
+                    self.actors.append(actor)
+                }
+                
+                self.tableView.reloadData()
+            }
+        }
     }
 }
 
 extension GameplayViewController: UISearchBarDelegate {
     
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        
-        self.view.layoutIfNeeded()
-        UIView.animate(withDuration: 0.5, animations: {
-            self.tableViewHeight.constant = 250.0
-            self.view.layoutIfNeeded()
-        })
-    }
-    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
         if searchText == "" {
             movies = [Movie]()
+            actors = [Person]()
+            
+            UIView.animate(withDuration: 0.5, animations: {
+                self.tableViewHeight.constant = 0
+                self.view.layoutIfNeeded()
+            })
+            
             tableView.reloadData()
             return
         }
         
-        MDBClient().searchDatabase(queryInput: searchText, queryType: MDBClient.movie) { (movies, error) in
-            
-            guard error == nil else {
-                // TODO: Handle error.
-                return
-            }
-            
-            guard let movies = movies else {
-                // TODO: Handle error.
-                return
-            }
-            
-            self.movies = [Movie]()
-            
-            for movie in movies {
-                self.movies.append(movie)
-            }
-            
-            self.tableView.reloadData()
-        }
+        UIView.animate(withDuration: 0.5, animations: {
+            self.tableViewHeight.constant = 200.0
+            self.view.layoutIfNeeded()
+        })
+        
+        updateTable(searchText: searchText)
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -129,13 +152,24 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let reuseIdentifier = "searchCell"
-        let movie = movies[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier) as UITableViewCell!
         
-        if let releaseYear = movie.releaseYear {
-            cell?.textLabel!.text = "\(movie.title) (\(releaseYear))"
+        cell?.textLabel!.font = UIFont(name: "Futura", size: 17)
+        
+        if movieButton.isSelected {
+            
+            let movie = movies[indexPath.row]
+            
+            if let releaseYear = movie.releaseYear {
+                cell?.textLabel!.text = "\(movie.title) (\(releaseYear))"
+            } else {
+                cell?.textLabel!.text = movie.title
+            }
+            
         } else {
-            cell?.textLabel!.text = movie.title
+            
+            let actor = actors[indexPath.row]
+            cell?.textLabel!.text = actor.name
         }
         
         return cell!
@@ -143,7 +177,12 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return movies.count
+        if movieButton.isSelected {
+            return movies.count
+        } else {
+            return actors.count
+        }
+        
     }
 }
 
