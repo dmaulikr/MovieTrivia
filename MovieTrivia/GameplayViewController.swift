@@ -26,6 +26,12 @@ class GameplayViewController: UIViewController {
     @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
     @IBOutlet weak var movieButton: RadioButton!
     @IBOutlet weak var actorButton: RadioButton!
+    @IBOutlet weak var blurView: UIView!
+    @IBOutlet weak var imageTitleLabel: UILabel!
+    @IBOutlet weak var moviePosterImage: UIImageView!
+    @IBOutlet weak var movieLabel: UILabel!
+    @IBOutlet weak var actorImage: UIImageView!
+    @IBOutlet weak var actorLabel: UILabel!
     
     //----------------------------------
     // MARK: Lifecycle
@@ -35,10 +41,37 @@ class GameplayViewController: UIViewController {
         
         super.viewDidLoad()
         
+        // TODO: Update view controller title to reflect current player.
+        
         self.title = "Player 1"
+        
+        // Hide search suggestion table view.
+        
         self.tableViewHeight.constant = 0
+        
+        // Set initial radio button values.
+        
         movieButton.isSelected = true
         actorButton.isSelected = false
+        
+        // Style 'Now playing' label and movie/actor images.
+        
+        imageTitleLabel.layer.cornerRadius = 10.0
+        imageTitleLabel.layer.masksToBounds = true
+        
+        moviePosterImage.layer.borderWidth = 2
+        moviePosterImage.layer.borderColor = UIColor.white.cgColor
+        moviePosterImage.layer.cornerRadius = 10.0
+        moviePosterImage.layer.masksToBounds = true
+    
+        actorImage.layer.borderWidth = 2
+        actorImage.layer.borderColor = UIColor.white.cgColor
+        actorImage.layer.cornerRadius = 10.0
+        actorImage.layer.masksToBounds = true
+        
+        // Set searchBar keyboard property.
+        
+        searchBar.returnKeyType = .go
     }
     
     //----------------------------------
@@ -60,6 +93,17 @@ class GameplayViewController: UIViewController {
         }
         
         updateTable(searchText: searchBar.text!)
+    }
+    
+    @IBAction func backgroundTapped() {
+        
+        self.view.endEditing(true)
+        
+        UIView.animate(withDuration: 0.5, animations: {
+            self.tableViewHeight.constant = 0
+            self.blurView.alpha = 0.0
+            self.view.layoutIfNeeded()
+        })
     }
     
     func updateTable(searchText: String) {
@@ -115,6 +159,21 @@ class GameplayViewController: UIViewController {
 
 extension GameplayViewController: UISearchBarDelegate {
     
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        
+        UIView.animate(withDuration: 0.5, animations: {
+            self.blurView.alpha = 0.8
+        })
+        
+        if searchBar.text != "" {
+            UIView.animate(withDuration: 0.5, animations: {
+                self.tableViewHeight.constant = 200.0
+                self.view.layoutIfNeeded()
+            })
+            updateTable(searchText: searchBar.text!)
+        }
+    }
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
         if searchText == "" {
@@ -139,7 +198,14 @@ extension GameplayViewController: UISearchBarDelegate {
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        
         searchBar.resignFirstResponder()
+        
+        UIView.animate(withDuration: 0.5, animations: {
+            self.tableViewHeight.constant = 0.0
+            self.blurView.alpha = 0.0
+            self.view.layoutIfNeeded()
+        })
     }
 }
 
