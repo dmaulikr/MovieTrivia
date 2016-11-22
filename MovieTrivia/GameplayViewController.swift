@@ -69,7 +69,7 @@ class GameplayViewController: UIViewController {
         actorImage.layer.cornerRadius = 10.0
         actorImage.layer.masksToBounds = true
         
-        // Set searchBar keyboard property.
+        // Set searchBar keyboard return key property.
         
         searchBar.returnKeyType = .go
     }

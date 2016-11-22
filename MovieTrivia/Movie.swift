@@ -7,29 +7,37 @@
 //
 
 import Foundation
+import CoreData
 
-struct Movie {
+class Movie: NSManagedObject {
     
     //----------------------------------
     // MARK: Properties
     //----------------------------------
     
-    var title: String
-    var releaseDate: String?
-    var releaseYear: String?
-    var cast: [String]
-    var posterPath: String?
-    var idNumber: Int
+    @NSManaged var title: String
+    @NSManaged var releaseDate: String?
+    @NSManaged var releaseYear: String?
+    @NSManaged var posterPath: String?
+    @NSManaged var idNumber: Int
+    @NSManaged var imageData: Data?
+    @NSManaged var cast: [Person]
     
     //----------------------------------
     // MARK: Initialization
     //----------------------------------
     
-    init(dictionary: [String: AnyObject]) {
+    override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
+        super.init(entity: entity, insertInto: context)
+    }
+    
+    init(dictionary: [String: AnyObject], context: NSManagedObjectContext) {
+        
+        let entity = NSEntityDescription.entity(forEntityName: "Movie", in: context)!
+        super.init(entity: entity, insertInto: context)
         
         title = dictionary["title"] as! String
         releaseDate = dictionary["release_date"] as? String
-        cast = [String]()
         posterPath = dictionary["poster_path"] as? String
         idNumber = dictionary["id"] as! Int
         
@@ -44,12 +52,12 @@ struct Movie {
     // MARK: Helper
     //----------------------------------
     
-    static func moviesFromResults(results: [[String: AnyObject]]) -> [Movie] {
+    static func moviesFromResults(results: [[String: AnyObject]], context: NSManagedObjectContext) -> [Movie] {
         
         var movies = [Movie]()
         
         for result in results {
-            movies.append(Movie(dictionary: result))
+            movies.append(Movie(dictionary: result, context: context))
         }
         
         return movies

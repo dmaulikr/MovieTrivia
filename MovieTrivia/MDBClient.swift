@@ -8,11 +8,12 @@
 
 import Foundation
 import Alamofire
+import CoreData
 
 struct MDBClient {
     
     //----------------------------------
-    // MARK: Constants
+    // MARK: Properties
     //----------------------------------
     
     // Parameter Keys
@@ -38,6 +39,10 @@ struct MDBClient {
         [apiKey: apiKeyDefault,
         language: languageDefault,
         includeAdult: includeAdultDefault]
+    }
+    
+    var sharedContext: NSManagedObjectContext {
+        return CoreDataStackManager.sharedInstance().managedObjectContext
     }
     
     //----------------------------------
@@ -66,7 +71,7 @@ struct MDBClient {
             if queryType == MDBClient.movie {
                 
                 if let movieData = responseJSON["results"] as? [[String: AnyObject]] {
-                    let movies = Movie.moviesFromResults(results: movieData)
+                    let movies = Movie.moviesFromResults(results: movieData, context: self.sharedContext)
                     completionHandler(movies, nil, nil)
                 } else {
                     // TODO: Handle error.
@@ -76,7 +81,7 @@ struct MDBClient {
             } else {
                 
                 if let actorData = responseJSON["results"] as? [[String: AnyObject]] {
-                    let actors = Person.peopleFromResults(results: actorData)
+                    let actors = Person.peopleFromResults(results: actorData, context: self.sharedContext)
                     completionHandler(nil, actors, nil)
                 } else {
                     // TODO: Handle error.
@@ -103,7 +108,7 @@ struct MDBClient {
             }
             
             if let castData = responseJSON["cast"] as? [[String: AnyObject]] {
-                let cast = Person.peopleFromResults(results: castData)
+                let cast = Person.peopleFromResults(results: castData, context: self.sharedContext)
                 completionHandler(cast, nil)
             } else {
                 // TODO: Handle error.
@@ -129,8 +134,8 @@ struct MDBClient {
             }
             
             if let filmographyData = responseJSON["cast"] as? [[String: AnyObject]] {
-                let cast = Movie.moviesFromResults(results: filmographyData)
-                completionHandler(cast, nil)
+                let filmography = Movie.moviesFromResults(results: filmographyData, context: self.sharedContext)
+                completionHandler(filmography, nil)
             } else {
                 // TODO: Handle error.
                 print("MDBClient: Nothing found for 'cast' key (filmography).")
