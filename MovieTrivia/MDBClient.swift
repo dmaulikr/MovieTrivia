@@ -49,7 +49,7 @@ struct MDBClient {
     // MARK: API Methods
     //----------------------------------
     
-    func searchDatabase(queryInput: String, queryType: String, completionHandler: @escaping (_ movies: [Movie]?, _ actors: [Person]?, _ error: NSError?) -> Void) {
+    func searchDatabase(queryInput: String, queryType: String, completionHandler: @escaping (_ movies: [Movie]?, _ actors: [Actor]?, _ error: NSError?) -> Void) {
         
         var params = baseParameters
         params[query] = queryInput
@@ -81,7 +81,7 @@ struct MDBClient {
             } else {
                 
                 if let actorData = responseJSON["results"] as? [[String: AnyObject]] {
-                    let actors = Person.peopleFromResults(results: actorData, context: self.sharedContext)
+                    let actors = Actor.peopleFromResults(results: actorData, context: self.sharedContext)
                     completionHandler(nil, actors, nil)
                 } else {
                     // TODO: Handle error.
@@ -91,7 +91,7 @@ struct MDBClient {
         }
     }
     
-    func getCast(movieID: Int, completionHandler: @escaping (_ result: [Person]?, _ error: NSError?) -> Void) {
+    func getCast(movieID: Int, completionHandler: @escaping (_ result: [Actor]?, _ error: NSError?) -> Void) {
         
         Alamofire.request(baseURL + "movie/" + String(movieID) + "/credits", method: .get, parameters: baseParameters, encoding: URLEncoding.default, headers: nil).responseJSON { response in
             
@@ -108,7 +108,7 @@ struct MDBClient {
             }
             
             if let castData = responseJSON["cast"] as? [[String: AnyObject]] {
-                let cast = Person.peopleFromResults(results: castData, context: self.sharedContext)
+                let cast = Actor.peopleFromResults(results: castData, context: self.sharedContext)
                 completionHandler(cast, nil)
             } else {
                 // TODO: Handle error.

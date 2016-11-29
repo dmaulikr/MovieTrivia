@@ -15,7 +15,7 @@ class GameplayViewController: UIViewController {
     //----------------------------------
     
     var movies = [Movie]()
-    var actors = [Person]()
+    var actors = [Actor]()
     
     //----------------------------------
     // MARK: Outlets
@@ -145,7 +145,7 @@ class GameplayViewController: UIViewController {
                     return
                 }
                 
-                self.actors = [Person]()
+                self.actors = [Actor]()
                 
                 for actor in actors {
                     self.actors.append(actor)
@@ -178,7 +178,7 @@ extension GameplayViewController: UISearchBarDelegate {
         
         if searchText == "" {
             movies = [Movie]()
-            actors = [Person]()
+            actors = [Actor]()
             
             UIView.animate(withDuration: 0.5, animations: {
                 self.tableViewHeight.constant = 0

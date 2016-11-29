@@ -1,5 +1,5 @@
 //
-//  Person.swift
+//  Actor.swift
 //  MovieTrivia
 //
 //  Created by Theodore Rothrock on 11/14/16.
@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-class Person: NSManagedObject {
+class Actor: NSManagedObject {
     
     //----------------------------------
     // MARK: Properties
@@ -31,7 +31,7 @@ class Person: NSManagedObject {
     
     init(dictionary: [String: AnyObject], context: NSManagedObjectContext) {
         
-        let entity = NSEntityDescription.entity(forEntityName: "Person", in: context)!
+        let entity = NSEntityDescription.entity(forEntityName: "Actor", in: context)!
         super.init(entity: entity, insertInto: context)
         
         name = dictionary["name"] as! String
@@ -43,12 +43,12 @@ class Person: NSManagedObject {
     // MARK: Helper
     //----------------------------------
     
-    static func peopleFromResults(results: [[String: AnyObject]], context: NSManagedObjectContext) -> [Person] {
+    static func peopleFromResults(results: [[String: AnyObject]], context: NSManagedObjectContext) -> [Actor] {
         
-        var people = [Person]()
+        var people = [Actor]()
         
         for result in results {
-            people.append(Person(dictionary: result, context: context))
+            people.append(Actor(dictionary: result, context: context))
         }
         
         return people

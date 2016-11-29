@@ -21,7 +21,7 @@ class Movie: NSManagedObject {
     @NSManaged var posterPath: String?
     @NSManaged var idNumber: Int
     @NSManaged var imageData: Data?
-    @NSManaged var cast: [Person]
+    @NSManaged var cast: [Actor]
     
     //----------------------------------
     // MARK: Initialization
