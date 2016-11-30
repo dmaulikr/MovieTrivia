@@ -20,7 +20,7 @@ class Movie: NSManagedObject {
     @NSManaged var releaseYear: String?
     @NSManaged var posterPath: String?
     @NSManaged var idNumber: Int
-    @NSManaged var imageData: Data?
+    @NSManaged var image: Data?
     @NSManaged var cast: [Actor]
     
     //----------------------------------

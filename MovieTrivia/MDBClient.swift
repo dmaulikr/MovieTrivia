@@ -31,6 +31,7 @@ struct MDBClient {
     // Default Parameters
     
     let baseURL = "https://api.themoviedb.org/3/"
+    let baseImageURL = "https://image.tmdb.org/t/p/w500"
     let apiKeyDefault = "af7c170463ea56b4a5142fc83ba863ba"
     let languageDefault = "en-US"
     let includeAdultDefault = "false"
@@ -91,9 +92,9 @@ struct MDBClient {
         }
     }
     
-    func getCast(movieID: Int, completionHandler: @escaping (_ result: [Actor]?, _ error: NSError?) -> Void) {
+    func getCast(movie: Movie, completionHandler: @escaping (_ result: [Actor]?, _ error: NSError?) -> Void) {
         
-        Alamofire.request(baseURL + "movie/" + String(movieID) + "/credits", method: .get, parameters: baseParameters, encoding: URLEncoding.default, headers: nil).responseJSON { response in
+        Alamofire.request(baseURL + "movie/" + String(movie.idNumber) + "/credits", method: .get, parameters: baseParameters, encoding: URLEncoding.default, headers: nil).responseJSON { response in
             
             guard response.result.isSuccess else {
                 // TODO: Handle error.
@@ -117,9 +118,9 @@ struct MDBClient {
         }
     }
     
-    func getFilmography(personID: Int, completionHandler: @escaping (_ result: [Movie]?, _ error: NSError?) -> Void) {
+    func getFilmography(actor: Actor, completionHandler: @escaping (_ result: [Movie]?, _ error: NSError?) -> Void) {
         
-        Alamofire.request(baseURL + "person/" + String(personID) + "/movie_credits", method: .get, parameters: baseParameters, encoding: URLEncoding.default, headers: nil).responseJSON { response in
+        Alamofire.request(baseURL + "person/" + String(actor.idNumber) + "/movie_credits", method: .get, parameters: baseParameters, encoding: URLEncoding.default, headers: nil).responseJSON { response in
             
             guard response.result.isSuccess else {
                 // TODO: Handle error.
@@ -140,6 +141,66 @@ struct MDBClient {
                 // TODO: Handle error.
                 print("MDBClient: Nothing found for 'cast' key (filmography).")
             }
+        }
+    }
+    
+    func getMovieImage(movie: Movie, completionHandler: @escaping (_ image: UIImage?, _ error: NSError?) -> Void) {
+        
+        guard let posterPath = movie.posterPath else {
+            // TODO: Handle error.
+            return
+        }
+        
+        Alamofire.request(baseImageURL + posterPath, method: .get, parameters: nil, encoding: URLEncoding.default, headers: nil).responseData { response in
+            
+            guard response.result.isSuccess else {
+                // TODO: Handle error.
+                print("MDBClient: Movie image query was unsuccessful.")
+                return
+            }
+            
+            guard let data = response.result.value else {
+                // TODO: Handle error.
+                print("MDBClient: Unable to retrieve movie image data.")
+                return
+            }
+            
+            guard let moviePosterImage = UIImage(data: data) else {
+                // TODO: Handle error.
+                return
+            }
+            
+            completionHandler(moviePosterImage, nil)
+        }
+    }
+    
+    func getActorImage(actor: Actor, completionHandler: @escaping (_ image: UIImage?, _ error: NSError?) -> Void) {
+        
+        guard let profilePath = actor.profilePath else {
+            // TODO: Handle error.
+            return
+        }
+        
+        Alamofire.request(baseImageURL + profilePath, method: .get, parameters: nil, encoding: URLEncoding.default, headers: nil).responseData { response in
+         
+            guard response.result.isSuccess else {
+                // TODO: Handle error.
+                print("MDBClient: Actor image query was unsuccessful.")
+                return
+            }
+            
+            guard let data = response.result.value else {
+                // TODO: Handle error.
+                print("MDBClient: Unable to retrieve actor image data.")
+                return
+            }
+            
+            guard let actorImage = UIImage(data: data) else {
+                // TODO: Handle error.
+                return
+            }
+            
+            completionHandler(actorImage, nil)
         }
     }
 }

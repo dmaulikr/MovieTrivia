@@ -71,7 +71,7 @@ class GameplayViewController: UIViewController {
         
         // Set searchBar keyboard return key property.
         
-        searchBar.returnKeyType = .go
+        searchBar.returnKeyType = .done
     }
     
     //----------------------------------
@@ -248,7 +248,52 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
         } else {
             return actors.count
         }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        if movieButton.isSelected{
+            
+            let selectedMovie = movies[indexPath.row]
+            
+            MDBClient().getMovieImage(movie: selectedMovie) { (image, error) in
+                
+                guard error == nil else {
+                    // TODO: Handle error.
+                    return
+                }
+                
+                self.moviePosterImage.image = image
+                self.movieLabel.text = selectedMovie.title
+            }
+            
+        } else {
+            
+            let selectedActor = actors[indexPath.row]
+            
+            MDBClient().getActorImage(actor: selectedActor) { (image, error) in
+                
+                guard error == nil else {
+                    // TODO: Handle error.
+                    return
+                }
+                
+                self.actorImage.image = image
+                self.actorLabel.text = selectedActor.name
+            }
+            
+        }
+        
+        // Clear search bar and dismiss table.
+        
+        self.searchBar.text = ""
+        self.view.endEditing(true)
+        
+        UIView.animate(withDuration: 0.5, animations: {
+            self.tableViewHeight.constant = 0.0
+            self.blurView.alpha = 0.0
+            self.view.layoutIfNeeded()
+        })
     }
 }
 
