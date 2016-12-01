@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class GameplayViewController: UIViewController {
     
@@ -16,6 +17,7 @@ class GameplayViewController: UIViewController {
     
     var movies = [Movie]()
     var actors = [Actor]()
+    let managedObjectContext = CoreDataStackManager.sharedInstance().managedObjectContext
     
     //----------------------------------
     // MARK: Outlets
@@ -267,6 +269,8 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                 self.movieLabel.text = selectedMovie.title
             }
             
+            // TODO: Add movie to game history.
+            
         } else {
             
             let selectedActor = actors[indexPath.row]
@@ -282,6 +286,7 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                 self.actorLabel.text = selectedActor.name
             }
             
+            // TODO: Add actor to game history.
         }
         
         // Clear search bar and dismiss table.
@@ -294,6 +299,24 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
             self.blurView.alpha = 0.0
             self.view.layoutIfNeeded()
         })
+        
+        // Clear cache and save changes.
+        
+        CoreDataStackManager.sharedInstance().clearMoviesAndActors() { error in
+            
+            guard error == nil else {
+                // TODO: Handle error.
+                return
+            }
+        }
+        
+        CoreDataStackManager.sharedInstance().saveContext() { error in
+            
+            guard error == nil else {
+                // TODO: Handle error.
+                return
+            }
+        }
     }
 }
 

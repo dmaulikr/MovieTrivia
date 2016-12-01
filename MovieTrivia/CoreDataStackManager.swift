@@ -59,7 +59,7 @@ class CoreDataStackManager {
     }()
     
     //--------------------------------------
-    // MARK: - Saving Support
+    // MARK: - Helper Methods
     //--------------------------------------
     
     func saveContext(completionHandler: (_ error: Error?) -> Void) {
@@ -71,6 +71,35 @@ class CoreDataStackManager {
                 print("Encoutered error while saving: \(error.localizedDescription)")
                 completionHandler(error)
             }
+        }
+    }
+    
+    func clearMoviesAndActors(completionHandler: (_ error: Error?) -> Void) {
+        
+        var fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Movie")
+        
+        do {
+            let list = try managedObjectContext.fetch(fetchRequest) as! [Movie]
+            for movie in list {
+                managedObjectContext.delete(movie)
+            }
+        } catch {
+            let error = error as Error
+            print("Encountered error while clearing Movie cache: \(error.localizedDescription)")
+            completionHandler(error)
+        }
+        
+        fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Actor")
+        
+        do {
+            let list = try managedObjectContext.fetch(fetchRequest) as! [Actor]
+            for actor in list {
+                managedObjectContext.delete(actor)
+            }
+        } catch {
+            let error = error as Error
+            print("Encountered error while clearing Actor cache: \(error.localizedDescription)")
+            completionHandler(error)
         }
     }
 }
