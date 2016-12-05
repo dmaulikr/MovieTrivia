@@ -19,7 +19,7 @@ class Actor: NSManagedObject {
     @NSManaged var profilePath: String?
     @NSManaged var idNumber: Int
     @NSManaged var imageData: Data?
-    @NSManaged var filmography: [Movie]
+    @NSManaged var filmography: Set<Movie>?
     
     //----------------------------------
     // MARK: Initialization
@@ -49,6 +49,7 @@ class Actor: NSManagedObject {
         
         for result in results {
             people.append(Actor(dictionary: result, context: context))
+            
         }
         
         return people

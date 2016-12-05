@@ -92,7 +92,7 @@ struct MDBClient {
         }
     }
     
-    func getCast(movie: Movie, completionHandler: @escaping (_ result: [Actor]?, _ error: NSError?) -> Void) {
+    func getCast(movie: Movie, completionHandler: @escaping (_ result: Set<Actor>?, _ error: NSError?) -> Void) {
         
         Alamofire.request(baseURL + "movie/" + String(movie.idNumber) + "/credits", method: .get, parameters: baseParameters, encoding: URLEncoding.default, headers: nil).responseJSON { response in
             
@@ -110,7 +110,8 @@ struct MDBClient {
             
             if let castData = responseJSON["cast"] as? [[String: AnyObject]] {
                 let cast = Actor.peopleFromResults(results: castData, context: self.sharedContext)
-                completionHandler(cast, nil)
+                let castSet = Set(cast)
+                completionHandler(castSet, nil)
             } else {
                 // TODO: Handle error.
                 print("MDBClient: Nothing found for 'cast' key.")
@@ -118,7 +119,7 @@ struct MDBClient {
         }
     }
     
-    func getFilmography(actor: Actor, completionHandler: @escaping (_ result: [Movie]?, _ error: NSError?) -> Void) {
+    func getFilmography(actor: Actor, completionHandler: @escaping (_ result: Set<Movie>?, _ error: NSError?) -> Void) {
         
         Alamofire.request(baseURL + "person/" + String(actor.idNumber) + "/movie_credits", method: .get, parameters: baseParameters, encoding: URLEncoding.default, headers: nil).responseJSON { response in
             
@@ -136,7 +137,8 @@ struct MDBClient {
             
             if let filmographyData = responseJSON["cast"] as? [[String: AnyObject]] {
                 let filmography = Movie.moviesFromResults(results: filmographyData, context: self.sharedContext)
-                completionHandler(filmography, nil)
+                let filmographySet = Set(filmography)
+                completionHandler(filmographySet, nil)
             } else {
                 // TODO: Handle error.
                 print("MDBClient: Nothing found for 'cast' key (filmography).")

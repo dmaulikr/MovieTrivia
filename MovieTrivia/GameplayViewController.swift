@@ -17,7 +17,14 @@ class GameplayViewController: UIViewController {
     
     var movies = [Movie]()
     var actors = [Actor]()
-    let managedObjectContext = CoreDataStackManager.sharedInstance().managedObjectContext
+    var currentMovie: Movie? = nil
+    var currentActor: Actor? = nil
+    var player1: Player? = nil
+    var player2: Player? = nil
+    var currentPlayer: Player? = nil
+    var currentRound: Int? = nil
+    var game: Game? = nil
+    var managedObjectContext: NSManagedObjectContext {return CoreDataStackManager.sharedInstance().managedObjectContext}
     
     //----------------------------------
     // MARK: Outlets
@@ -38,14 +45,60 @@ class GameplayViewController: UIViewController {
     //----------------------------------
     // MARK: Lifecycle
     //----------------------------------
+    
+    struct setupObjects {
+        
+        let whatAboutBob = Movie(
+            dictionary: [
+                "title": "What About Bob?" as AnyObject,
+                "release_date": "1991-05-17" as AnyObject,
+                "poster_path": "/fopJnM6MCZilYM6nRpglWdFndt1.jpg" as AnyObject,
+                "id": 10276 as AnyObject
+            ],
+            context: CoreDataStackManager.sharedInstance().managedObjectContext
+        )
+        
+        let billMurray = Actor(
+            dictionary: [
+                "name": "Bill Murray" as AnyObject,
+                "profile_path": "/lBXifSLzs1DuspaWkACjSfjlwbd.jpg" as AnyObject,
+                "id": 1532 as AnyObject
+            ],
+            context: CoreDataStackManager.sharedInstance().managedObjectContext)
+    }
 
     override func viewDidLoad() {
         
         super.viewDidLoad()
         
-        // TODO: Update view controller title to reflect current player.
+        // DELETE BELOW. Temporary setup.
         
-        self.title = "Player 1"
+        player1 = Player(name: "Player 1", color: UIColor.red, context: managedObjectContext)
+        player2 = Player(name: "Player 2", color: UIColor.green, context: managedObjectContext)
+        game = Game(players: [player1!, player2!], context: managedObjectContext)
+        
+        currentPlayer = player1
+        currentMovie = setupObjects().whatAboutBob
+        
+        MDBClient().getMovieImage(movie: currentMovie!) { (image, error) in
+            
+            guard error == nil else {
+                // TODO: Handle error.
+                return
+            }
+            
+            self.moviePosterImage.image = image
+            self.movieLabel.text = self.currentMovie?.title
+        }
+        
+        MDBClient().getCast(movie: currentMovie!) { (cast, error) in
+            
+            self.currentMovie!.cast = cast!
+        }
+        
+        // DELETE ABOVE
+        
+        self.title = currentPlayer?.name
         
         // Hide search suggestion table view.
         
@@ -110,50 +163,126 @@ class GameplayViewController: UIViewController {
     
     func updateTable(searchText: String) {
         
-        if movieButton.isSelected {
+        var queryType: String
+        
+        switch movieButton.isSelected {
             
-            MDBClient().searchDatabase(queryInput: searchText, queryType: MDBClient.movie) { (movies, actors, error) in
+        case true:
+            queryType = MDBClient.movie
+            break
+            
+        case false:
+            queryType = MDBClient.person
+            break
+        }
+        
+        MDBClient().searchDatabase(queryInput: searchText, queryType: queryType) { (movies, actors, error) in
+            
+            guard error == nil else {
+                // TODO: Handle error.
+                return
+            }
+            
+            switch queryType {
                 
-                guard error == nil else {
-                    // TODO: Handle error.
-                    return
-                }
-                
+            case MDBClient.movie:
                 guard let movies = movies else {
                     // TODO: Handle error.
                     return
                 }
-                
                 self.movies = [Movie]()
-                
                 for movie in movies {
                     self.movies.append(movie)
                 }
+                break
                 
-                self.tableView.reloadData()
+            case MDBClient.person:
+                guard let actors = actors else {
+                    // TODO: Handle error.
+                    return
+                }
+                self.actors = [Actor]()
+                for actor in actors {
+                    self.actors.append(actor)
+                }
+                break
+                
+            default:
+                break
             }
             
-        } else {
+            self.tableView.reloadData()
+        }
+    }
+    
+    //----------------------------------
+    // MARK: Helper Functions
+    //----------------------------------
+    
+    func dismissTable() {
+        
+        self.searchBar.text = ""
+        self.view.endEditing(true)
+        
+        UIView.animate(withDuration: 0.5, animations: {
+            self.tableViewHeight.constant = 0.0
+            self.blurView.alpha = 0.0
+            self.view.layoutIfNeeded()
+        })
+    }
+    
+    func verifyAnswer(movie: Movie, actor: Actor, completionHandler: @escaping (_ correct: Bool?, _ error: Error?) -> Void) {
+        
+        if movieButton.isSelected {
             
-            MDBClient().searchDatabase(queryInput: searchText, queryType: MDBClient.person) { (movies, actors, error) in
+            MDBClient().getCast(movie: movie) { (cast, error) in
                 
                 guard error == nil else {
                     // TODO: Handle error.
                     return
                 }
                 
-                guard let actors = actors else {
+                guard let cast = cast else {
+                    // TODO: Handle error.
+                    return
+                }
+
+                movie.cast = cast
+                
+                for castMember in movie.cast! {
+                    if castMember.name == actor.name {
+                        completionHandler(true, nil)
+                        return
+                    }
+                }
+                
+                completionHandler(false, nil)
+            }
+            
+        } else {
+            
+            MDBClient().getFilmography(actor: actor) { (filmography, error) in
+                
+                guard error == nil else {
                     // TODO: Handle error.
                     return
                 }
                 
-                self.actors = [Actor]()
-                
-                for actor in actors {
-                    self.actors.append(actor)
+                guard let filmography = filmography else {
+                    // TODO: Handle error.
+                    return
                 }
                 
-                self.tableView.reloadData()
+                actor.filmography = filmography
+                
+                for film in actor.filmography! {
+                    if film.title == movie.title {
+                        completionHandler(true, nil)
+                        return
+                    }
+                }
+                
+                completionHandler(false, nil)
             }
         }
     }
@@ -224,20 +353,21 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
         
         cell?.textLabel!.font = UIFont(name: "Futura", size: 17)
         
-        if movieButton.isSelected {
+        switch movieButton.isSelected {
             
+        case true:
             let movie = movies[indexPath.row]
-            
             if let releaseYear = movie.releaseYear {
                 cell?.textLabel!.text = "\(movie.title) (\(releaseYear))"
             } else {
                 cell?.textLabel!.text = movie.title
             }
+            break
             
-        } else {
-            
+        case false:
             let actor = actors[indexPath.row]
             cell?.textLabel!.text = actor.name
+            break
         }
         
         return cell!
@@ -245,20 +375,26 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if movieButton.isSelected {
+        switch movieButton.isSelected {
+            
+        case true:
             return movies.count
-        } else {
+            
+        case false:
             return actors.count
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        if movieButton.isSelected{
+        switch movieButton.isSelected {
             
-            let selectedMovie = movies[indexPath.row]
+        case true:
+            currentMovie = movies[indexPath.row]
             
-            MDBClient().getMovieImage(movie: selectedMovie) { (image, error) in
+            // Set movie image and label.
+            
+            MDBClient().getMovieImage(movie: currentMovie!) { (image, error) in
                 
                 guard error == nil else {
                     // TODO: Handle error.
@@ -266,16 +402,16 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                 }
                 
                 self.moviePosterImage.image = image
-                self.movieLabel.text = selectedMovie.title
+                self.movieLabel.text = self.currentMovie?.title
             }
+            break
             
-            // TODO: Add movie to game history.
+        case false:
+            currentActor = actors[indexPath.row]
             
-        } else {
+            // Set actor image and label.
             
-            let selectedActor = actors[indexPath.row]
-            
-            MDBClient().getActorImage(actor: selectedActor) { (image, error) in
+            MDBClient().getActorImage(actor: currentActor!) { (image, error) in
                 
                 guard error == nil else {
                     // TODO: Handle error.
@@ -283,40 +419,37 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                 }
                 
                 self.actorImage.image = image
-                self.actorLabel.text = selectedActor.name
+                self.actorLabel.text = self.currentActor?.name
             }
-            
-            // TODO: Add actor to game history.
+            break
         }
         
-        // Clear search bar and dismiss table.
-        
-        self.searchBar.text = ""
-        self.view.endEditing(true)
-        
-        UIView.animate(withDuration: 0.5, animations: {
-            self.tableViewHeight.constant = 0.0
-            self.blurView.alpha = 0.0
-            self.view.layoutIfNeeded()
-        })
-        
-        // Clear cache and save changes.
-        
-        CoreDataStackManager.sharedInstance().clearMoviesAndActors() { error in
+        verifyAnswer(movie: currentMovie!, actor: currentActor!) { (correct, error) in
+            
+            print("Verifying that \(self.currentActor!.name) appeared in '\(self.currentMovie!.title)': \(correct!)")
             
             guard error == nil else {
                 // TODO: Handle error.
                 return
             }
-        }
-        
-        CoreDataStackManager.sharedInstance().saveContext() { error in
             
-            guard error == nil else {
+            guard let correct = correct else {
                 // TODO: Handle error.
                 return
             }
+            
+            let _ = Turn(player: self.currentPlayer!, game: self.game!, success: correct, round: 1, movie: self.currentMovie!, actor: self.currentActor!, context: self.managedObjectContext)
+            
+            CoreDataStackManager.sharedInstance().saveContext() { error in
+                guard error == nil else {
+                    // TODO: Handle error.
+                    return
+                }
+            }
         }
+        
+        // TODO: Clear cache of unused Movie and Actor objects from managedObjectContext.
+        
+        dismissTable()
     }
 }
-

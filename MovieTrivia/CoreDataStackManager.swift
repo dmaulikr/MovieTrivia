@@ -68,7 +68,7 @@ class CoreDataStackManager {
                 try managedObjectContext.save()
             } catch {
                 let error = error as Error
-                print("Encoutered error while saving: \(error.localizedDescription)")
+                print("Encountered error while saving: \(error.localizedDescription)")
                 completionHandler(error)
             }
         }
