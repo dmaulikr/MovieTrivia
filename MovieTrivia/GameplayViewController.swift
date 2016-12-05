@@ -183,9 +183,9 @@ class GameplayViewController: UIViewController {
                 return
             }
             
-            switch queryType {
+            switch self.movieButton.isSelected {
                 
-            case MDBClient.movie:
+            case true:
                 guard let movies = movies else {
                     // TODO: Handle error.
                     return
@@ -196,7 +196,7 @@ class GameplayViewController: UIViewController {
                 }
                 break
                 
-            case MDBClient.person:
+            case false:
                 guard let actors = actors else {
                     // TODO: Handle error.
                     return
@@ -205,9 +205,6 @@ class GameplayViewController: UIViewController {
                 for actor in actors {
                     self.actors.append(actor)
                 }
-                break
-                
-            default:
                 break
             }
             
@@ -233,8 +230,9 @@ class GameplayViewController: UIViewController {
     
     func verifyAnswer(movie: Movie, actor: Actor, completionHandler: @escaping (_ correct: Bool?, _ error: Error?) -> Void) {
         
-        if movieButton.isSelected {
+        switch movieButton.isSelected {
             
+        case true:
             MDBClient().getCast(movie: movie) { (cast, error) in
                 
                 guard error == nil else {
@@ -246,7 +244,7 @@ class GameplayViewController: UIViewController {
                     // TODO: Handle error.
                     return
                 }
-
+                
                 movie.cast = cast
                 
                 for castMember in movie.cast! {
@@ -258,9 +256,9 @@ class GameplayViewController: UIViewController {
                 
                 completionHandler(false, nil)
             }
+            break
             
-        } else {
-            
+        case false:
             MDBClient().getFilmography(actor: actor) { (filmography, error) in
                 
                 guard error == nil else {
@@ -284,6 +282,7 @@ class GameplayViewController: UIViewController {
                 
                 completionHandler(false, nil)
             }
+            break
         }
     }
 }
