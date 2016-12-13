@@ -17,7 +17,7 @@ class Player: NSManagedObject {
     //----------------------------------
     
     @NSManaged var name: String
-    @NSManaged var color: UIColor
+    @NSManaged var color: UIColor?
     @NSManaged var score: Int
     @NSManaged var turns: [Turn]?
     @NSManaged var game: Game?
@@ -30,13 +30,12 @@ class Player: NSManagedObject {
         super.init(entity: entity, insertInto: context)
     }
     
-    init(name: String, color: UIColor, context: NSManagedObjectContext) {
+    init(name: String, context: NSManagedObjectContext) {
         
         let entity = NSEntityDescription.entity(forEntityName: "Player", in: context)!
         super.init(entity: entity, insertInto: context)
         
         self.name = name
-        self.color = color
         self.score = 0
     }
 }

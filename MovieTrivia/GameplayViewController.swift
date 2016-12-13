@@ -73,8 +73,8 @@ class GameplayViewController: UIViewController {
         
         // DELETE BELOW. Temporary setup.
         
-        player1 = Player(name: "Player 1", color: UIColor.red, context: managedObjectContext)
-        player2 = Player(name: "Player 2", color: UIColor.green, context: managedObjectContext)
+        player1 = Player(name: "Player 1", context: managedObjectContext)
+        player2 = Player(name: "Player 2", context: managedObjectContext)
         game = Game(players: [player1!, player2!], context: managedObjectContext)
         
         currentPlayer = player1

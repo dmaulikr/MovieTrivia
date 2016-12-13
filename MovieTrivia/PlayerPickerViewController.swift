@@ -7,8 +7,18 @@
 //
 
 import UIKit
+import CoreData
 
 class PlayerPickerViewController: UIViewController {
+    
+    //----------------------------------
+    // MARK: Properties
+    //----------------------------------
+    
+    var game: Game? = nil
+    var players = [Player]()
+    var numberOfPlayers = 2
+    var managedObjectContext: NSManagedObjectContext {return CoreDataStackManager.sharedInstance().managedObjectContext}
     
     //----------------------------------
     // MARK: Outlets
@@ -26,6 +36,25 @@ class PlayerPickerViewController: UIViewController {
         // Set initial picker value.
         
         pickerView.selectRow(1, inComponent: 0, animated: false)
+    }
+    
+    //----------------------------------
+    // MARK: View Methods
+    //----------------------------------
+    
+    @IBAction func setPlayers() {
+        
+        for index in 1...numberOfPlayers {
+            
+            let player = Player(name: "Player\(index)", context: managedObjectContext)
+            players.append(player)
+        }
+        
+        game = Game(players: players, context: managedObjectContext)
+        
+        for player in (game?.players)! {
+            print(player.name)
+        }
     }
 }
 
@@ -50,6 +79,11 @@ extension PlayerPickerViewController: UIPickerViewDelegate, UIPickerViewDataSour
         pickerLabel.attributedText = title
         pickerLabel.textAlignment = .center
         return pickerLabel
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        
+        numberOfPlayers = row + 1
     }
 }
 

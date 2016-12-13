@@ -51,10 +51,11 @@
                                     <constraint firstAttribute="width" constant="150" id="drj-9z-FUQ"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
-                                <state key="normal" title="Go">
+                                <state key="normal" title="Done">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
+                                    <action selector="setPlayers" destination="Bpg-xi-m3v" eventType="touchUpInside" id="iLY-u9-2jq"/>
                                     <segue destination="dCV-CM-qLk" kind="show" id="03Z-vd-tdb"/>
                                 </connections>
                             </button>
