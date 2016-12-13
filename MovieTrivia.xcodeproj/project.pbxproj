@@ -14,10 +14,14 @@
 		9F0EE0BB1DF15D2C002B1FB3 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0EE0BA1DF15D2C002B1FB3 /* Player.swift */; };
 		9F0EE0BD1DF15DBE002B1FB3 /* Turn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0EE0BC1DF15DBE002B1FB3 /* Turn.swift */; };
 		9F0EE0BF1DF1610A002B1FB3 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0EE0BE1DF1610A002B1FB3 /* Game.swift */; };
+		9F1F88081DFFDF3D003492D7 /* ColorPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1F88071DFFDF3D003492D7 /* ColorPickerViewController.swift */; };
+		9F1F880A1DFFE337003492D7 /* ColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1F88091DFFE337003492D7 /* ColorCell.swift */; };
 		9F50EF7A1DD958A100D0F602 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 9F50EF791DD958A100D0F602 /* .gitignore */; };
 		9F70C53D1DD6F5BC00BFF7B7 /* MDBClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F70C53C1DD6F5BC00BFF7B7 /* MDBClient.swift */; };
 		9F7B23051DD9B1510032F72A /* Actor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7B23041DD9B1510032F72A /* Actor.swift */; };
 		9F99F8101DD9425A0050A40C /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F99F80F1DD9425A0050A40C /* Movie.swift */; };
+		9FB049991DF6BD2100866868 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FB049981DF6BD2100866868 /* CustomButton.swift */; };
+		9FB0499B1DF6BFD500866868 /* PlayerPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FB0499A1DF6BFD500866868 /* PlayerPickerViewController.swift */; };
 		9FE947381DD6BFA40024DBFA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FE947371DD6BFA40024DBFA /* AppDelegate.swift */; };
 		9FE9473A1DD6BFA40024DBFA /* GameplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FE947391DD6BFA40024DBFA /* GameplayViewController.swift */; };
 		9FE9473D1DD6BFA40024DBFA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9FE9473B1DD6BFA40024DBFA /* Main.storyboard */; };
@@ -56,10 +60,14 @@
 		9F0EE0BA1DF15D2C002B1FB3 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		9F0EE0BC1DF15DBE002B1FB3 /* Turn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Turn.swift; sourceTree = "<group>"; };
 		9F0EE0BE1DF1610A002B1FB3 /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
+		9F1F88071DFFDF3D003492D7 /* ColorPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPickerViewController.swift; sourceTree = "<group>"; };
+		9F1F88091DFFE337003492D7 /* ColorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorCell.swift; sourceTree = "<group>"; };
 		9F50EF791DD958A100D0F602 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		9F70C53C1DD6F5BC00BFF7B7 /* MDBClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDBClient.swift; sourceTree = "<group>"; };
 		9F7B23041DD9B1510032F72A /* Actor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Actor.swift; sourceTree = "<group>"; };
 		9F99F80F1DD9425A0050A40C /* Movie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
+		9FB049981DF6BD2100866868 /* CustomButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
+		9FB0499A1DF6BFD500866868 /* PlayerPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerPickerViewController.swift; sourceTree = "<group>"; };
 		9FE947341DD6BFA40024DBFA /* MovieTrivia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieTrivia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FE947371DD6BFA40024DBFA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9FE947391DD6BFA40024DBFA /* GameplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameplayViewController.swift; sourceTree = "<group>"; };
@@ -122,6 +130,8 @@
 		9F0EE0B31DE2F007002B1FB3 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				9FB0499A1DF6BFD500866868 /* PlayerPickerViewController.swift */,
+				9F1F88071DFFDF3D003492D7 /* ColorPickerViewController.swift */,
 				9FE947391DD6BFA40024DBFA /* GameplayViewController.swift */,
 			);
 			name = Controller;
@@ -131,6 +141,8 @@
 			isa = PBXGroup;
 			children = (
 				9F0EE0B11DDD8D8C002B1FB3 /* RadioButton.swift */,
+				9FB049981DF6BD2100866868 /* CustomButton.swift */,
+				9F1F88091DFFE337003492D7 /* ColorCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -503,13 +515,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				9F0EE0BD1DF15DBE002B1FB3 /* Turn.swift in Sources */,
+				9FB0499B1DF6BFD500866868 /* PlayerPickerViewController.swift in Sources */,
 				9F7B23051DD9B1510032F72A /* Actor.swift in Sources */,
 				9F0EE0B71DE2F7DC002B1FB3 /* CoreDataStackManager.swift in Sources */,
 				9F0EE0B21DDD8D8C002B1FB3 /* RadioButton.swift in Sources */,
 				9F70C53D1DD6F5BC00BFF7B7 /* MDBClient.swift in Sources */,
 				9FE947401DD6BFA40024DBFA /* MovieTrivia.xcdatamodeld in Sources */,
 				9F0EE0BF1DF1610A002B1FB3 /* Game.swift in Sources */,
+				9F1F880A1DFFE337003492D7 /* ColorCell.swift in Sources */,
 				9FE9473A1DD6BFA40024DBFA /* GameplayViewController.swift in Sources */,
+				9FB049991DF6BD2100866868 /* CustomButton.swift in Sources */,
+				9F1F88081DFFDF3D003492D7 /* ColorPickerViewController.swift in Sources */,
 				9FE947381DD6BFA40024DBFA /* AppDelegate.swift in Sources */,
 				9F0EE0BB1DF15D2C002B1FB3 /* Player.swift in Sources */,
 				9F99F8101DD9425A0050A40C /* Movie.swift in Sources */,
