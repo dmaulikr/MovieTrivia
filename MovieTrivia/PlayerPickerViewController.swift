@@ -17,23 +17,40 @@ class PlayerPickerViewController: UIViewController {
     
     var game: Game? = nil
     var players = [Player]()
-    var numberOfPlayers = 2
     var managedObjectContext: NSManagedObjectContext {return CoreDataStackManager.sharedInstance().managedObjectContext}
     
     //----------------------------------
     // MARK: Outlets
     //----------------------------------
     
-    @IBOutlet weak var pickerView: UIPickerView!
+    @IBOutlet weak var playerCountLabel: UILabel!
+    @IBOutlet weak var playerCountContainer: UIView!
+    @IBOutlet weak var stepper: UIStepper!
     
     //----------------------------------
     // MARK: Lifecycle
     //----------------------------------
 
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         
         self.title = "Players"
+        
+        playerCountContainer.layer.cornerRadius = playerCountContainer.frame.width / 2
+        playerCountContainer.layer.masksToBounds = true
+        
+        stepper.minimumValue = 2.0
+        stepper.maximumValue = 8.0
+    }
+    
+    //----------------------------------
+    // MARK: Page Methods
+    //----------------------------------
+    
+    @IBAction func stepperValueChanged(sender: UIStepper) {
+        
+        playerCountLabel.text = String(Int(stepper.value))
     }
     
     //----------------------------------
@@ -42,7 +59,7 @@ class PlayerPickerViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        for index in 1...numberOfPlayers {
+        for index in 1...Int(stepper.value) {
             
             let player = Player(name: "Player \(index)", context: managedObjectContext)
             players.append(player)
@@ -52,31 +69,6 @@ class PlayerPickerViewController: UIViewController {
         
         let colorPickerViewController = segue.destination as! ColorPickerViewController
         colorPickerViewController.game = game
-    }
-}
-
-extension PlayerPickerViewController: UIPickerViewDelegate, UIPickerViewDataSource {
-    
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return 7
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-        let pickerLabel = UILabel()
-        var title = NSAttributedString()
-        title = NSAttributedString(string: String(row + 2), attributes: [NSFontAttributeName: UIFont(name: "Futura", size: 17.0)!, NSForegroundColorAttributeName: UIColor.white])
-        pickerLabel.attributedText = title
-        pickerLabel.textAlignment = .center
-        return pickerLabel
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        
-        numberOfPlayers = row + 2
     }
 }
 

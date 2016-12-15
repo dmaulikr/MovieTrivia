@@ -25,26 +25,17 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="How many players are there?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tnv-Ee-maa">
-                                <rect key="frame" x="47.666666666666657" y="243" width="320" height="40"/>
+                                <rect key="frame" x="87.666666666666686" y="238.66666666666669" width="240" height="40.000000000000057"/>
                                 <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="DTs-Xf-ShA"/>
                                     <constraint firstAttribute="height" constant="40" id="aFy-o7-cwu"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bbB-1h-kbj">
-                                <rect key="frame" x="47" y="293" width="320" height="150"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="150" id="24t-P1-f6Q"/>
-                                </constraints>
-                                <connections>
-                                    <outlet property="dataSource" destination="Bpg-xi-m3v" id="Ufd-eo-BpL"/>
-                                    <outlet property="delegate" destination="Bpg-xi-m3v" id="WiV-Hk-JvJ"/>
-                                </connections>
-                            </pickerView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="49k-DB-TqL" customClass="CustomButton" customModule="MovieTrivia" customModuleProvider="target">
-                                <rect key="frame" x="132" y="483" width="150" height="40"/>
+                                <rect key="frame" x="132" y="487.66666666666663" width="150" height="39.999999999999886"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="P3F-lH-kEj"/>
                                     <constraint firstAttribute="width" constant="150" id="drj-9z-FUQ"/>
@@ -57,22 +48,63 @@
                                     <segue destination="dCV-CM-qLk" kind="show" id="03Z-vd-tdb"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W5Z-WX-jiP" userLabel="Stepper Container">
+                                <rect key="frame" x="142" y="308.66666666666669" width="130" height="119"/>
+                                <subviews>
+                                    <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="ZAR-xe-8NS">
+                                        <rect key="frame" x="18" y="90" width="94" height="29"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <action selector="stepperValueChangedWithSender:" destination="Bpg-xi-m3v" eventType="valueChanged" id="e9p-o1-F9W"/>
+                                        </connections>
+                                    </stepper>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YCO-XN-kzv" userLabel="Number Container">
+                                        <rect key="frame" x="35" y="0.0" width="60" height="60"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eDh-wo-HEZ">
+                                                <rect key="frame" x="24" y="18.666666666666629" width="10.666666666666657" height="22.333333333333371"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
+                                                <color key="textColor" red="0.4039215686" green="0.25490196079999999" blue="0.44705882349999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="5Xn-mm-pg0"/>
+                                            <constraint firstAttribute="width" constant="60" id="H0r-kH-23u"/>
+                                            <constraint firstItem="eDh-wo-HEZ" firstAttribute="centerX" secondItem="YCO-XN-kzv" secondAttribute="centerX" id="XSI-qO-cuR"/>
+                                            <constraint firstItem="eDh-wo-HEZ" firstAttribute="centerY" secondItem="YCO-XN-kzv" secondAttribute="centerY" id="nVl-tZ-DmJ"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="ZAR-xe-8NS" firstAttribute="centerX" secondItem="W5Z-WX-jiP" secondAttribute="centerX" id="0ec-Vf-e9i"/>
+                                    <constraint firstAttribute="width" constant="130" id="3DY-Ju-K0n"/>
+                                    <constraint firstItem="ZAR-xe-8NS" firstAttribute="top" secondItem="YCO-XN-kzv" secondAttribute="bottom" constant="30" id="7i9-0O-jB0"/>
+                                    <constraint firstItem="YCO-XN-kzv" firstAttribute="centerX" secondItem="W5Z-WX-jiP" secondAttribute="centerX" id="JPy-tv-8ed"/>
+                                    <constraint firstAttribute="bottom" secondItem="ZAR-xe-8NS" secondAttribute="bottom" id="T2k-Jo-s6X"/>
+                                    <constraint firstItem="YCO-XN-kzv" firstAttribute="top" secondItem="W5Z-WX-jiP" secondAttribute="top" id="fQd-od-lgI"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.4039215686" green="0.25490196079999999" blue="0.44705882349999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="bbB-1h-kbj" firstAttribute="centerY" secondItem="HjJ-33-eZY" secondAttribute="centerY" id="6zV-tK-Mmp"/>
-                            <constraint firstItem="Tnv-Ee-maa" firstAttribute="centerX" secondItem="bbB-1h-kbj" secondAttribute="centerX" id="Glh-ON-Nxy"/>
-                            <constraint firstItem="Tnv-Ee-maa" firstAttribute="width" secondItem="bbB-1h-kbj" secondAttribute="width" id="GvM-7a-k1B"/>
-                            <constraint firstItem="49k-DB-TqL" firstAttribute="centerX" secondItem="bbB-1h-kbj" secondAttribute="centerX" id="Xt8-u6-Ybf"/>
-                            <constraint firstItem="bbB-1h-kbj" firstAttribute="centerX" secondItem="HjJ-33-eZY" secondAttribute="centerX" id="dKH-Xa-Adk"/>
-                            <constraint firstItem="bbB-1h-kbj" firstAttribute="top" secondItem="Tnv-Ee-maa" secondAttribute="bottom" constant="10" id="jrX-FL-aDN"/>
-                            <constraint firstItem="49k-DB-TqL" firstAttribute="top" secondItem="bbB-1h-kbj" secondAttribute="bottom" constant="40" id="k7S-Gd-5Ks"/>
+                            <constraint firstItem="49k-DB-TqL" firstAttribute="top" secondItem="W5Z-WX-jiP" secondAttribute="bottom" constant="60" id="cXs-ED-l41"/>
+                            <constraint firstItem="49k-DB-TqL" firstAttribute="centerX" secondItem="HjJ-33-eZY" secondAttribute="centerX" id="mLf-yr-uwX"/>
+                            <constraint firstItem="W5Z-WX-jiP" firstAttribute="top" secondItem="Tnv-Ee-maa" secondAttribute="bottom" constant="30" id="odN-X0-4gn"/>
+                            <constraint firstItem="Tnv-Ee-maa" firstAttribute="centerX" secondItem="HjJ-33-eZY" secondAttribute="centerX" id="pnv-5l-ixf"/>
+                            <constraint firstItem="W5Z-WX-jiP" firstAttribute="centerY" secondItem="HjJ-33-eZY" secondAttribute="centerY" id="t61-sF-ggR"/>
+                            <constraint firstItem="W5Z-WX-jiP" firstAttribute="centerX" secondItem="HjJ-33-eZY" secondAttribute="centerX" id="uqJ-vB-e4W"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="qT5-v9-u9w"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
-                        <outlet property="pickerView" destination="bbB-1h-kbj" id="gR6-8T-ck8"/>
+                        <outlet property="playerCountContainer" destination="YCO-XN-kzv" id="Eqz-g7-u6o"/>
+                        <outlet property="playerCountLabel" destination="eDh-wo-HEZ" id="nYz-Gf-sfG"/>
+                        <outlet property="stepper" destination="ZAR-xe-8NS" id="wJb-HG-OVF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="npH-i8-7mu" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -92,12 +124,12 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9j8-kq-456" userLabel="ContainerView">
-                                <rect key="frame" x="20" y="161.66666666666663" width="374" height="413"/>
+                                <rect key="frame" x="20" y="151.66666666666663" width="374" height="433"/>
                                 <subviews>
                                     <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="40Y-pW-Saz">
-                                        <rect key="frame" x="0.0" y="23" width="374" height="100"/>
+                                        <rect key="frame" x="0.0" y="23" width="374" height="120"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="100" id="v99-lF-xLU"/>
+                                            <constraint firstAttribute="height" constant="120" id="v99-lF-xLU"/>
                                         </constraints>
                                         <connections>
                                             <outlet property="dataSource" destination="dCV-CM-qLk" id="Eg4-Af-cg8"/>
@@ -105,7 +137,7 @@
                                         </connections>
                                     </pickerView>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="gNl-Px-h1V">
-                                        <rect key="frame" x="0.0" y="143.00000000000003" width="374" height="169.99999999999997"/>
+                                        <rect key="frame" x="0.0" y="163.00000000000003" width="374" height="169.99999999999997"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="170" id="8VP-PY-5gc"/>
@@ -156,7 +188,7 @@
                                         </connections>
                                     </collectionView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Dl-99-5a5" customClass="CustomButton" customModule="MovieTrivia" customModuleProvider="target">
-                                        <rect key="frame" x="112" y="373" width="150" height="40"/>
+                                        <rect key="frame" x="112" y="393" width="150" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="150" id="elV-WP-mjN"/>
                                             <constraint firstAttribute="height" constant="40" id="wsz-Xb-6Ty"/>
@@ -180,7 +212,7 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select a color for each player:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SZS-Q0-7GV">
-                                <rect key="frame" x="89" y="161.66666666666666" width="236" height="23"/>
+                                <rect key="frame" x="89" y="151.66666666666666" width="236" height="23"/>
                                 <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
