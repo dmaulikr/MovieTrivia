@@ -34,5 +34,5 @@ class CustomButton: UIButton {
         return image
     }()
     
-    let titleHighlighted = UIColor(red: 0.18, green: 0.8, blue: 0.44, alpha: 1.0)
+    let titleHighlighted = UIColor(red:0.40, green:0.25, blue:0.45, alpha:1.0)
 }

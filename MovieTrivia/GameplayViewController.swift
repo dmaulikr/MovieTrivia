@@ -340,10 +340,6 @@ extension GameplayViewController: UISearchBarDelegate {
 }
 
 extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
-
-    //----------------------------------
-    // MARK: Table View Delegate
-    //----------------------------------
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         

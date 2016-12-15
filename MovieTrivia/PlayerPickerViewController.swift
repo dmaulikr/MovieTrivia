@@ -33,49 +33,42 @@ class PlayerPickerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Set initial picker value.
-        
-        pickerView.selectRow(1, inComponent: 0, animated: false)
+        self.title = "Players"
     }
     
     //----------------------------------
-    // MARK: View Methods
+    // MARK: Navigation
     //----------------------------------
     
-    @IBAction func setPlayers() {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         for index in 1...numberOfPlayers {
             
-            let player = Player(name: "Player\(index)", context: managedObjectContext)
+            let player = Player(name: "Player \(index)", context: managedObjectContext)
             players.append(player)
         }
         
         game = Game(players: players, context: managedObjectContext)
         
-        for player in (game?.players)! {
-            print(player.name)
-        }
+        let colorPickerViewController = segue.destination as! ColorPickerViewController
+        colorPickerViewController.game = game
     }
 }
 
 extension PlayerPickerViewController: UIPickerViewDelegate, UIPickerViewDataSource {
-    
-    //----------------------------------
-    // MARK: Picker View Delegate
-    //----------------------------------
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return 8
+        return 7
     }
     
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         let pickerLabel = UILabel()
         var title = NSAttributedString()
-        title = NSAttributedString(string: String(row + 1), attributes: [NSFontAttributeName: UIFont(name: "Futura", size: 17.0)!, NSForegroundColorAttributeName: UIColor.white])
+        title = NSAttributedString(string: String(row + 2), attributes: [NSFontAttributeName: UIFont(name: "Futura", size: 17.0)!, NSForegroundColorAttributeName: UIColor.white])
         pickerLabel.attributedText = title
         pickerLabel.textAlignment = .center
         return pickerLabel
@@ -83,7 +76,7 @@ extension PlayerPickerViewController: UIPickerViewDelegate, UIPickerViewDataSour
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
-        numberOfPlayers = row + 1
+        numberOfPlayers = row + 2
     }
 }
 

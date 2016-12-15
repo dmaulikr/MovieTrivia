@@ -11,8 +11,18 @@ import UIKit
 class ColorCell: UICollectionViewCell {
     
     @IBOutlet weak var colorView: UIView!
+    @IBOutlet weak var playerLabel: UILabel!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+    }
+    
+    func styleCell(color: UIColor) {
+
+        self.colorView.layer.cornerRadius = self.colorView.frame.width / 2
+        self.colorView.layer.borderWidth = 2.0
+        self.colorView.layer.borderColor = UIColor.white.cgColor
+        self.colorView.backgroundColor = color
+        self.playerLabel.isHidden = true
     }
 }
