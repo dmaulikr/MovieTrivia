@@ -417,7 +417,6 @@
                                         <rect key="frame" x="359.33333333333326" y="0.0" width="54.666666666666686" height="60"/>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" red="0.4039215686" green="0.25490196079999999" blue="0.44705882349999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="SBa-CR-umu" firstAttribute="centerX" secondItem="aJb-mc-asR" secondAttribute="centerX" id="1Gg-vZ-6hj"/>
                                     <constraint firstItem="5L7-dT-LI8" firstAttribute="top" secondItem="aJb-mc-asR" secondAttribute="top" id="60y-F4-i18"/>
@@ -519,6 +518,7 @@
                         <outlet property="movieButton" destination="nED-26-W9d" id="AfV-Nh-pPl"/>
                         <outlet property="movieLabel" destination="3l1-oJ-3Nr" id="1ha-1r-dHR"/>
                         <outlet property="moviePosterImage" destination="2q0-Xu-UN2" id="smd-yP-dhl"/>
+                        <outlet property="radioButtonContainer" destination="aJb-mc-asR" id="S6x-Hv-EDM"/>
                         <outlet property="searchBar" destination="krH-Ya-ysJ" id="KgN-um-9E9"/>
                         <outlet property="tableView" destination="ckJ-mo-Vki" id="hcv-Sn-Qq7"/>
                         <outlet property="tableViewHeight" destination="gIJ-AT-aTj" id="hKF-F0-WvQ"/>
@@ -531,7 +531,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="3006" y="137"/>
+            <point key="canvasLocation" x="3005.7971014492755" y="136.95652173913044"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Mis-YV-rUJ">

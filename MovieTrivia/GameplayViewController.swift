@@ -35,6 +35,7 @@ class GameplayViewController: UIViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var radioButtonContainer: UIView!
     @IBOutlet weak var movieButton: RadioButton!
     @IBOutlet weak var actorButton: RadioButton!
     @IBOutlet weak var blurView: UIView!
@@ -59,11 +60,14 @@ class GameplayViewController: UIViewController {
         
         // Set up UI.
         
+        updateUIForCurrentPlayer()
+        
         navigationItem.hidesBackButton = true
         
         self.tableViewHeight.constant = 0
         
         movieButton.isSelected = true
+        actorButton.isSelected = false
         
         imageTitleLabel.layer.cornerRadius = 10.0
         imageTitleLabel.layer.masksToBounds = true
@@ -84,6 +88,17 @@ class GameplayViewController: UIViewController {
     //----------------------------------
     // MARK: Page Methods
     //----------------------------------
+    
+    func updateUIForCurrentPlayer() {
+        
+        guard let currentPlayer = currentPlayer else {return}
+        guard let playerColor = currentPlayer.color else {return}
+        
+        self.title = currentPlayer.name
+        self.view.backgroundColor = playerColor
+        radioButtonContainer.backgroundColor = playerColor
+        imageTitleLabel.textColor = currentPlayer.color
+    }
     
     @IBAction func radioButtonTapped(sender: RadioButton) {
         
@@ -439,6 +454,16 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                 }
             }
         }
+        
+        guard let indexOfCurrentPlayer = game!.players!.index(of: currentPlayer!) else {return}
+        
+        if indexOfCurrentPlayer < game!.players!.count - 1 {
+            currentPlayer = game!.players![indexOfCurrentPlayer + 1]
+        } else {
+            currentPlayer = game!.players![0]
+        }
+        
+        updateUIForCurrentPlayer()
         
         // TODO: Clear cache of unused Movie and Actor objects from managedObjectContext.
         
