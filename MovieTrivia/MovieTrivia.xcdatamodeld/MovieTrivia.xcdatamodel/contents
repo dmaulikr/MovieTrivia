@@ -9,7 +9,7 @@
     </entity>
     <entity name="Game" representedClassName=".Game" syncable="YES">
         <relationship name="history" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Turn" inverseName="game" inverseEntity="Turn" syncable="YES"/>
-        <relationship name="players" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Player" inverseName="game" inverseEntity="Player" syncable="YES"/>
+        <relationship name="players" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Player" inverseName="game" inverseEntity="Player" syncable="YES"/>
     </entity>
     <entity name="Movie" representedClassName=".Movie" syncable="YES">
         <attribute name="idNumber" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -30,16 +30,16 @@
     <entity name="Turn" representedClassName=".Turn" syncable="YES">
         <attribute name="round" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="success" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="actor" maxCount="1" deletionRule="Nullify" destinationEntity="Actor" syncable="YES"/>
+        <relationship name="actor" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Actor" syncable="YES"/>
         <relationship name="game" maxCount="1" deletionRule="Nullify" destinationEntity="Game" inverseName="history" inverseEntity="Game" syncable="YES"/>
-        <relationship name="movie" maxCount="1" deletionRule="Nullify" destinationEntity="Movie" syncable="YES"/>
+        <relationship name="movie" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Movie" syncable="YES"/>
         <relationship name="player" maxCount="1" deletionRule="Nullify" destinationEntity="Player" inverseName="turns" inverseEntity="Player" syncable="YES"/>
     </entity>
     <elements>
         <element name="Actor" positionX="-38" positionY="-18" width="128" height="120"/>
-        <element name="Game" positionX="-243" positionY="-21" width="128" height="28"/>
+        <element name="Game" positionX="-243" positionY="-21" width="128" height="75"/>
         <element name="Movie" positionX="-425" positionY="18" width="128" height="150"/>
         <element name="Player" positionX="-360" positionY="231" width="128" height="120"/>
-        <element name="Turn" positionX="-38" positionY="216" width="128" height="28"/>
+        <element name="Turn" positionX="-38" positionY="216" width="128" height="135"/>
     </elements>
 </model>

@@ -15,7 +15,7 @@ class Game: NSManagedObject {
     // MARK: Properties
     //----------------------------------
     
-    @NSManaged var players: [Player]
+    @NSManaged var players: [Player]?
     @NSManaged var history: [Turn]?
     
     //----------------------------------
@@ -26,13 +26,9 @@ class Game: NSManagedObject {
         super.init(entity: entity, insertInto: context)
     }
     
-    init(players: [Player], context: NSManagedObjectContext) {
+    init(context: NSManagedObjectContext) {
         
         let entity = NSEntityDescription.entity(forEntityName: "Game", in: context)!
         super.init(entity: entity, insertInto: context)
-        
-        for player in players {
-            player.game = self
-        }
     }
 }

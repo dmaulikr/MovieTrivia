@@ -17,6 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         UINavigationBar.appearance().titleTextAttributes = [NSFontAttributeName: UIFont(name: "Futura", size: 17)!]
+        UINavigationBar.appearance().tintColor = UIColor.black
+        UIBarButtonItem.appearance().setTitleTextAttributes([NSFontAttributeName: UIFont(name: "Futura", size: 17)!], for: UIControlState.normal)
         
         return true
     }

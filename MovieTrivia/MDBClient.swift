@@ -43,7 +43,7 @@ struct MDBClient {
     }
     
     var sharedContext: NSManagedObjectContext {
-        return CoreDataStackManager.sharedInstance().managedObjectContext
+        return CoreDataStackManager.sharedInstance.managedObjectContext
     }
     
     //----------------------------------

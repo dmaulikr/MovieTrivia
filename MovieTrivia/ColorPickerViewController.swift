@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class ColorPickerViewController: UIViewController {
     
@@ -15,7 +16,8 @@ class ColorPickerViewController: UIViewController {
     //----------------------------------
     
     var game: Game? = nil
-    var currentPlayer: Player? = nil
+    var currentPlayerIndex = 0
+    var managedObjectContext: NSManagedObjectContext {return CoreDataStackManager.sharedInstance.managedObjectContext}
     
     // Colors
     
@@ -25,8 +27,10 @@ class ColorPickerViewController: UIViewController {
     var green = UIColor(red:0.15, green:0.65, blue:0.36, alpha:1.0)
     var orange = UIColor(red:0.98, green:0.41, blue:0.1, alpha:1.0)
     var purple = UIColor(red:0.60, green:0.07, blue:0.70, alpha:1.0)
-    var grey = UIColor(red:0.42, green:0.48, blue:0.54, alpha:1.0)
-    var turquoise = UIColor(red:0.21, green:0.84, blue:0.72, alpha:1.0)
+    var grey = UIColor(red:0.17, green:0.24, blue:0.31, alpha:1.0)
+    var turquoise = UIColor(red:0.01, green:0.79, blue:0.66, alpha:1.0)
+    
+    var colorArray: [UIColor] {return [red, pink, blue, green, orange, purple, grey, turquoise]}
     
     //----------------------------------
     // MARK: Outlets
@@ -34,6 +38,7 @@ class ColorPickerViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var picker: UIPickerView!
+    @IBOutlet weak var continueButton: CustomButton!
     
     //----------------------------------
     // MARK: Lifecycle
@@ -43,7 +48,49 @@ class ColorPickerViewController: UIViewController {
         
         super.viewDidLoad()
         
-        self.title = "Colors"
+        continueButton.isEnabled = false
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Reset", style: .plain, target: self, action: #selector(reset))
+        navigationItem.rightBarButtonItem?.isEnabled = false
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
+        super.viewDidAppear(animated)
+        
+        self.reset()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        
+        super.viewWillDisappear(animated)
+        
+        if self.isMovingFromParentViewController {
+            CoreDataStackManager.sharedInstance.deleteGame() { error in
+                
+            }
+        }
+    }
+    
+    //----------------------------------
+    // MARK: Page Methods
+    //----------------------------------
+    
+    func reset() {
+        
+        navigationItem.rightBarButtonItem?.isEnabled = false
+        currentPlayerIndex = 0
+        picker.selectRow(0, inComponent: 0, animated: true)
+        continueButton.isEnabled = false
+        
+        for cell in collectionView.visibleCells as! [ColorCell] {
+            cell.playerLabel.isHidden = true
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        let gameplayViewController = segue.destination as! GameplayViewController
+        gameplayViewController.game = self.game
     }
 }
 
@@ -54,13 +101,13 @@ extension ColorPickerViewController: UIPickerViewDelegate, UIPickerViewDataSourc
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return game!.players.count
+        return game!.players!.count
     }
     
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         let pickerLabel = UILabel()
         var title = NSAttributedString()
-        title = NSAttributedString(string: String(game!.players[row].name), attributes: [NSFontAttributeName: UIFont(name: "Futura", size: 17.0)!, NSForegroundColorAttributeName: UIColor.white])
+        title = NSAttributedString(string: String(game!.players![row].name), attributes: [NSFontAttributeName: UIFont(name: "Futura", size: 17.0)!, NSForegroundColorAttributeName: UIColor.white])
         pickerLabel.attributedText = title
         pickerLabel.textAlignment = .center
         return pickerLabel
@@ -80,9 +127,7 @@ extension ColorPickerViewController: UICollectionViewDelegate, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "colorCell", for: indexPath) as! ColorCell
-        
-        let colors = [red, pink, blue, green, orange, purple, grey, turquoise]
-        cell.styleCell(color: colors[indexPath.row])
+        cell.styleCell(color: colorArray[indexPath.row])
         
         return cell
     }
@@ -91,6 +136,17 @@ extension ColorPickerViewController: UICollectionViewDelegate, UICollectionViewD
         
         let cell = collectionView.cellForItem(at: indexPath) as! ColorCell
         
-        cell.playerLabel.isHidden = !cell.playerLabel.isHidden
+        guard cell.playerLabel.isHidden && currentPlayerIndex <= game!.players!.count - 1 else {return}
+        
+        if currentPlayerIndex == 0 {navigationItem.rightBarButtonItem?.isEnabled = true}
+        cell.playerLabel.text = "P" + "\(game!.players![currentPlayerIndex].name.components(separatedBy: " ")[1])"
+        cell.playerLabel.isHidden = false
+        game!.players![currentPlayerIndex].color = colorArray[indexPath.row]
+        currentPlayerIndex += 1
+        picker.selectRow(currentPlayerIndex, inComponent: 0, animated: true)
+        
+        if currentPlayerIndex == game!.players!.count {
+            continueButton.isEnabled = true
+        }
     }
 }

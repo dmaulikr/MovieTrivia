@@ -15,9 +15,7 @@ class PlayerPickerViewController: UIViewController {
     // MARK: Properties
     //----------------------------------
     
-    var game: Game? = nil
-    var players = [Player]()
-    var managedObjectContext: NSManagedObjectContext {return CoreDataStackManager.sharedInstance().managedObjectContext}
+    var managedObjectContext: NSManagedObjectContext {return CoreDataStackManager.sharedInstance.managedObjectContext}
     
     //----------------------------------
     // MARK: Outlets
@@ -35,13 +33,16 @@ class PlayerPickerViewController: UIViewController {
         
         super.viewDidLoad()
         
-        self.title = "Players"
-        
         playerCountContainer.layer.cornerRadius = playerCountContainer.frame.width / 2
         playerCountContainer.layer.masksToBounds = true
         
         stepper.minimumValue = 2.0
         stepper.maximumValue = 8.0
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
+        super.viewDidAppear(animated)
     }
     
     //----------------------------------
@@ -53,11 +54,9 @@ class PlayerPickerViewController: UIViewController {
         playerCountLabel.text = String(Int(stepper.value))
     }
     
-    //----------------------------------
-    // MARK: Navigation
-    //----------------------------------
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        var players = [Player]()
         
         for index in 1...Int(stepper.value) {
             
@@ -65,7 +64,11 @@ class PlayerPickerViewController: UIViewController {
             players.append(player)
         }
         
-        game = Game(players: players, context: managedObjectContext)
+        let game = Game(context: managedObjectContext)
+        
+        for player in players {
+            player.game = game
+        }
         
         let colorPickerViewController = segue.destination as! ColorPickerViewController
         colorPickerViewController.game = game

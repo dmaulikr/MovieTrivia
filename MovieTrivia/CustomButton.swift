@@ -21,6 +21,17 @@ class CustomButton: UIButton {
         self.titleLabel!.font = UIFont(name: "Futura", size: 17)
         self.setBackgroundImage(backgroundHighlighted, for: UIControlState.highlighted)
         self.setTitleColor(titleHighlighted, for: UIControlState.highlighted)
+        self.setTitleColor(UIColor.lightGray, for: UIControlState.disabled)
+    }
+    
+    override var isEnabled: Bool {
+        didSet {
+            if isEnabled {
+               self.layer.borderColor = UIColor.white.cgColor
+            } else {
+                self.layer.borderColor = UIColor.lightGray.cgColor
+            }
+        }
     }
     
     let backgroundHighlighted: UIImage = {

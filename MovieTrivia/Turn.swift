@@ -18,8 +18,8 @@ class Turn: NSManagedObject {
     @NSManaged var player: Player
     @NSManaged var success: Bool
     @NSManaged var round: Int
-    @NSManaged var movie: Movie
-    @NSManaged var actor: Actor
+    @NSManaged var movie: Movie?
+    @NSManaged var actor: Actor?
     @NSManaged var game: Game
     
     //----------------------------------
@@ -30,7 +30,7 @@ class Turn: NSManagedObject {
         super.init(entity: entity, insertInto: context)
     }
     
-    init(player: Player, game: Game, success: Bool, round: Int, movie: Movie, actor: Actor, context: NSManagedObjectContext) {
+    init(player: Player, game: Game, success: Bool, round: Int, movie: Movie?, actor: Actor?, context: NSManagedObjectContext) {
         
         let entity = NSEntityDescription.entity(forEntityName: "Turn", in: context)!
         super.init(entity: entity, insertInto: context)

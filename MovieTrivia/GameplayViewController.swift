@@ -24,7 +24,8 @@ class GameplayViewController: UIViewController {
     var currentPlayer: Player? = nil
     var currentRound: Int? = nil
     var game: Game? = nil
-    var managedObjectContext: NSManagedObjectContext {return CoreDataStackManager.sharedInstance().managedObjectContext}
+    var isInitialPick = true
+    var managedObjectContext: NSManagedObjectContext {return CoreDataStackManager.sharedInstance.managedObjectContext}
     
     //----------------------------------
     // MARK: Outlets
@@ -45,71 +46,23 @@ class GameplayViewController: UIViewController {
     //----------------------------------
     // MARK: Lifecycle
     //----------------------------------
-    
-    struct setupObjects {
-        
-        let whatAboutBob = Movie(
-            dictionary: [
-                "title": "What About Bob?" as AnyObject,
-                "release_date": "1991-05-17" as AnyObject,
-                "poster_path": "/fopJnM6MCZilYM6nRpglWdFndt1.jpg" as AnyObject,
-                "id": 10276 as AnyObject
-            ],
-            context: CoreDataStackManager.sharedInstance().managedObjectContext
-        )
-        
-        let billMurray = Actor(
-            dictionary: [
-                "name": "Bill Murray" as AnyObject,
-                "profile_path": "/lBXifSLzs1DuspaWkACjSfjlwbd.jpg" as AnyObject,
-                "id": 1532 as AnyObject
-            ],
-            context: CoreDataStackManager.sharedInstance().managedObjectContext)
-    }
 
     override func viewDidLoad() {
         
         super.viewDidLoad()
         
-        // DELETE BELOW. Temporary setup.
+        // Set initial gampeplay values.
         
-        player1 = Player(name: "Player 1", context: managedObjectContext)
-        player2 = Player(name: "Player 2", context: managedObjectContext)
-        game = Game(players: [player1!, player2!], context: managedObjectContext)
-        
-        currentPlayer = player1
-        currentMovie = setupObjects().whatAboutBob
-        
-        MDBClient().getMovieImage(movie: currentMovie!) { (image, error) in
-            
-            guard error == nil else {
-                // TODO: Handle error.
-                return
-            }
-            
-            self.moviePosterImage.image = image
-            self.movieLabel.text = self.currentMovie?.title
-        }
-        
-        MDBClient().getCast(movie: currentMovie!) { (cast, error) in
-            
-            self.currentMovie!.cast = cast!
-        }
-        
-        // DELETE ABOVE
-        
+        currentPlayer = game?.players?[0]
         self.title = currentPlayer?.name
         
-        // Hide search suggestion table view.
+        // Set up UI.
+        
+        navigationItem.hidesBackButton = true
         
         self.tableViewHeight.constant = 0
         
-        // Set initial radio button values.
-        
         movieButton.isSelected = true
-        actorButton.isSelected = false
-        
-        // Style 'Now playing' label and movie/actor images.
         
         imageTitleLabel.layer.cornerRadius = 10.0
         imageTitleLabel.layer.masksToBounds = true
@@ -124,13 +77,11 @@ class GameplayViewController: UIViewController {
         actorImage.layer.cornerRadius = 10.0
         actorImage.layer.masksToBounds = true
         
-        // Set searchBar keyboard return key property.
-        
         searchBar.returnKeyType = .done
     }
     
     //----------------------------------
-    // MARK: View Methods
+    // MARK: Page Methods
     //----------------------------------
     
     @IBAction func radioButtonTapped(sender: RadioButton) {
@@ -212,10 +163,6 @@ class GameplayViewController: UIViewController {
         }
     }
     
-    //----------------------------------
-    // MARK: Helper Functions
-    //----------------------------------
-    
     func dismissTable() {
         
         self.searchBar.text = ""
@@ -228,11 +175,14 @@ class GameplayViewController: UIViewController {
         })
     }
     
-    func verifyAnswer(movie: Movie, actor: Actor, completionHandler: @escaping (_ correct: Bool?, _ error: Error?) -> Void) {
+    func verifyAnswer(movie: Movie?, actor: Actor?, completionHandler: @escaping (_ correct: Bool?, _ error: Error?) -> Void) {
         
         switch movieButton.isSelected {
             
         case true:
+            
+            guard let movie = movie else {return}
+            
             MDBClient().getCast(movie: movie) { (cast, error) in
                 
                 guard error == nil else {
@@ -247,6 +197,15 @@ class GameplayViewController: UIViewController {
                 
                 movie.cast = cast
                 
+                guard !self.isInitialPick else {
+                    
+                    self.isInitialPick = false
+                    completionHandler(true, nil)
+                    return
+                }
+                
+                guard let actor = actor else {return}
+                
                 for castMember in movie.cast! {
                     if castMember.name == actor.name {
                         completionHandler(true, nil)
@@ -256,9 +215,12 @@ class GameplayViewController: UIViewController {
                 
                 completionHandler(false, nil)
             }
-            break
+            return
             
         case false:
+            
+            guard let actor = actor else {return}
+            
             MDBClient().getFilmography(actor: actor) { (filmography, error) in
                 
                 guard error == nil else {
@@ -273,6 +235,15 @@ class GameplayViewController: UIViewController {
                 
                 actor.filmography = filmography
                 
+                guard !self.isInitialPick else {
+                    
+                    self.isInitialPick = false
+                    completionHandler(true, nil)
+                    return
+                }
+                
+                guard let movie = movie else {return}
+                
                 for film in actor.filmography! {
                     if film.title == movie.title {
                         completionHandler(true, nil)
@@ -282,7 +253,7 @@ class GameplayViewController: UIViewController {
                 
                 completionHandler(false, nil)
             }
-            break
+            return
         }
     }
 }
@@ -382,9 +353,23 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        if !isInitialPick && ((movieButton.isSelected && currentActor == nil) || (actorButton.isSelected && currentMovie == nil)) {
+            
+            // Second player is attempting to pick a value of the same type as the initial value, e.g. movie + movie.
+            
+            let alertMessage = "You have to pick " + (movieButton.isSelected ? "an actor.": "a movie.")
+            let alert = UIAlertController(title: "Oops!", message: alertMessage, preferredStyle: .alert)
+            let okayAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alert.addAction(okayAction)
+            self.present(alert, animated: true, completion: nil)
+            
+            return
+        }
+        
         switch movieButton.isSelected {
             
         case true:
+            
             currentMovie = movies[indexPath.row]
             
             // Set movie image and label.
@@ -402,6 +387,7 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
             break
             
         case false:
+            
             currentActor = actors[indexPath.row]
             
             // Set actor image and label.
@@ -419,9 +405,9 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
             break
         }
         
-        verifyAnswer(movie: currentMovie!, actor: currentActor!) { (correct, error) in
+        verifyAnswer(movie: currentMovie, actor: currentActor) { (correct, error) in
             
-            print("Verifying that \(self.currentActor!.name) appeared in '\(self.currentMovie!.title)': \(correct!)")
+            print("Verifying that \(self.currentActor?.name) appeared in '\(self.currentMovie?.title)': \(correct!)")
             
             guard error == nil else {
                 // TODO: Handle error.
@@ -433,9 +419,11 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                 return
             }
             
-            let _ = Turn(player: self.currentPlayer!, game: self.game!, success: correct, round: 1, movie: self.currentMovie!, actor: self.currentActor!, context: self.managedObjectContext)
+            // Save turn history.
             
-            CoreDataStackManager.sharedInstance().saveContext() { error in
+            let _ = Turn(player: self.currentPlayer!, game: self.game!, success: correct, round: 1, movie: self.currentMovie, actor: self.currentActor, context: self.managedObjectContext)
+            
+            CoreDataStackManager.sharedInstance.saveContext() { error in
                 guard error == nil else {
                     // TODO: Handle error.
                     return

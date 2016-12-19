@@ -17,12 +17,8 @@ class CoreDataStackManager {
     // MARK: - Shared Instance
     //--------------------------------------
     
-    class func sharedInstance() -> CoreDataStackManager {
-        struct Static {
-            static let instance = CoreDataStackManager()
-        }
-        return Static.instance
-    }
+    static let sharedInstance = CoreDataStackManager()
+    private init() {}
     
     //--------------------------------------
     // MARK: - Core Data Stack
@@ -100,6 +96,21 @@ class CoreDataStackManager {
             let error = error as Error
             print("Encountered error while clearing Actor cache: \(error.localizedDescription)")
             completionHandler(error)
+        }
+    }
+    
+    func deleteGame(completionHandler: (_ error: Error?) -> Void) {
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Game")
+        
+        do {
+            let list = try managedObjectContext.fetch(fetchRequest) as! [Game]
+            for game in list {
+                managedObjectContext.delete(game)
+            }
+        } catch {
+            let error = error as Error
+            print("Encountered error: \(error.localizedDescription)")
         }
     }
 }
