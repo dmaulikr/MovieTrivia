@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import PKHUD
 
 class GameplayViewController: UIViewController {
     
@@ -372,17 +373,19 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
             
             currentMovie = movies[indexPath.row]
             
-            // Set movie image and label.
+            // Set movie label and image.
+            
+            self.movieLabel.text = self.currentMovie?.title
             
             MDBClient().getMovieImage(movie: currentMovie!) { (image, error) in
                 
                 guard error == nil else {
                     // TODO: Handle error.
+                    print("Error retrieving movie image.")
                     return
                 }
                 
                 self.moviePosterImage.image = image
-                self.movieLabel.text = self.currentMovie?.title
             }
             break
             
@@ -390,24 +393,24 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
             
             currentActor = actors[indexPath.row]
             
-            // Set actor image and label.
+            // Set actor label and image.
+            
+            self.actorLabel.text = self.currentActor?.name
             
             MDBClient().getActorImage(actor: currentActor!) { (image, error) in
                 
                 guard error == nil else {
                     // TODO: Handle error.
+                    print("Error retrieving actor image.")
                     return
                 }
                 
                 self.actorImage.image = image
-                self.actorLabel.text = self.currentActor?.name
             }
             break
         }
         
         verifyAnswer(movie: currentMovie, actor: currentActor) { (correct, error) in
-            
-            print("Verifying that \(self.currentActor?.name) appeared in '\(self.currentMovie?.title)': \(correct!)")
             
             guard error == nil else {
                 // TODO: Handle error.
@@ -417,6 +420,12 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
             guard let correct = correct else {
                 // TODO: Handle error.
                 return
+            }
+            
+            if correct && self.currentMovie != nil && self.currentActor != nil {
+                HUD.flash(.success, delay: 1.5)
+            } else if !correct && self.currentMovie != nil && self.currentActor != nil {
+                HUD.flash(.error, delay: 1.5)
             }
             
             // Save turn history.

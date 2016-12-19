@@ -8,6 +8,7 @@ target 'MovieTrivia' do
   # Pods for MovieTrivia
 
   pod 'Alamofire'
+  pod 'PKHUD'
 
   target 'MovieTriviaTests' do
     inherit! :search_paths
