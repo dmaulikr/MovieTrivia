@@ -272,6 +272,49 @@ class GameplayViewController: UIViewController {
             return
         }
     }
+    
+    func clearCache() {
+        
+        var savedActors = [Actor]()
+        var savedMovies = [Movie]()
+        
+        for turn in game!.history! {
+            if let actor = turn.actor {
+                savedActors.append(actor)
+            }
+            if let movie = turn.movie {
+                savedMovies.append(movie)
+            }
+        }
+        
+        var fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Movie")
+        
+        do {
+            let list = try managedObjectContext.fetch(fetchRequest) as! [Movie]
+            for movie in list {
+                if !savedMovies.contains(movie) {
+                    managedObjectContext.delete(movie)
+                }
+            }
+        } catch {
+            let error = error as Error
+            print("Encountered error: \(error.localizedDescription)")
+        }
+        
+        fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Actor")
+        
+        do {
+            let list = try managedObjectContext.fetch(fetchRequest) as! [Actor]
+            for actor in list {
+                if !savedActors.contains(actor) {
+                    managedObjectContext.delete(actor)
+                }
+            }
+        } catch {
+            let error = error as NSError
+            print("Encountered error: \(error.localizedDescription)")
+        }
+    }
 }
 
 extension GameplayViewController: UISearchBarDelegate {
@@ -443,9 +486,11 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                 HUD.flash(.error, delay: 1.5)
             }
             
-            // Save turn history.
+            // Save turn and clear cache.
             
             let _ = Turn(player: self.currentPlayer!, game: self.game!, success: correct, round: 1, movie: self.currentMovie, actor: self.currentActor, context: self.managedObjectContext)
+            
+            self.clearCache()
             
             CoreDataStackManager.sharedInstance.saveContext() { error in
                 guard error == nil else {
@@ -464,9 +509,6 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         updateUIForCurrentPlayer()
-        
-        // TODO: Clear cache of unused Movie and Actor objects from managedObjectContext.
-        
         dismissTable()
     }
 }
