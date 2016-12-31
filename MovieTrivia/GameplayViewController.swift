@@ -44,6 +44,8 @@ class GameplayViewController: UIViewController {
     @IBOutlet weak var movieLabel: UILabel!
     @IBOutlet weak var actorImage: UIImageView!
     @IBOutlet weak var actorLabel: UILabel!
+    @IBOutlet weak var scoreLabel: UILabel!
+    @IBOutlet weak var collectionView: UICollectionView!
     
     //----------------------------------
     // MARK: Lifecycle
@@ -69,8 +71,14 @@ class GameplayViewController: UIViewController {
         movieButton.isSelected = true
         actorButton.isSelected = false
         
+        movieLabel.text = ""
+        actorLabel.text = ""
+        
         imageTitleLabel.layer.cornerRadius = 10.0
         imageTitleLabel.layer.masksToBounds = true
+        
+        scoreLabel.layer.cornerRadius = 10.0
+        scoreLabel.layer.masksToBounds = true
         
         moviePosterImage.layer.borderWidth = 2
         moviePosterImage.layer.borderColor = UIColor.white.cgColor
@@ -97,7 +105,9 @@ class GameplayViewController: UIViewController {
         self.title = currentPlayer.name
         self.view.backgroundColor = playerColor
         radioButtonContainer.backgroundColor = playerColor
-        imageTitleLabel.textColor = currentPlayer.color
+        imageTitleLabel.textColor = playerColor
+        scoreLabel.textColor = playerColor
+        collectionView.backgroundColor = playerColor
     }
     
     @IBAction func radioButtonTapped(sender: RadioButton) {
@@ -510,5 +520,22 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
         
         updateUIForCurrentPlayer()
         dismissTable()
+    }
+}
+
+extension GameplayViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return game!.players!.count
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "scoreCell", for: indexPath) as! ScoreCell
+        
+        cell.styleCell(color: game!.players![indexPath.row].color!)
+        cell.scoreLabel.text = String(game!.players![indexPath.row].score)
+        
+        return cell
     }
 }
