@@ -23,7 +23,7 @@ class GameplayViewController: UIViewController {
     var player1: Player? = nil
     var player2: Player? = nil
     var currentPlayer: Player? = nil
-    var currentRound: Int? = nil
+    var currentRound = 1
     var game: Game? = nil
     var isInitialPick = true
     var managedObjectContext: NSManagedObjectContext {return CoreDataStackManager.sharedInstance.managedObjectContext}
@@ -491,14 +491,36 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
             }
             
             if correct && self.currentMovie != nil && self.currentActor != nil {
+                
+                // Correct answer.
+                
                 HUD.flash(.success, delay: 1.5)
+                
             } else if !correct && self.currentMovie != nil && self.currentActor != nil {
+                
+                // Incorrect answer. Update round and scoring and clear actor/movie.
+                
                 HUD.flash(.error, delay: 1.5)
+                
+                self.currentRound += 1
+                
+                self.currentPlayer!.score += 1
+                self.collectionView.reloadData()
+                
+                self.currentActor = nil
+                self.actorLabel.text = ""
+                self.actorImage.image = nil
+                
+                self.currentMovie = nil
+                self.movieLabel.text = nil
+                self.moviePosterImage.image = nil
+                
+                self.isInitialPick = true
             }
             
             // Save turn and clear cache.
             
-            let _ = Turn(player: self.currentPlayer!, game: self.game!, success: correct, round: 1, movie: self.currentMovie, actor: self.currentActor, context: self.managedObjectContext)
+            let _ = Turn(player: self.currentPlayer!, game: self.game!, success: correct, round: self.currentRound, movie: self.currentMovie, actor: self.currentActor, context: self.managedObjectContext)
             
             self.clearCache()
             
@@ -508,18 +530,20 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                     return
                 }
             }
+            
+            // Update current player.
+            
+            guard let indexOfCurrentPlayer = self.game!.players!.index(of: self.currentPlayer!) else {return}
+            
+            if indexOfCurrentPlayer < self.game!.players!.count - 1 {
+                self.currentPlayer = self.game!.players![indexOfCurrentPlayer + 1]
+            } else {
+                self.currentPlayer = self.game!.players![0]
+            }
+            
+            self.updateUIForCurrentPlayer()
+            self.dismissTable()
         }
-        
-        guard let indexOfCurrentPlayer = game!.players!.index(of: currentPlayer!) else {return}
-        
-        if indexOfCurrentPlayer < game!.players!.count - 1 {
-            currentPlayer = game!.players![indexOfCurrentPlayer + 1]
-        } else {
-            currentPlayer = game!.players![0]
-        }
-        
-        updateUIForCurrentPlayer()
-        dismissTable()
     }
 }
 
