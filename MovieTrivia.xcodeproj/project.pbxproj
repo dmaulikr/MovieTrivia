@@ -17,6 +17,7 @@
 		9F1F88081DFFDF3D003492D7 /* ColorPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1F88071DFFDF3D003492D7 /* ColorPickerViewController.swift */; };
 		9F1F880A1DFFE337003492D7 /* ColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1F88091DFFE337003492D7 /* ColorCell.swift */; };
 		9F50EF7A1DD958A100D0F602 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 9F50EF791DD958A100D0F602 /* .gitignore */; };
+		9F5E74B91E1B0036009F82EB /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F5E74B81E1B0036009F82EB /* OptionsViewController.swift */; };
 		9F70C53D1DD6F5BC00BFF7B7 /* MDBClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F70C53C1DD6F5BC00BFF7B7 /* MDBClient.swift */; };
 		9F7B23051DD9B1510032F72A /* Actor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7B23041DD9B1510032F72A /* Actor.swift */; };
 		9F99F8101DD9425A0050A40C /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F99F80F1DD9425A0050A40C /* Movie.swift */; };
@@ -65,6 +66,7 @@
 		9F1F88071DFFDF3D003492D7 /* ColorPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPickerViewController.swift; sourceTree = "<group>"; };
 		9F1F88091DFFE337003492D7 /* ColorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorCell.swift; sourceTree = "<group>"; };
 		9F50EF791DD958A100D0F602 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		9F5E74B81E1B0036009F82EB /* OptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
 		9F70C53C1DD6F5BC00BFF7B7 /* MDBClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDBClient.swift; sourceTree = "<group>"; };
 		9F7B23041DD9B1510032F72A /* Actor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Actor.swift; sourceTree = "<group>"; };
 		9F99F80F1DD9425A0050A40C /* Movie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 				9F1F88071DFFDF3D003492D7 /* ColorPickerViewController.swift */,
 				9FE947391DD6BFA40024DBFA /* GameplayViewController.swift */,
 				9FA2E46E1E19D76F0055E8B9 /* TurnHistoryViewController.swift */,
+				9F5E74B81E1B0036009F82EB /* OptionsViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -523,6 +526,7 @@
 				9F0EE0BD1DF15DBE002B1FB3 /* Turn.swift in Sources */,
 				9FB0499B1DF6BFD500866868 /* PlayerPickerViewController.swift in Sources */,
 				9F7B23051DD9B1510032F72A /* Actor.swift in Sources */,
+				9F5E74B91E1B0036009F82EB /* OptionsViewController.swift in Sources */,
 				9F0EE0B71DE2F7DC002B1FB3 /* CoreDataStackManager.swift in Sources */,
 				9F0EE0B21DDD8D8C002B1FB3 /* RadioButton.swift in Sources */,
 				9F70C53D1DD6F5BC00BFF7B7 /* MDBClient.swift in Sources */,

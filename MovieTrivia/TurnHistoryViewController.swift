@@ -8,33 +8,41 @@
 
 import UIKit
 
-class TurnHistoryViewController: UITableViewController{
-    
-    //----------------------------------
-    // MARK: Properties
-    //----------------------------------
+class TurnHistoryViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var game: Game? = nil
     
+    @IBOutlet weak var table: UITableView!
+    @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var explanationLabel: UILabel!
+    
     //----------------------------------
-    // MARK: Table View Delegate
+    // MARK: Lifecycle
     //----------------------------------
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.title = "Turn History"
-    }
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        if game!.history!.count == 0 {
+            explanationLabel.isHidden = false
+        } else {
+            explanationLabel.isHidden = true
+        }
+        
+        tableViewHeight.constant = CGFloat(game!.history!.count * 44)
     }
+    
+    //----------------------------------
+    // MARK: Table View Delegate
+    //----------------------------------
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return game!.history!.count
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "turnCell", for: indexPath) as UITableViewCell
         
@@ -42,8 +50,6 @@ class TurnHistoryViewController: UITableViewController{
         
         cell.textLabel!.font = UIFont(name: "Futura", size: 17)
         cell.textLabel!.textColor = UIColor.white
-        
-        print(turn)
         
         if turn.movie == nil {
             cell.textLabel!.text = "\(turn.actor!.name)"
@@ -54,10 +60,6 @@ class TurnHistoryViewController: UITableViewController{
         cell.backgroundColor = turn.player.color!
         
         return cell
-    }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
     }
 
     //----------------------------------
