@@ -113,6 +113,54 @@
             </objects>
             <point key="canvasLocation" x="1244.9275362318842" y="136.95652173913044"/>
         </scene>
+        <!--Root View Controller-->
+        <scene sceneID="w4E-AD-3aE">
+            <objects>
+                <tableViewController id="3Rv-cv-Vi5" customClass="TurnHistoryViewController" customModule="MovieTrivia" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="Rix-5c-ajs">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="turnCell" id="ySX-eE-9tW">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ySX-eE-9tW" id="lU5-n9-zfW">
+                                    <rect key="frame" x="0.0" y="0.0" width="342" height="44"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="3Rv-cv-Vi5" id="A7f-v9-Y9h"/>
+                            <outlet property="delegate" destination="3Rv-cv-Vi5" id="kI2-Z0-DFR"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Root View Controller" id="xb2-wd-1qp"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zRu-4A-NoI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3878" y="-618"/>
+        </scene>
+        <!--Side Menu Navigation Controller-->
+        <scene sceneID="ZuA-3j-zUY">
+            <objects>
+                <navigationController id="dMX-Bj-dPq" customClass="UISideMenuNavigationController" customModule="SideMenu" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="xqC-x0-V22">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="leftSide" value="NO"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <segue destination="3Rv-cv-Vi5" kind="relationship" relationship="rootViewController" id="4IJ-fj-J14"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Hil-UE-1Za" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3006" y="-619"/>
+        </scene>
         <!--Colors-->
         <scene sceneID="Ai9-OF-ayU">
             <objects>
@@ -579,7 +627,13 @@
                             <constraint firstItem="Yih-dv-7m9" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="vH3-SX-mYV"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Player" id="fhI-ao-adl"/>
+                    <navigationItem key="navigationItem" title="Player" id="fhI-ao-adl">
+                        <barButtonItem key="rightBarButtonItem" systemItem="bookmarks" id="Pw5-v2-Qtr">
+                            <connections>
+                                <segue destination="dMX-Bj-dPq" kind="presentation" identifier="showHistory" id="bhd-lS-XAY"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="actorButton" destination="ZMK-1D-CwH" id="cca-k0-Qur"/>
                         <outlet property="actorImage" destination="tmq-8w-rMG" id="DLI-Zd-yjh"/>

@@ -21,6 +21,7 @@
 		9F7B23051DD9B1510032F72A /* Actor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7B23041DD9B1510032F72A /* Actor.swift */; };
 		9F99F8101DD9425A0050A40C /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F99F80F1DD9425A0050A40C /* Movie.swift */; };
 		9FA2E46D1E18598E0055E8B9 /* ScoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FA2E46C1E18598E0055E8B9 /* ScoreCell.swift */; };
+		9FA2E46F1E19D76F0055E8B9 /* TurnHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FA2E46E1E19D76F0055E8B9 /* TurnHistoryViewController.swift */; };
 		9FB049991DF6BD2100866868 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FB049981DF6BD2100866868 /* CustomButton.swift */; };
 		9FB0499B1DF6BFD500866868 /* PlayerPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FB0499A1DF6BFD500866868 /* PlayerPickerViewController.swift */; };
 		9FE947381DD6BFA40024DBFA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FE947371DD6BFA40024DBFA /* AppDelegate.swift */; };
@@ -68,6 +69,7 @@
 		9F7B23041DD9B1510032F72A /* Actor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Actor.swift; sourceTree = "<group>"; };
 		9F99F80F1DD9425A0050A40C /* Movie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
 		9FA2E46C1E18598E0055E8B9 /* ScoreCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreCell.swift; sourceTree = "<group>"; };
+		9FA2E46E1E19D76F0055E8B9 /* TurnHistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TurnHistoryViewController.swift; sourceTree = "<group>"; };
 		9FB049981DF6BD2100866868 /* CustomButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		9FB0499A1DF6BFD500866868 /* PlayerPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerPickerViewController.swift; sourceTree = "<group>"; };
 		9FE947341DD6BFA40024DBFA /* MovieTrivia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieTrivia.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -135,6 +137,7 @@
 				9FB0499A1DF6BFD500866868 /* PlayerPickerViewController.swift */,
 				9F1F88071DFFDF3D003492D7 /* ColorPickerViewController.swift */,
 				9FE947391DD6BFA40024DBFA /* GameplayViewController.swift */,
+				9FA2E46E1E19D76F0055E8B9 /* TurnHistoryViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -528,6 +531,7 @@
 				9F0EE0BF1DF1610A002B1FB3 /* Game.swift in Sources */,
 				9F1F880A1DFFE337003492D7 /* ColorCell.swift in Sources */,
 				9FE9473A1DD6BFA40024DBFA /* GameplayViewController.swift in Sources */,
+				9FA2E46F1E19D76F0055E8B9 /* TurnHistoryViewController.swift in Sources */,
 				9FB049991DF6BD2100866868 /* CustomButton.swift in Sources */,
 				9F1F88081DFFDF3D003492D7 /* ColorPickerViewController.swift in Sources */,
 				9FE947381DD6BFA40024DBFA /* AppDelegate.swift in Sources */,

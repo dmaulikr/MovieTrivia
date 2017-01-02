@@ -1,15 +1,18 @@
 PODS:
   - Alamofire (4.0.1)
   - PKHUD (4.0.0)
+  - SideMenu (2.0.6)
 
 DEPENDENCIES:
   - Alamofire
   - PKHUD
+  - SideMenu
 
 SPEC CHECKSUMS:
   Alamofire: 7682d43245de14874acd142ec137b144aa1dd335
   PKHUD: 2bb45c936bb8afa39f3cd33ec14e8cc89f624255
+  SideMenu: 90be7a14e9f54eb528f96f2033aa54f2992c5667
 
-PODFILE CHECKSUM: 05dfbaf2a845856f1e1785dc288da8ef0d23c0cf
+PODFILE CHECKSUM: ad5836fe1eddb6a30451d0b4e5d89b9dfd4660bd
 
 COCOAPODS: 1.1.1

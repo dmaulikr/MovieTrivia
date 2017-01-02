@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import PKHUD
+import SideMenu
 
 class GameplayViewController: UIViewController {
     
@@ -325,6 +326,16 @@ class GameplayViewController: UIViewController {
             print("Encountered error: \(error.localizedDescription)")
         }
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "showHistory" {
+            
+            let navigationController = segue.destination as! UISideMenuNavigationController
+            let historyVC = navigationController.topViewController as! TurnHistoryViewController
+            historyVC.game = self.game
+        }
+    }
 }
 
 extension GameplayViewController: UISearchBarDelegate {
@@ -383,29 +394,28 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let reuseIdentifier = "searchCell"
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier) as UITableViewCell!
+        let cell = tableView.dequeueReusableCell(withIdentifier: "searchCell", for: indexPath) as UITableViewCell
         
-        cell?.textLabel!.font = UIFont(name: "Futura", size: 17)
+        cell.textLabel!.font = UIFont(name: "Futura", size: 17)
         
         switch movieButton.isSelected {
             
         case true:
             let movie = movies[indexPath.row]
             if let releaseYear = movie.releaseYear {
-                cell?.textLabel!.text = "\(movie.title) (\(releaseYear))"
+                cell.textLabel!.text = "\(movie.title) (\(releaseYear))"
             } else {
-                cell?.textLabel!.text = movie.title
+                cell.textLabel!.text = movie.title
             }
             break
             
         case false:
             let actor = actors[indexPath.row]
-            cell?.textLabel!.text = actor.name
+            cell.textLabel!.text = actor.name
             break
         }
         
-        return cell!
+        return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -490,6 +500,17 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                 return
             }
             
+            // Save turn and clear cache.
+            
+            if self.movieButton.isSelected {
+                
+                let _ = Turn(player: self.currentPlayer!, game: self.game!, success: correct, round: self.currentRound, movie: self.currentMovie, actor: nil, context: self.managedObjectContext)
+                
+            } else {
+                
+                let _ = Turn(player: self.currentPlayer!, game: self.game!, success: correct, round: self.currentRound, movie: nil, actor: self.currentActor, context: self.managedObjectContext)
+            }
+            
             if correct && self.currentMovie != nil && self.currentActor != nil {
                 
                 // Correct answer.
@@ -517,10 +538,6 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                 
                 self.isInitialPick = true
             }
-            
-            // Save turn and clear cache.
-            
-            let _ = Turn(player: self.currentPlayer!, game: self.game!, success: correct, round: self.currentRound, movie: self.currentMovie, actor: self.currentActor, context: self.managedObjectContext)
             
             self.clearCache()
             

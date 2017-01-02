@@ -9,6 +9,7 @@ target 'MovieTrivia' do
 
   pod 'Alamofire'
   pod 'PKHUD'
+  pod 'SideMenu'
 
   target 'MovieTriviaTests' do
     inherit! :search_paths
