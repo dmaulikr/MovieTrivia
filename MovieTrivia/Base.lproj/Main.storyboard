@@ -129,6 +129,9 @@
                                     <rect key="frame" x="0.0" y="0.0" width="342" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="VmD-9Z-9A2" kind="show" id="x5i-hR-joq"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -142,6 +145,24 @@
             </objects>
             <point key="canvasLocation" x="3878" y="-618"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="6as-XF-3JV">
+            <objects>
+                <viewController id="VmD-9Z-9A2" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="q5n-SN-ILH"/>
+                        <viewControllerLayoutGuide type="bottom" id="re9-BU-hYo"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="6QP-vN-Ww8">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RkQ-FI-q6f" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4732" y="-619"/>
+        </scene>
         <!--Side Menu Navigation Controller-->
         <scene sceneID="ZuA-3j-zUY">
             <objects>
@@ -151,7 +172,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="boolean" keyPath="leftSide" value="NO"/>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="leftSide" value="YES"/>
                     </userDefinedRuntimeAttributes>
                     <connections>
                         <segue destination="3Rv-cv-Vi5" kind="relationship" relationship="rootViewController" id="4IJ-fj-J14"/>
@@ -571,7 +592,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="G1z-Gi-wiA" id="ptK-rr-CWP">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -628,7 +649,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Player" id="fhI-ao-adl">
-                        <barButtonItem key="rightBarButtonItem" systemItem="bookmarks" id="Pw5-v2-Qtr">
+                        <barButtonItem key="leftBarButtonItem" systemItem="bookmarks" id="Pw5-v2-Qtr">
                             <connections>
                                 <segue destination="dMX-Bj-dPq" kind="presentation" identifier="showHistory" id="bhd-lS-XAY"/>
                             </connections>
