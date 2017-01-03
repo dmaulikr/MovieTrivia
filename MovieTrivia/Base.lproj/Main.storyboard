@@ -145,11 +145,8 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="w1g-ji-BkM">
-                                <rect key="frame" x="0.0" y="64" width="375" height="150"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="150" id="3Nv-nn-0bu"/>
-                                </constraints>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="turnCell" id="ise-Du-k5E">
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
@@ -168,9 +165,9 @@
                                 </connections>
                             </tableView>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="As you play, a record of your selections will appear here." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QQR-Jd-NAt">
-                                <rect key="frame" x="72" y="297" width="230" height="73"/>
+                                <rect key="frame" x="87" y="297" width="200" height="73"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="230" id="H9t-aF-UjX"/>
+                                    <constraint firstAttribute="width" constant="200" id="H9t-aF-UjX"/>
                                     <constraint firstAttribute="height" constant="73" id="fs4-Ok-XDL"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
@@ -181,6 +178,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="QQR-Jd-NAt" firstAttribute="centerX" secondItem="CBQ-gu-MUf" secondAttribute="centerX" id="0Y0-Qf-z9x"/>
+                            <constraint firstItem="cMn-C0-5J8" firstAttribute="top" secondItem="w1g-ji-BkM" secondAttribute="bottom" id="24h-z5-RKn"/>
                             <constraint firstItem="w1g-ji-BkM" firstAttribute="leading" secondItem="CBQ-gu-MUf" secondAttribute="leading" id="Ape-yj-8ed"/>
                             <constraint firstItem="QQR-Jd-NAt" firstAttribute="centerY" secondItem="CBQ-gu-MUf" secondAttribute="centerY" id="eKB-8y-tJd"/>
                             <constraint firstAttribute="trailing" secondItem="w1g-ji-BkM" secondAttribute="trailing" id="jmn-Dn-IOK"/>
@@ -191,7 +189,6 @@
                     <connections>
                         <outlet property="explanationLabel" destination="QQR-Jd-NAt" id="t9Y-Ik-4v4"/>
                         <outlet property="table" destination="w1g-ji-BkM" id="MFR-4d-K87"/>
-                        <outlet property="tableViewHeight" destination="3Nv-nn-0bu" id="25t-hA-hNv"/>
                         <segue destination="EXT-FZ-mNn" kind="show" identifier="showDetail" id="UiS-FW-FHB"/>
                     </connections>
                 </viewController>
@@ -238,8 +235,11 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" rowHeight="40" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="OxJ-jQ-GE8">
-                                <rect key="frame" x="14.5" y="444" width="335" height="213"/>
+                                <rect key="frame" x="14.5" y="444" width="335" height="220"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="220" id="1PV-sR-E4I"/>
+                                </constraints>
                                 <color key="separatorColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cellIdentifier" id="6Pu-hg-S5m">
@@ -262,7 +262,6 @@
                             <constraint firstItem="FRQ-Zj-kWk" firstAttribute="top" secondItem="Obr-ZT-kha" secondAttribute="bottom" constant="20" id="1lM-Yn-mFt"/>
                             <constraint firstItem="FRQ-Zj-kWk" firstAttribute="centerX" secondItem="FqP-MD-wth" secondAttribute="centerX" id="3Oa-ZU-AHV"/>
                             <constraint firstItem="OxJ-jQ-GE8" firstAttribute="trailing" secondItem="FRQ-Zj-kWk" secondAttribute="trailing" constant="-10" id="GpC-u9-XhM"/>
-                            <constraint firstItem="QZy-We-GBn" firstAttribute="top" secondItem="OxJ-jQ-GE8" secondAttribute="bottom" constant="10" id="I58-Oi-fJI"/>
                             <constraint firstItem="Obr-ZT-kha" firstAttribute="width" secondItem="FqP-MD-wth" secondAttribute="width" multiplier="0.45" id="JJf-Yv-y6K"/>
                             <constraint firstItem="Obr-ZT-kha" firstAttribute="centerX" secondItem="FqP-MD-wth" secondAttribute="centerX" id="Ktj-U1-pWO"/>
                             <constraint firstItem="QzA-HG-qEQ" firstAttribute="width" secondItem="FqP-MD-wth" secondAttribute="width" constant="-30" id="RgE-MT-Kn4"/>
@@ -279,6 +278,7 @@
                         <outlet property="imageview" destination="Obr-ZT-kha" id="8C3-ak-Pm4"/>
                         <outlet property="secondHeading" destination="FRQ-Zj-kWk" id="j9G-KP-yDv"/>
                         <outlet property="tableView" destination="OxJ-jQ-GE8" id="OuU-4N-w6y"/>
+                        <outlet property="tableViewHeight" destination="1PV-sR-E4I" id="0ck-kW-WEs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0UX-UG-yi0" userLabel="First Responder" sceneMemberID="firstResponder"/>

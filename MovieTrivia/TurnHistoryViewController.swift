@@ -33,9 +33,16 @@ class TurnHistoryViewController: UIViewController, UITableViewDelegate, UITableV
             explanationLabel.isHidden = true
         }
         
-        tableViewHeight.constant = CGFloat(game!.history!.count * 44)
+        table.indicatorStyle = .white
+        table.tableFooterView = UIView()
         
-        // TODO: Fix scroll issue.
+        // Scroll to bottom of table.
+        
+        if table.numberOfRows(inSection: 0) > 0 {
+            let indexPath = IndexPath(row: table.numberOfRows(inSection: 0) - 1, section: 0)
+            table.scrollToRow(at: indexPath, at: .middle, animated: false)
+        }
+        
     }
     
     //----------------------------------

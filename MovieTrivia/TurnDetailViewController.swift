@@ -19,6 +19,7 @@ class TurnDetailViewController: UIViewController {
     @IBOutlet weak var imageview: UIImageView!
     @IBOutlet weak var secondHeading: UILabel!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
 
     override func viewDidLoad() {
         
@@ -58,7 +59,6 @@ class TurnDetailViewController: UIViewController {
             }
             
             secondHeading.text = "Cast"
-            
             cast = Array(movie.cast!).sorted { $0.name < $1.name}
             
         } else if let actor = turn?.actor {
@@ -72,10 +72,12 @@ class TurnDetailViewController: UIViewController {
             }
             
             secondHeading.text = "Filmography"
-            
             filmography = Array(actor.filmography!).sorted { $0.title < $1.title}
         }
         
+        let spaceForTable = Int(self.view.frame.height - tableView.frame.minY)
+        let numberOfRowsToShow = spaceForTable / 40
+        tableViewHeight.constant = CGFloat(numberOfRowsToShow * 40)
         tableView.indicatorStyle = .white
         tableView.tableFooterView = UIView()
     }
