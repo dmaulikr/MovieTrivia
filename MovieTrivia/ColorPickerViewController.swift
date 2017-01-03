@@ -66,7 +66,7 @@ class ColorPickerViewController: UIViewController {
         
         if self.isMovingFromParentViewController {
             CoreDataStackManager.sharedInstance.deleteGame() { error in
-                
+                // TODO: Handle error.
             }
         }
     }

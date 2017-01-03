@@ -167,6 +167,8 @@ struct MDBClient {
                 return
             }
             
+            movie.imageData = data
+            
             guard let moviePosterImage = UIImage(data: data) else {
                 // TODO: Handle error.
                 return
@@ -196,6 +198,8 @@ struct MDBClient {
                 print("MDBClient: Unable to retrieve actor image data.")
                 return
             }
+            
+            actor.imageData = data
             
             guard let actorImage = UIImage(data: data) else {
                 // TODO: Handle error.

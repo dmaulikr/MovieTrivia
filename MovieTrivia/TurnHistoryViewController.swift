@@ -11,6 +11,7 @@ import UIKit
 class TurnHistoryViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var game: Game? = nil
+    var selectedTurn: Turn? = nil
     
     @IBOutlet weak var table: UITableView!
     @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
@@ -21,6 +22,7 @@ class TurnHistoryViewController: UIViewController, UITableViewDelegate, UITableV
     //----------------------------------
 
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         
         self.title = "Turn History"
@@ -32,6 +34,8 @@ class TurnHistoryViewController: UIViewController, UITableViewDelegate, UITableV
         }
         
         tableViewHeight.constant = CGFloat(game!.history!.count * 44)
+        
+        // TODO: Fix scroll issue.
     }
     
     //----------------------------------
@@ -61,13 +65,20 @@ class TurnHistoryViewController: UIViewController, UITableViewDelegate, UITableV
         
         return cell
     }
-
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        selectedTurn = game!.history![indexPath.row]
+        self.performSegue(withIdentifier: "showDetail", sender: self)
+    }
+    
     //----------------------------------
     // MARK: Navigation
     //----------------------------------
- 
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-
+        
+        let detailVC = segue.destination as! TurnDetailViewController
+        detailVC.turn = selectedTurn
     }
-
 }

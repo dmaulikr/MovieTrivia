@@ -539,7 +539,7 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                 self.isInitialPick = true
             }
             
-            self.clearCache()
+//            self.clearCache()
             
             CoreDataStackManager.sharedInstance.saveContext() { error in
                 guard error == nil else {
