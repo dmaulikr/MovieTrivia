@@ -112,13 +112,9 @@ extension ColorPickerViewController: UIPickerViewDelegate, UIPickerViewDataSourc
         pickerLabel.textAlignment = .center
         return pickerLabel
     }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        
-    }
 }
 
-extension ColorPickerViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension ColorPickerViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 8
@@ -130,6 +126,11 @@ extension ColorPickerViewController: UICollectionViewDelegate, UICollectionViewD
         cell.styleCell(color: colorArray[indexPath.row])
         
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        return CGSize(width: collectionView.frame.width / 4, height: collectionView.frame.width / 4)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

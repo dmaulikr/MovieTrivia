@@ -24,10 +24,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="How many players are there?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tnv-Ee-maa">
-                                <rect key="frame" x="67.5" y="204" width="240" height="40"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select the number of players:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tnv-Ee-maa">
+                                <rect key="frame" x="0.5" y="204" width="375" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="240" id="DTs-Xf-ShA"/>
                                     <constraint firstAttribute="height" constant="40" id="aFy-o7-cwu"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
@@ -97,6 +96,7 @@
                             <constraint firstItem="Tnv-Ee-maa" firstAttribute="centerX" secondItem="HjJ-33-eZY" secondAttribute="centerX" id="pnv-5l-ixf"/>
                             <constraint firstItem="W5Z-WX-jiP" firstAttribute="centerY" secondItem="HjJ-33-eZY" secondAttribute="centerY" id="t61-sF-ggR"/>
                             <constraint firstItem="W5Z-WX-jiP" firstAttribute="centerX" secondItem="HjJ-33-eZY" secondAttribute="centerX" id="uqJ-vB-e4W"/>
+                            <constraint firstItem="Tnv-Ee-maa" firstAttribute="width" secondItem="HjJ-33-eZY" secondAttribute="width" id="vvg-22-fdC"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Players" id="qT5-v9-u9w">
@@ -130,7 +130,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hil-UE-1Za" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3006" y="-619"/>
+            <point key="canvasLocation" x="3857" y="-220"/>
         </scene>
         <!--Turn History-->
         <scene sceneID="5o6-vq-cQe">
@@ -194,7 +194,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3W7-HE-BgN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3856.8000000000002" y="-619.34032983508246"/>
+            <point key="canvasLocation" x="4708" y="-220"/>
         </scene>
         <!--Turn Details-->
         <scene sceneID="6v3-Vn-Bht">
@@ -283,7 +283,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0UX-UG-yi0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4718" y="-619"/>
+            <point key="canvasLocation" x="5569" y="-220"/>
         </scene>
         <!--Colors-->
         <scene sceneID="Ai9-OF-ayU">
@@ -334,7 +334,7 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nE3-wU-5nM" userLabel="Color View">
-                                                            <rect key="frame" x="4" y="4" width="77" height="77"/>
+                                                            <rect key="frame" x="4" y="4" width="61" height="77"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="P1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dLt-J1-44X">
                                                                     <rect key="frame" x="17" y="28" width="42" height="21"/>
@@ -806,7 +806,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5ut-Q4-buw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3857" y="136"/>
+            <point key="canvasLocation" x="3857" y="493"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Mis-YV-rUJ">
