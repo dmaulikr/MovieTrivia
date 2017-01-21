@@ -27,6 +27,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         SideMenuManager.menuFadeStatusBar = false
         
+        // Set user defaults if they are not already determined.
+        
+        let userDefaults = UserDefaults.standard
+        if userDefaults.object(forKey: "strikeMax") == nil {
+            userDefaults.set(3, forKey: "strikeMax")
+        }
+        
         return true
     }
 
