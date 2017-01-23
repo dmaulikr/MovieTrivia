@@ -19,10 +19,9 @@ class GameplayViewController: UIViewController {
     
     var movies = [Movie]()
     var actors = [Actor]()
+    var activePlayers = [Player]()
     var currentMovie: Movie? = nil
     var currentActor: Actor? = nil
-    var player1: Player? = nil
-    var player2: Player? = nil
     var currentPlayer: Player? = nil
     var currentRound = 1
     var game: Game? = nil
@@ -46,7 +45,7 @@ class GameplayViewController: UIViewController {
     @IBOutlet weak var actorImage: UIImageView!
     @IBOutlet weak var actorLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
-    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var scoreCollectionView: UICollectionView!
     
     //----------------------------------
     // MARK: Lifecycle
@@ -58,6 +57,7 @@ class GameplayViewController: UIViewController {
         
         // Set initial gampeplay values.
         
+        activePlayers = game!.players!
         currentPlayer = game?.players?[0]
         self.title = currentPlayer?.name
         
@@ -108,7 +108,7 @@ class GameplayViewController: UIViewController {
         radioButtonContainer.backgroundColor = playerColor
         imageTitleLabel.textColor = playerColor
         scoreLabel.textColor = playerColor
-        collectionView.backgroundColor = playerColor
+        scoreCollectionView.backgroundColor = playerColor
     }
     
     @IBAction func radioButtonTapped(sender: RadioButton) {
@@ -506,6 +506,9 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                 return
             }
             
+            let indexOfCurrentPlayer = self.activePlayers.index(of: self.currentPlayer!)!
+            var playerEliminated = false
+            
             // Save turn and clear cache.
             
             if self.movieButton.isSelected {
@@ -527,12 +530,19 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                 
                 // Incorrect answer. Update round and scoring and clear actor/movie.
                 
-                HUD.flash(.error, delay: 1.5)
-                
                 self.currentRound += 1
                 
                 self.currentPlayer!.score += 1
-                self.collectionView.reloadData()
+                if self.currentPlayer!.score == UserDefaults.standard.integer(forKey: "strikeMax") {
+                    self.activePlayers = self.activePlayers.filter() {$0 != self.currentPlayer!}
+                    playerEliminated = true
+                }
+                
+                if !playerEliminated {
+                    HUD.flash(.error, delay: 1.5)
+                }
+                
+                self.scoreCollectionView.reloadData()
                 
                 self.currentActor = nil
                 self.actorLabel.text = ""
@@ -554,18 +564,31 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                 }
             }
             
+            self.dismissTable()
+            
+            if playerEliminated {
+                let alert = UIAlertController(title: "\(self.currentPlayer!.name) has been eliminated.", message: nil, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+            
             // Update current player.
             
-            guard let indexOfCurrentPlayer = self.game!.players!.index(of: self.currentPlayer!) else {return}
-            
-            if indexOfCurrentPlayer < self.game!.players!.count - 1 {
-                self.currentPlayer = self.game!.players![indexOfCurrentPlayer + 1]
+            if playerEliminated {
+                if indexOfCurrentPlayer == self.activePlayers.count {
+                    self.currentPlayer = self.activePlayers[0]
+                } else {
+                    self.currentPlayer = self.activePlayers[indexOfCurrentPlayer]
+                }
             } else {
-                self.currentPlayer = self.game!.players![0]
+                if indexOfCurrentPlayer < self.activePlayers.count - 1 {
+                    self.currentPlayer = self.activePlayers[indexOfCurrentPlayer + 1]
+                } else {
+                    self.currentPlayer = self.activePlayers[0]
+                }
             }
             
             self.updateUIForCurrentPlayer()
-            self.dismissTable()
         }
     }
 }

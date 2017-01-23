@@ -770,12 +770,12 @@
                         <outlet property="actorImage" destination="tmq-8w-rMG" id="DLI-Zd-yjh"/>
                         <outlet property="actorLabel" destination="iam-ud-y4r" id="2Pl-A8-PKu"/>
                         <outlet property="blurView" destination="Yih-dv-7m9" id="w5x-EM-SLv"/>
-                        <outlet property="collectionView" destination="er3-Pf-InK" id="Psi-Cx-Ozz"/>
                         <outlet property="imageTitleLabel" destination="xQw-fU-M8a" id="MTS-Jl-8ZG"/>
                         <outlet property="movieButton" destination="nED-26-W9d" id="AfV-Nh-pPl"/>
                         <outlet property="movieLabel" destination="3l1-oJ-3Nr" id="1ha-1r-dHR"/>
                         <outlet property="moviePosterImage" destination="2q0-Xu-UN2" id="smd-yP-dhl"/>
                         <outlet property="radioButtonContainer" destination="aJb-mc-asR" id="S6x-Hv-EDM"/>
+                        <outlet property="scoreCollectionView" destination="er3-Pf-InK" id="8nC-SL-awI"/>
                         <outlet property="scoreLabel" destination="esF-No-iN5" id="yo1-te-fHP"/>
                         <outlet property="searchBar" destination="krH-Ya-ysJ" id="KgN-um-9E9"/>
                         <outlet property="tableView" destination="ckJ-mo-Vki" id="hcv-Sn-Qq7"/>
