@@ -286,15 +286,21 @@ class GameplayViewController: UIViewController {
     
     func clearCache() {
         
-        var savedActors = [Actor]()
-        var savedMovies = [Movie]()
+        var actorsToSave = [Actor]()
+        var moviesToSave = [Movie]()
         
         for turn in game!.history! {
             if let actor = turn.actor {
-                savedActors.append(actor)
+                actorsToSave.append(actor)
+                for movie in actor.filmography! {
+                    moviesToSave.append(movie)
+                }
             }
             if let movie = turn.movie {
-                savedMovies.append(movie)
+                moviesToSave.append(movie)
+                for actor in movie.cast! {
+                    actorsToSave.append(actor)
+                }
             }
         }
         
@@ -303,7 +309,7 @@ class GameplayViewController: UIViewController {
         do {
             let list = try managedObjectContext.fetch(fetchRequest) as! [Movie]
             for movie in list {
-                if !savedMovies.contains(movie) {
+                if !moviesToSave.contains(movie) {
                     managedObjectContext.delete(movie)
                 }
             }
@@ -317,7 +323,7 @@ class GameplayViewController: UIViewController {
         do {
             let list = try managedObjectContext.fetch(fetchRequest) as! [Actor]
             for actor in list {
-                if !savedActors.contains(actor) {
+                if !actorsToSave.contains(actor) {
                     managedObjectContext.delete(actor)
                 }
             }
@@ -539,7 +545,7 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                 self.isInitialPick = true
             }
             
-//            self.clearCache()
+            self.clearCache()
             
             CoreDataStackManager.sharedInstance.saveContext() { error in
                 guard error == nil else {
