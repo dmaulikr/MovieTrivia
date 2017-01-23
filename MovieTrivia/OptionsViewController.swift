@@ -42,4 +42,17 @@ class OptionsViewController: UIViewController {
         strikeCountLabel.text = String(Int(strikeStepper.value))
         navigationItem.rightBarButtonItem?.isEnabled = true
     }
+    
+    @IBAction func quit() {
+        
+        let alert = UIAlertController(title: "Are you sure?", message: "Your game will not be saved.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { action in
+            _ = self.navigationController?.popToRootViewController(animated: true)
+            CoreDataStackManager.sharedInstance.deleteGame() { error in
+                // TODO: Handle error.
+            }
+        })
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
 }

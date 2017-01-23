@@ -883,6 +883,9 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
                                 <state key="normal" title="Quit"/>
+                                <connections>
+                                    <action selector="quit" destination="ldV-0E-qD6" eventType="touchUpInside" id="LgM-Fe-DCI"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.4039215686" green="0.25490196079999999" blue="0.44705882349999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
