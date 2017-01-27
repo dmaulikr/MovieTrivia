@@ -14,7 +14,6 @@ class TurnHistoryViewController: UIViewController, UITableViewDelegate, UITableV
     var selectedTurn: Turn? = nil
     
     @IBOutlet weak var table: UITableView!
-    @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
     @IBOutlet weak var explanationLabel: UILabel!
     
     //----------------------------------
@@ -48,16 +47,40 @@ class TurnHistoryViewController: UIViewController, UITableViewDelegate, UITableV
     //----------------------------------
     // MARK: Table View Delegate
     //----------------------------------
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        
+        guard let lastTurn = game?.history?.last else {
+            return 1
+        }
+        
+        return lastTurn.round
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "Round \(section + 1)"
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.font = UIFont(name: "Futura", size: 17)
+    }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return game!.history!.count
+        
+        // Filter out turns not associated with the current round/section.
+        
+        let turnsForRound = self.game!.history!.filter() {$0.round == section + 1}
+        return turnsForRound.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "turnCell", for: indexPath) as UITableViewCell
         
-        let turn = game!.history![indexPath.row]
+        let turnsForSection = self.game!.history!.filter() {$0.round == indexPath.section + 1}
+        
+        let turn = turnsForSection[indexPath.row]
         
         cell.textLabel!.font = UIFont(name: "Futura", size: 17)
         cell.textLabel!.textColor = UIColor.white

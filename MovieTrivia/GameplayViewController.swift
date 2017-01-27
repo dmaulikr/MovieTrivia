@@ -63,7 +63,16 @@ class GameplayViewController: UIViewController {
         
         // Set up UI.
         
-        updateUIForCurrentPlayer(clearPreviousAnswers: false)
+        if let currentPlayer = self.currentPlayer {
+            
+            self.title = currentPlayer.name
+            
+            self.view.backgroundColor = currentPlayer.color
+            self.radioButtonContainer.backgroundColor = currentPlayer.color
+            self.scoreCollectionView.backgroundColor = currentPlayer.color
+            self.imageTitleLabel.textColor = currentPlayer.color
+            self.scoreLabel.textColor = currentPlayer.color
+        }
         
         navigationItem.hidesBackButton = true
         
@@ -103,16 +112,16 @@ class GameplayViewController: UIViewController {
         guard let currentPlayer = currentPlayer else {return}
         guard let playerColor = currentPlayer.color else {return}
         
-        self.title = currentPlayer.name
-        
-        UIView.animate(withDuration: 0.5, animations: {
+        UIView.animate(withDuration: 1.0, animations: {
             self.view.backgroundColor = playerColor
             self.radioButtonContainer.backgroundColor = playerColor
             self.scoreCollectionView.backgroundColor = playerColor
         })
         
-        UIView.transition(with: self.imageTitleLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.imageTitleLabel.textColor = playerColor}, completion: nil)
-        UIView.transition(with: self.scoreLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.scoreLabel.textColor = playerColor}, completion: nil)
+        UIView.transition(with: self.imageTitleLabel, duration: 1.0, options: .transitionCrossDissolve, animations: {self.imageTitleLabel.textColor = playerColor}, completion: nil)
+        UIView.transition(with: self.scoreLabel, duration: 1.0, options: .transitionCrossDissolve, animations: {self.scoreLabel.textColor = playerColor}, completion: nil)
+        
+        self.title = currentPlayer.name
         
         if clearPreviousAnswers {
             
@@ -451,12 +460,14 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        self.dismissTable()
+        
+        // Verify that second player is not attempting to pick a value of the same type as the initial value, e.g. movie + movie.
+        
         if !isInitialPick && ((movieButton.isSelected && currentActor == nil) || (actorButton.isSelected && currentMovie == nil)) {
             
-            // Second player is attempting to pick a value of the same type as the initial value, e.g. movie + movie.
-            
             let alertMessage = "You have to pick " + (movieButton.isSelected ? "an actor.": "a movie.")
-            let alert = UIAlertController(title: "Oops!", message: alertMessage, preferredStyle: .alert)
+            let alert = UIAlertController(title: "Hold up", message: alertMessage, preferredStyle: .alert)
             let okayAction = UIAlertAction(title: "OK", style: .default, handler: nil)
             alert.addAction(okayAction)
             self.present(alert, animated: true, completion: nil)
@@ -464,7 +475,31 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
             return
         }
         
-        self.dismissTable()
+        // Verify that the movie or actor selected has not already been used this round.
+        
+        let turnsForRound = game!.history!.filter() {$0.round == currentRound}
+        var moviesForRound = [String]()
+        var actorsForRound = [String]()
+        
+        for turn in turnsForRound {
+            if let movie = turn.movie {
+                moviesForRound.append(movie.title)
+            }
+            if let actor = turn.actor {
+                actorsForRound.append(actor.name)
+            }
+        }
+        
+        if (movieButton.isSelected && moviesForRound.contains(movies[indexPath.row].title)) || (actorButton.isSelected && actorsForRound.contains(actors[indexPath.row].name)) {
+            
+            let alertMessage = "Your selection has already been used this round. Pick another movie or actor."
+            let alert = UIAlertController(title: "Not so fast", message: alertMessage, preferredStyle: .alert)
+            let okayAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alert.addAction(okayAction)
+            self.present(alert, animated: true, completion: nil)
+            
+            return
+        }
         
         // Show progress HUD.
         
@@ -523,6 +558,7 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                     self.scoreCollectionView.reloadData()
                     self.isInitialPick = true
                     clearPreviousAnswers = true
+                    self.currentRound += 1
                 }
                 
                 // Update UI for the next player.
