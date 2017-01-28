@@ -152,7 +152,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ise-Du-k5E" id="E6T-Gh-P6U">
-                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.4039215686" green="0.25490196079999999" blue="0.44705882349999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -247,7 +247,7 @@
                                         <rect key="frame" x="0.0" y="28" width="335" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6Pu-hg-S5m" id="L3p-eE-QHx">
-                                            <rect key="frame" x="0.0" y="0.0" width="335" height="39"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="335" height="39.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -335,7 +335,7 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nE3-wU-5nM" userLabel="Color View">
-                                                            <rect key="frame" x="4" y="4" width="61" height="77"/>
+                                                            <rect key="frame" x="4" y="4" width="77" height="77"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="P1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dLt-J1-44X">
                                                                     <rect key="frame" x="17" y="28" width="42" height="21"/>
@@ -438,7 +438,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dCs-ej-Axy" userLabel="Bottom Spacer">
                                 <rect key="frame" x="0.0" y="485.5" width="375" height="86.5"/>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Now playing" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xQw-fU-M8a" userLabel="Image Title">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Round 1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xQw-fU-M8a" userLabel="Image Title">
                                 <rect key="frame" x="27.5" y="198" width="319" height="30"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -448,14 +448,14 @@
                                 <color key="textColor" red="0.4039215686" green="0.25490196079999999" blue="0.44705882349999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Movie Title" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3l1-oJ-3Nr" userLabel="Movie Label">
-                                <rect key="frame" x="27.5" y="485.5" width="155" height="22.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3l1-oJ-3Nr" userLabel="Movie Label">
+                                <rect key="frame" x="27.5" y="485.5" width="155" height="0.0"/>
                                 <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Actor Name" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iam-ud-y4r" userLabel="Actor Label">
-                                <rect key="frame" x="193.5" y="485.5" width="154" height="22.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iam-ud-y4r" userLabel="Actor Label">
+                                <rect key="frame" x="193.5" y="485.5" width="154" height="0.0"/>
                                 <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -466,7 +466,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J0x-ca-kor" userLabel="Left Spacer">
                                         <rect key="frame" x="0.0" y="0.0" width="11.5" height="257.5"/>
                                     </view>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2q0-Xu-UN2" userLabel="Movie Image">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="reel" translatesAutoresizingMaskIntoConstraints="NO" id="2q0-Xu-UN2" userLabel="Movie Image">
                                         <rect key="frame" x="11.5" y="14" width="155" height="229.5"/>
                                         <color key="backgroundColor" red="0.70104206650000001" green="0.73659952029999998" blue="0.92737926140000004" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
@@ -476,7 +476,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fi4-v6-Ur8" userLabel="Center Spacer">
                                         <rect key="frame" x="166.5" y="0.0" width="11" height="257.5"/>
                                     </view>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tmq-8w-rMG" userLabel="Actor Image">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person" translatesAutoresizingMaskIntoConstraints="NO" id="tmq-8w-rMG" userLabel="Actor Image">
                                         <rect key="frame" x="177.5" y="15" width="154" height="228.5"/>
                                         <color key="backgroundColor" red="0.70104206650000001" green="0.73659952029999998" blue="0.92737926140000004" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
@@ -509,6 +509,15 @@
                                     <constraint firstItem="Aoc-r1-Gaz" firstAttribute="centerY" secondItem="ULk-Tx-JLX" secondAttribute="centerY" id="xCt-Nx-vO2"/>
                                 </constraints>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Make a selection to start the round" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fuO-Xw-3po">
+                                <rect key="frame" x="15.5" y="485.5" width="343" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="Y6D-vv-MOA"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Strikes" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="esF-No-iN5">
                                 <rect key="frame" x="16" y="572" width="343" height="30"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -696,7 +705,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="G1z-Gi-wiA" id="ptK-rr-CWP">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -712,6 +721,7 @@
                             <constraint firstItem="3l1-oJ-3Nr" firstAttribute="width" secondItem="2q0-Xu-UN2" secondAttribute="width" id="1qa-4V-eR3"/>
                             <constraint firstItem="iam-ud-y4r" firstAttribute="centerX" secondItem="tmq-8w-rMG" secondAttribute="centerX" id="2Gh-84-zfW"/>
                             <constraint firstItem="ULk-Tx-JLX" firstAttribute="bottom" secondItem="dCs-ej-Axy" secondAttribute="top" id="2fQ-8Z-He9"/>
+                            <constraint firstItem="fuO-Xw-3po" firstAttribute="width" secondItem="esF-No-iN5" secondAttribute="width" id="3Oi-Rp-jC2"/>
                             <constraint firstItem="JYh-g9-bwV" firstAttribute="top" secondItem="krH-Ya-ysJ" secondAttribute="bottom" constant="60" id="4ak-h8-Yy6"/>
                             <constraint firstItem="dCs-ej-Axy" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="5DM-9l-JZf"/>
                             <constraint firstAttribute="trailing" secondItem="ckJ-mo-Vki" secondAttribute="trailing" id="5p9-Im-StZ"/>
@@ -750,6 +760,8 @@
                             <constraint firstItem="esF-No-iN5" firstAttribute="width" secondItem="ULk-Tx-JLX" secondAttribute="width" id="qjE-2l-ghy"/>
                             <constraint firstItem="ckJ-mo-Vki" firstAttribute="top" secondItem="krH-Ya-ysJ" secondAttribute="bottom" id="t2r-2I-ziN"/>
                             <constraint firstItem="Yih-dv-7m9" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="vH3-SX-mYV"/>
+                            <constraint firstItem="fuO-Xw-3po" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="vmD-I4-rNu"/>
+                            <constraint firstItem="ULk-Tx-JLX" firstAttribute="bottom" secondItem="fuO-Xw-3po" secondAttribute="top" id="wZW-nI-uW0"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Player" id="fhI-ao-adl">
@@ -774,6 +786,7 @@
                         <outlet property="movieButton" destination="nED-26-W9d" id="AfV-Nh-pPl"/>
                         <outlet property="movieLabel" destination="3l1-oJ-3Nr" id="1ha-1r-dHR"/>
                         <outlet property="moviePosterImage" destination="2q0-Xu-UN2" id="smd-yP-dhl"/>
+                        <outlet property="newRoundLabel" destination="fuO-Xw-3po" id="vIX-GP-SSh"/>
                         <outlet property="radioButtonContainer" destination="aJb-mc-asR" id="S6x-Hv-EDM"/>
                         <outlet property="scoreCollectionView" destination="er3-Pf-InK" id="8nC-SL-awI"/>
                         <outlet property="scoreLabel" destination="esF-No-iN5" id="yo1-te-fHP"/>
@@ -928,6 +941,8 @@
         </scene>
     </scenes>
     <resources>
+        <image name="person" width="201" height="298"/>
+        <image name="reel" width="201" height="298"/>
         <image name="settingsIcon" width="43" height="43"/>
     </resources>
 </document>

@@ -50,163 +50,164 @@ struct MDBClient {
     // MARK: API Methods
     //----------------------------------
     
-    func searchDatabase(queryInput: String, queryType: String, completionHandler: @escaping (_ movies: [Movie]?, _ actors: [Actor]?, _ error: NSError?) -> Void) {
+    func searchDatabase(queryInput: String, queryType: String, completionHandler: @escaping (_ movies: [Movie]?, _ actors: [Actor]?, _ errorMessage: String?) -> Void) {
         
         var params = baseParameters
         params[query] = queryInput
         
         Alamofire.request(baseURL + "search/" + queryType, method: .get, parameters: params, encoding: URLEncoding.default, headers: nil).responseJSON { response in
             
-            guard response.result.isSuccess else {
-                // TODO: Handle error.
-                print("MDBClient: Movie query was unsuccessful.")
-                return
-            }
-            
-            guard let responseJSON = response.result.value as? [String: AnyObject] else {
-                // TODO: Handle error.
-                print("MDBClient: Unable to parse movie response.")
-                return
-            }
-            
-            if queryType == MDBClient.movie {
+            switch response.result {
                 
-                if let movieData = responseJSON["results"] as? [[String: AnyObject]] {
-                    let movies = Movie.moviesFromResults(results: movieData, context: self.sharedContext)
-                    completionHandler(movies, nil, nil)
-                } else {
-                    // TODO: Handle error.
-                    print("MDBClient: Nothing found for 'results' key.")
+            case .failure:
+                completionHandler(nil, nil, "Query failed.")
+                return
+            
+            case .success:
+                guard let responseJSON = response.result.value as? [String: AnyObject] else {
+                    completionHandler(nil, nil, "Unable to parse response.")
+                    return
                 }
                 
-            } else {
-                
-                if let actorData = responseJSON["results"] as? [[String: AnyObject]] {
-                    let actors = Actor.peopleFromResults(results: actorData, context: self.sharedContext)
-                    completionHandler(nil, actors, nil)
+                if queryType == MDBClient.movie {
+                    
+                    if let movieData = responseJSON["results"] as? [[String: AnyObject]] {
+                        let movies = Movie.moviesFromResults(results: movieData, context: self.sharedContext)
+                        completionHandler(movies, nil, nil)
+                    } else {
+                        completionHandler(nil, nil, "Response did not contain expected key.")
+                    }
+                    
                 } else {
-                    // TODO: Handle error.
-                    print("MDBClient: Nothing found for 'results' key.")
+                    
+                    if let actorData = responseJSON["results"] as? [[String: AnyObject]] {
+                        let actors = Actor.peopleFromResults(results: actorData, context: self.sharedContext)
+                        completionHandler(nil, actors, nil)
+                    } else {
+                        completionHandler(nil, nil, "Response did not contain expected key.")
+                    }
                 }
             }
         }
     }
     
-    func getCast(movie: Movie, completionHandler: @escaping (_ result: Set<Actor>?, _ error: NSError?) -> Void) {
+    func getCast(movie: Movie, completionHandler: @escaping (_ result: Set<Actor>?, _ errorMessage: String?) -> Void) {
         
         Alamofire.request(baseURL + "movie/" + String(movie.idNumber) + "/credits", method: .get, parameters: baseParameters, encoding: URLEncoding.default, headers: nil).responseJSON { response in
             
-            guard response.result.isSuccess else {
-                // TODO: Handle error.
-                print("MDBClient: Cast query was unsuccessful.")
+            switch response.result {
+                
+            case .failure:
+                completionHandler(nil, "Query failed.")
                 return
-            }
-            
-            guard let responseJSON = response.result.value as? [String: AnyObject] else {
-                // TODO: Handle error.
-                print("MDBClient: Unable to parse cast response.")
-                return
-            }
-            
-            if let castData = responseJSON["cast"] as? [[String: AnyObject]] {
-                let cast = Actor.peopleFromResults(results: castData, context: self.sharedContext)
-                let castSet = Set(cast)
-                completionHandler(castSet, nil)
-            } else {
-                // TODO: Handle error.
-                print("MDBClient: Nothing found for 'cast' key.")
+                
+            case .success:
+                guard let responseJSON = response.result.value as? [String: AnyObject] else {
+                    completionHandler(nil, "Unable to parse response.")
+                    return
+                }
+                
+                if let castData = responseJSON["cast"] as? [[String: AnyObject]] {
+                    let cast = Actor.peopleFromResults(results: castData, context: self.sharedContext)
+                    let castSet = Set(cast)
+                    completionHandler(castSet, nil)
+                } else {
+                    completionHandler(nil, "Response did not contain expected key.")
+                }
             }
         }
     }
     
-    func getFilmography(actor: Actor, completionHandler: @escaping (_ result: Set<Movie>?, _ error: NSError?) -> Void) {
+    func getFilmography(actor: Actor, completionHandler: @escaping (_ result: Set<Movie>?, _ errorMessage: String?) -> Void) {
         
         Alamofire.request(baseURL + "person/" + String(actor.idNumber) + "/movie_credits", method: .get, parameters: baseParameters, encoding: URLEncoding.default, headers: nil).responseJSON { response in
             
-            guard response.result.isSuccess else {
-                // TODO: Handle error.
-                print("MDBClient: Filmography query was unsuccessful.")
+            switch response.result {
+                
+            case .failure:
+                completionHandler(nil, "Query failed.")
                 return
-            }
-            
-            guard let responseJSON = response.result.value as? [String: AnyObject] else {
-                // TODO: Handle error.
-                print("MDBClient: Unable to parse filmography response.")
-                return
-            }
-            
-            if let filmographyData = responseJSON["cast"] as? [[String: AnyObject]] {
-                let filmography = Movie.moviesFromResults(results: filmographyData, context: self.sharedContext)
-                let filmographySet = Set(filmography)
-                completionHandler(filmographySet, nil)
-            } else {
-                // TODO: Handle error.
-                print("MDBClient: Nothing found for 'cast' key (filmography).")
+                
+            case .success:
+                guard let responseJSON = response.result.value as? [String: AnyObject] else {
+                    completionHandler(nil, "Unable to parse response.")
+                    return
+                }
+                
+                if let filmographyData = responseJSON["cast"] as? [[String: AnyObject]] {
+                    let filmography = Movie.moviesFromResults(results: filmographyData, context: self.sharedContext)
+                    let filmographySet = Set(filmography)
+                    completionHandler(filmographySet, nil)
+                } else {
+                    completionHandler(nil, "Response did not contain expected key.")
+                }
             }
         }
     }
     
-    func getMovieImage(movie: Movie, completionHandler: @escaping (_ image: UIImage?, _ error: NSError?) -> Void) {
+    func getMovieImage(movie: Movie, completionHandler: @escaping (_ image: UIImage?, _ errorMessage: String?) -> Void) {
         
         guard let posterPath = movie.posterPath else {
-            // TODO: Handle error.
+            completionHandler(nil, "Missing image path.")
             return
         }
         
         Alamofire.request(baseImageURL + posterPath, method: .get, parameters: nil, encoding: URLEncoding.default, headers: nil).responseData { response in
             
-            guard response.result.isSuccess else {
-                // TODO: Handle error.
-                print("MDBClient: Movie image query was unsuccessful.")
+            switch response.result {
+                
+            case .failure:
+                completionHandler(nil, "Query failed.")
                 return
+                
+            case .success:
+                guard let data = response.result.value else {
+                    completionHandler(nil, "No image data returned.")
+                    return
+                }
+                
+                movie.imageData = data
+                
+                guard let moviePosterImage = UIImage(data: data) else {
+                    completionHandler(nil, "Unable to render image.")
+                    return
+                }
+                
+                completionHandler(moviePosterImage, nil)
             }
-            
-            guard let data = response.result.value else {
-                // TODO: Handle error.
-                print("MDBClient: Unable to retrieve movie image data.")
-                return
-            }
-            
-            movie.imageData = data
-            
-            guard let moviePosterImage = UIImage(data: data) else {
-                // TODO: Handle error.
-                return
-            }
-            
-            completionHandler(moviePosterImage, nil)
         }
     }
     
-    func getActorImage(actor: Actor, completionHandler: @escaping (_ image: UIImage?, _ error: NSError?) -> Void) {
+    func getActorImage(actor: Actor, completionHandler: @escaping (_ image: UIImage?, _ errorMessage: String?) -> Void) {
         
         guard let profilePath = actor.profilePath else {
-            // TODO: Handle error.
+            completionHandler(nil, "Missing image path.")
             return
         }
         
         Alamofire.request(baseImageURL + profilePath, method: .get, parameters: nil, encoding: URLEncoding.default, headers: nil).responseData { response in
-         
-            guard response.result.isSuccess else {
-                // TODO: Handle error.
-                print("MDBClient: Actor image query was unsuccessful.")
+            
+            switch response.result {
+                
+            case .failure:
+                completionHandler(nil, "Query failed.")
                 return
+                
+            case .success:
+                guard let data = response.result.value else {
+                    completionHandler(nil, "No image data returned.")
+                    return
+                }
+                
+                actor.imageData = data
+                
+                guard let actorImage = UIImage(data: data) else {
+                    completionHandler(nil, "Unable to render image.")
+                    return
+                }
+                
+                completionHandler(actorImage, nil)
             }
-            
-            guard let data = response.result.value else {
-                // TODO: Handle error.
-                print("MDBClient: Unable to retrieve actor image data.")
-                return
-            }
-            
-            actor.imageData = data
-            
-            guard let actorImage = UIImage(data: data) else {
-                // TODO: Handle error.
-                return
-            }
-            
-            completionHandler(actorImage, nil)
         }
     }
 }

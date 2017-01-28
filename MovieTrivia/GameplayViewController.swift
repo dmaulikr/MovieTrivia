@@ -45,6 +45,7 @@ class GameplayViewController: UIViewController {
     @IBOutlet weak var actorImage: UIImageView!
     @IBOutlet weak var actorLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
+    @IBOutlet weak var newRoundLabel: UILabel!
     @IBOutlet weak var scoreCollectionView: UICollectionView!
     
     //----------------------------------
@@ -104,7 +105,7 @@ class GameplayViewController: UIViewController {
     }
     
     //----------------------------------
-    // MARK: Page Methods
+    // MARK: UI Methods
     //----------------------------------
     
     func updateUIForCurrentPlayer(clearPreviousAnswers: Bool) {
@@ -112,26 +113,28 @@ class GameplayViewController: UIViewController {
         guard let currentPlayer = currentPlayer else {return}
         guard let playerColor = currentPlayer.color else {return}
         
-        UIView.animate(withDuration: 1.0, animations: {
+        UIView.animate(withDuration: 0.5, animations: {
             self.view.backgroundColor = playerColor
             self.radioButtonContainer.backgroundColor = playerColor
             self.scoreCollectionView.backgroundColor = playerColor
         })
         
-        UIView.transition(with: self.imageTitleLabel, duration: 1.0, options: .transitionCrossDissolve, animations: {self.imageTitleLabel.textColor = playerColor}, completion: nil)
-        UIView.transition(with: self.scoreLabel, duration: 1.0, options: .transitionCrossDissolve, animations: {self.scoreLabel.textColor = playerColor}, completion: nil)
-        
+        UIView.transition(with: self.imageTitleLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.imageTitleLabel.textColor = playerColor}, completion: nil)
+        UIView.transition(with: self.scoreLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.scoreLabel.textColor = playerColor}, completion: nil)
+
         self.title = currentPlayer.name
         
         if clearPreviousAnswers {
             
             self.currentActor = nil
-            self.actorLabel.text = ""
-            self.actorImage.image = nil
-            
             self.currentMovie = nil
-            self.movieLabel.text = nil
-            self.moviePosterImage.image = nil
+            
+            UIView.transition(with: self.actorImage, duration: 0.5, options: .transitionCrossDissolve, animations: {self.actorImage.image = #imageLiteral(resourceName: "person")}, completion: nil)
+            UIView.transition(with: self.actorLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.actorLabel.isHidden = true}, completion: nil)
+            UIView.transition(with: self.moviePosterImage, duration: 0.5, options: .transitionCrossDissolve, animations: {self.moviePosterImage.image = #imageLiteral(resourceName: "reel")}, completion: nil)
+            UIView.transition(with: self.movieLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.movieLabel.isHidden = true}, completion: nil)
+            UIView.transition(with: self.newRoundLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.newRoundLabel.isHidden = false}, completion: nil)
+            UIView.transition(with: self.imageTitleLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.imageTitleLabel.text = "Round \(self.currentRound)"}, completion: nil)
         }
     }
     
@@ -178,35 +181,41 @@ class GameplayViewController: UIViewController {
             break
         }
         
-        MDBClient().searchDatabase(queryInput: searchText, queryType: queryType) { (movies, actors, error) in
+        MDBClient().searchDatabase(queryInput: searchText, queryType: queryType) { (movies, actors, errorMessage) in
             
-            guard error == nil else {
-                // TODO: Handle error.
+            if let errorMessage = errorMessage {
+                self.displayErrorAlert(errorMessage: errorMessage)
                 return
             }
             
             switch self.movieButton.isSelected {
                 
             case true:
+                
                 guard let movies = movies else {
-                    // TODO: Handle error.
                     return
                 }
+                
                 self.movies = [Movie]()
+                
                 for movie in movies {
                     self.movies.append(movie)
                 }
+                
                 break
                 
             case false:
+                
                 guard let actors = actors else {
-                    // TODO: Handle error.
                     return
                 }
+                
                 self.actors = [Actor]()
+                
                 for actor in actors {
                     self.actors.append(actor)
                 }
+                
                 break
             }
             
@@ -226,35 +235,127 @@ class GameplayViewController: UIViewController {
         })
     }
     
+    func displayErrorAlert(errorMessage: String) {
+        
+        var alertTitle = String()
+        var alertMessage = String()
+        
+        switch errorMessage {
+            
+        case "Query failed.":
+            alertTitle = "Unable to connect"
+            alertMessage = "You must be connected to the internet to play. Please check your network settings and try again."
+            break
+            
+        case "Unable to parse response.":
+            alertTitle = "Uh-oh"
+            alertMessage = "We were unable to process your selection. Please try again or make a different selection."
+            break
+            
+        case "Response did not contain expected key.":
+            alertTitle = "Uh-oh"
+            alertMessage = "We were unable to process your selection. Please try again or make a different selection."
+            break
+            
+        default:
+            break
+        }
+        
+        let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+        let okayAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(okayAction)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func setImageForTurn(indexOfSelectedRow: Int, completionHandler: @escaping () -> Void) {
+        
+        switch movieButton.isSelected {
+            
+        case true:
+            
+            currentMovie = movies[indexOfSelectedRow]
+            
+            // Set movie label and image.
+            
+            if !self.newRoundLabel.isHidden {
+                self.newRoundLabel.isHidden = true
+            }
+            
+            self.movieLabel.text = self.currentMovie?.title
+            
+            MDBClient().getMovieImage(movie: currentMovie!) { (image, errorMessage) in
+                
+                if errorMessage != nil {
+                    // TODO: Set 'Image Unavailable' image.
+                    completionHandler()
+                    return
+                }
+                
+                self.moviePosterImage.image = image
+                completionHandler()
+            }
+            
+        case false:
+            
+            currentActor = actors[indexOfSelectedRow]
+            
+            // Set actor label and image.
+            
+            self.actorLabel.text = self.currentActor?.name
+            
+            MDBClient().getActorImage(actor: currentActor!) { (image, errorMessage) in
+                
+                if errorMessage != nil {
+                    // TODO: Set 'Image Unavailable' image.
+                    completionHandler()
+                    return
+                }
+                
+                self.actorImage.image = image
+                completionHandler()
+            }
+        }
+    }
+    
+    //----------------------------------
+    // MARK: Helper Methods
+    //----------------------------------
+    
     func verifyAnswer(movie: Movie?, actor: Actor?, completionHandler: @escaping (_ correct: Bool?) -> Void) {
         
         switch movieButton.isSelected {
             
         case true:
             
-            guard let movie = movie else {return}
+            guard let movie = movie else {
+                completionHandler(nil)
+                return
+            }
             
-            MDBClient().getCast(movie: movie) { (cast, error) in
+            MDBClient().getCast(movie: movie) { (cast, errorMessage) in
                 
-                guard error == nil else {
-                    // TODO: Handle error.
+                if let errorMessage = errorMessage {
+                    self.displayErrorAlert(errorMessage: errorMessage)
+                    completionHandler(nil)
                     return
                 }
                 
                 guard let cast = cast else {
-                    // TODO: Handle error.
+                    completionHandler(nil)
                     return
                 }
                 
                 movie.cast = cast
                 
                 guard !self.isInitialPick else {
-                    
                     completionHandler(true)
                     return
                 }
                 
-                guard let actor = actor else {return}
+                guard let actor = actor else {
+                    completionHandler(nil)
+                    return
+                }
                 
                 for castMember in movie.cast! {
                     if castMember.name == actor.name {
@@ -265,21 +366,24 @@ class GameplayViewController: UIViewController {
                 
                 completionHandler(false)
             }
-            return
             
         case false:
             
-            guard let actor = actor else {return}
+            guard let actor = actor else {
+                completionHandler(nil)
+                return
+            }
             
-            MDBClient().getFilmography(actor: actor) { (filmography, error) in
+            MDBClient().getFilmography(actor: actor) { (filmography, errorMessage) in
                 
-                guard error == nil else {
-                    // TODO: Handle error.
+                if let errorMessage = errorMessage {
+                    self.displayErrorAlert(errorMessage: errorMessage)
+                    completionHandler(nil)
                     return
                 }
                 
                 guard let filmography = filmography else {
-                    // TODO: Handle error.
+                    completionHandler(nil)
                     return
                 }
                 
@@ -291,7 +395,10 @@ class GameplayViewController: UIViewController {
                     return
                 }
                 
-                guard let movie = movie else {return}
+                guard let movie = movie else {
+                    completionHandler(nil)
+                    return
+                }
                 
                 for film in actor.filmography! {
                     if film.title == movie.title {
@@ -302,7 +409,6 @@ class GameplayViewController: UIViewController {
                 
                 completionHandler(false)
             }
-            return
         }
     }
     
@@ -355,6 +461,54 @@ class GameplayViewController: UIViewController {
         }
     }
     
+    func updateCurrentPlayer() {
+        
+        let indexOfCurrentPlayer = self.activePlayers.index(of: self.currentPlayer!)!
+        var playerEliminated = false
+        
+        if self.currentPlayer!.score == UserDefaults.standard.integer(forKey: "strikeMax") {
+            self.activePlayers = self.activePlayers.filter() {$0 != self.currentPlayer!}
+            playerEliminated = true
+        }
+        
+        if playerEliminated {
+            
+            if indexOfCurrentPlayer == self.activePlayers.count {
+                self.currentPlayer = self.activePlayers[0]
+            } else {
+                self.currentPlayer = self.activePlayers[indexOfCurrentPlayer]
+            }
+            
+            let alert = UIAlertController(title: "\(self.currentPlayer!.name) has been eliminated.", message: nil, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            
+        } else {
+            
+            if indexOfCurrentPlayer < self.activePlayers.count - 1 {
+                self.currentPlayer = self.activePlayers[indexOfCurrentPlayer + 1]
+            } else {
+                self.currentPlayer = self.activePlayers[0]
+            }
+        }
+    }
+    
+    func saveTurn(correct: Bool) {
+        
+        if self.movieButton.isSelected {
+            
+            let _ = Turn(player: self.currentPlayer!, game: self.game!, success: correct, round: self.currentRound, movie: self.currentMovie, actor: nil, context: self.managedObjectContext)
+            
+        } else {
+            
+            let _ = Turn(player: self.currentPlayer!, game: self.game!, success: correct, round: self.currentRound, movie: nil, actor: self.currentActor, context: self.managedObjectContext)
+        }
+    }
+    
+    //----------------------------------
+    // MARK: Navigation
+    //----------------------------------
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == "showHistory" {
@@ -365,6 +519,10 @@ class GameplayViewController: UIViewController {
         }
     }
 }
+
+//----------------------------------
+// MARK: Search Bar Delegate
+//----------------------------------
 
 extension GameplayViewController: UISearchBarDelegate {
     
@@ -417,6 +575,10 @@ extension GameplayViewController: UISearchBarDelegate {
         })
     }
 }
+
+//----------------------------------
+// MARK: Table View Delegate
+//----------------------------------
 
 extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
     
@@ -506,12 +668,7 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
         PKHUD.sharedHUD.contentView = PKHUDProgressView()
         PKHUD.sharedHUD.show()
         
-        setImageForTurn(indexOfSelectedRow: indexPath.row) { (success) in
-            
-            guard success else {
-                // TODO: Handle error.
-                return
-            }
+        setImageForTurn(indexOfSelectedRow: indexPath.row) {
             
             self.verifyAnswer(movie: self.currentMovie, actor: self.currentActor) { (correct) in
                 
@@ -536,6 +693,8 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                 var clearPreviousAnswers = false
                 
                 if self.isInitialPick {
+                    
+                    // Initial pick.
                     
                     self.isInitialPick = false
                     PKHUD.sharedHUD.hide(true)
@@ -571,100 +730,11 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
             }
         }
     }
-    
-    func updateCurrentPlayer() {
-        
-        let indexOfCurrentPlayer = self.activePlayers.index(of: self.currentPlayer!)!
-        var playerEliminated = false
-        
-        if self.currentPlayer!.score == UserDefaults.standard.integer(forKey: "strikeMax") {
-            self.activePlayers = self.activePlayers.filter() {$0 != self.currentPlayer!}
-            playerEliminated = true
-        }
-        
-        if playerEliminated {
-            
-            if indexOfCurrentPlayer == self.activePlayers.count {
-                self.currentPlayer = self.activePlayers[0]
-            } else {
-                self.currentPlayer = self.activePlayers[indexOfCurrentPlayer]
-            }
-            
-            let alert = UIAlertController(title: "\(self.currentPlayer!.name) has been eliminated.", message: nil, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-            
-        } else {
-            
-            if indexOfCurrentPlayer < self.activePlayers.count - 1 {
-                self.currentPlayer = self.activePlayers[indexOfCurrentPlayer + 1]
-            } else {
-                self.currentPlayer = self.activePlayers[0]
-            }
-        }
-    }
-    
-    func setImageForTurn(indexOfSelectedRow: Int, completionHandler: @escaping (_ success: Bool) -> Void) {
-        
-        switch movieButton.isSelected {
-            
-        case true:
-            
-            currentMovie = movies[indexOfSelectedRow]
-            
-            // Set movie label and image.
-            
-            self.movieLabel.text = self.currentMovie?.title
-            
-            MDBClient().getMovieImage(movie: currentMovie!) { (image, error) in
-                
-                guard error == nil else {
-                    // TODO: Handle error.
-                    print("Error retrieving movie image.")
-                    completionHandler(false)
-                    return
-                }
-                
-                self.moviePosterImage.image = image
-                completionHandler(true)
-            }
-            break
-            
-        case false:
-            
-            currentActor = actors[indexOfSelectedRow]
-            
-            // Set actor label and image.
-            
-            self.actorLabel.text = self.currentActor?.name
-            
-            MDBClient().getActorImage(actor: currentActor!) { (image, error) in
-                
-                guard error == nil else {
-                    // TODO: Handle error.
-                    print("Error retrieving actor image.")
-                    return
-                }
-                
-                self.actorImage.image = image
-                completionHandler(true)
-            }
-            break
-        }
-    }
-    
-    func saveTurn(correct: Bool) {
-        
-        if self.movieButton.isSelected {
-            
-            let _ = Turn(player: self.currentPlayer!, game: self.game!, success: correct, round: self.currentRound, movie: self.currentMovie, actor: nil, context: self.managedObjectContext)
-            
-        } else {
-            
-            let _ = Turn(player: self.currentPlayer!, game: self.game!, success: correct, round: self.currentRound, movie: nil, actor: self.currentActor, context: self.managedObjectContext)
-        }
-    }
 }
+
+//----------------------------------
+// MARK: Collection View Delegate
+//----------------------------------
 
 extension GameplayViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
