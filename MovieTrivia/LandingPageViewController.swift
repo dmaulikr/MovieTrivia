@@ -25,9 +25,14 @@ class LandingPageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        topCellView.layer.cornerRadius = 10.0
-        middleCellView.layer.cornerRadius = 10.0
-        bottomCellView.layer.cornerRadius = 10.0
+        let views: [UIView] = [topCellView, middleCellView, bottomCellView]
+        
+        for view in views {
+            view.layer.borderColor = UIColor.white.cgColor
+            view.layer.borderWidth = 4.0
+            view.layer.cornerRadius = 10.0
+            
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
