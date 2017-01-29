@@ -40,9 +40,9 @@ class PlayerPickerViewController: UIViewController {
         stepper.maximumValue = 8.0
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        
-        super.viewDidAppear(animated)
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        super.viewWillAppear(animated)
     }
     
     //----------------------------------

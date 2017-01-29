@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="iTc-ir-SBd">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="dl7-to-bZm">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -12,6 +12,88 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Landing Page View Controller-->
+        <scene sceneID="Sai-Nl-5Mo">
+            <objects>
+                <viewController id="j96-3G-diW" customClass="LandingPageViewController" customModule="MovieTrivia" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="2S7-JX-dZ6"/>
+                        <viewControllerLayoutGuide type="bottom" id="Mog-Mg-Sb7"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="uO3-xC-Ejc">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="filmStrip" translatesAutoresizingMaskIntoConstraints="NO" id="9cc-Yz-0XJ">
+                                <rect key="frame" x="0.0" y="20" width="45" height="647"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="45" id="BZi-bA-t8H"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="filmStrip" translatesAutoresizingMaskIntoConstraints="NO" id="evo-Jp-vf0">
+                                <rect key="frame" x="330" y="20" width="45" height="647"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="45" id="eTb-yv-mOd"/>
+                                </constraints>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rOM-n0-HVT" userLabel="ButtonContainer">
+                                <rect key="frame" x="112" y="478" width="150" height="120"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5gd-fi-Pkc" customClass="CustomButton" customModule="MovieTrivia" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="150" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="TI6-Ok-kbI"/>
+                                            <constraint firstAttribute="width" constant="150" id="UK2-wX-KYn"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
+                                        <state key="normal" title="How to Play">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6ho-xO-PkC" customClass="CustomButton" customModule="MovieTrivia" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="65" width="150" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="MbD-Ct-S4D"/>
+                                            <constraint firstAttribute="width" constant="150" id="q0c-7R-pl0"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
+                                        <state key="normal" title="Start"/>
+                                        <connections>
+                                            <segue destination="Bpg-xi-m3v" kind="show" id="uHR-En-yIA"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="6ho-xO-PkC" firstAttribute="centerX" secondItem="rOM-n0-HVT" secondAttribute="centerX" id="3KV-G6-ZyR"/>
+                                    <constraint firstAttribute="bottom" secondItem="6ho-xO-PkC" secondAttribute="bottom" constant="15" id="IqC-Dk-4BJ"/>
+                                    <constraint firstItem="5gd-fi-Pkc" firstAttribute="top" secondItem="rOM-n0-HVT" secondAttribute="top" id="NUK-QH-WPS"/>
+                                    <constraint firstItem="5gd-fi-Pkc" firstAttribute="centerX" secondItem="rOM-n0-HVT" secondAttribute="centerX" id="TuS-at-hR8"/>
+                                    <constraint firstAttribute="height" constant="120" id="a7k-Ag-VJD"/>
+                                    <constraint firstAttribute="width" constant="150" id="gvg-yR-Yyv"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="9cc-Yz-0XJ" firstAttribute="leading" secondItem="uO3-xC-Ejc" secondAttribute="leading" id="1XN-8z-PI8"/>
+                            <constraint firstItem="rOM-n0-HVT" firstAttribute="centerX" secondItem="uO3-xC-Ejc" secondAttribute="centerX" id="9yY-TV-627"/>
+                            <constraint firstItem="evo-Jp-vf0" firstAttribute="top" secondItem="2S7-JX-dZ6" secondAttribute="bottom" id="Afm-pE-f8D"/>
+                            <constraint firstItem="Mog-Mg-Sb7" firstAttribute="top" secondItem="rOM-n0-HVT" secondAttribute="bottom" constant="69" id="F8a-Zc-kNc"/>
+                            <constraint firstItem="9cc-Yz-0XJ" firstAttribute="top" secondItem="2S7-JX-dZ6" secondAttribute="bottom" id="UVE-Q6-N9J"/>
+                            <constraint firstItem="Mog-Mg-Sb7" firstAttribute="top" secondItem="9cc-Yz-0XJ" secondAttribute="bottom" id="Xz5-OR-XoX"/>
+                            <constraint firstItem="Mog-Mg-Sb7" firstAttribute="top" secondItem="evo-Jp-vf0" secondAttribute="bottom" id="ct9-J6-Ndg"/>
+                            <constraint firstAttribute="trailing" secondItem="evo-Jp-vf0" secondAttribute="trailing" id="ktB-v6-3nd"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="yfz-re-pcE">
+                        <barButtonItem key="backBarButtonItem" title=" " id="UXH-AQ-21a"/>
+                    </navigationItem>
+                    <nil key="simulatedTopBarMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yAB-2S-Utr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1269.5999999999999" y="136.28185907046478"/>
+        </scene>
         <!--Players-->
         <scene sceneID="1dC-M5-wlY">
             <objects>
@@ -111,7 +193,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="npH-i8-7mu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1244.9275362318842" y="136.95652173913044"/>
+            <point key="canvasLocation" x="2183.1999999999998" y="136.28185907046478"/>
         </scene>
         <!--Side Menu Navigation Controller-->
         <scene sceneID="ZuA-3j-zUY">
@@ -130,7 +212,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hil-UE-1Za" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3857" y="-220"/>
+            <point key="canvasLocation" x="4796" y="-220.83958020989508"/>
         </scene>
         <!--Turn History-->
         <scene sceneID="5o6-vq-cQe">
@@ -194,7 +276,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3W7-HE-BgN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4708" y="-220"/>
+            <point key="canvasLocation" x="5647.1999999999998" y="-220.83958020989508"/>
         </scene>
         <!--Turn Details-->
         <scene sceneID="6v3-Vn-Bht">
@@ -284,7 +366,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0UX-UG-yi0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5569" y="-220"/>
+            <point key="canvasLocation" x="6508" y="-220.83958020989508"/>
         </scene>
         <!--Colors-->
         <scene sceneID="Ai9-OF-ayU">
@@ -418,7 +500,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gli-U5-6M8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2134.7826086956525" y="136.95652173913044"/>
+            <point key="canvasLocation" x="3072.8000000000002" y="136.28185907046478"/>
         </scene>
         <!--Player-->
         <scene sceneID="tne-QT-ifu">
@@ -802,7 +884,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="3005.7971014492755" y="136.95652173913044"/>
+            <point key="canvasLocation" x="3944.8000000000002" y="136.28185907046478"/>
         </scene>
         <!--Options-->
         <scene sceneID="TiY-9o-j6R">
@@ -919,28 +1001,31 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5ut-Q4-buw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3856.8000000000002" y="492.50374812593708"/>
+            <point key="canvasLocation" x="4796" y="492.50374812593708"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="Mis-YV-rUJ">
+        <scene sceneID="Nxd-Ok-2pC">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="iTc-ir-SBd" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="dl7-to-bZm" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="so5-FU-K0F">
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="6SQ-jv-gmt">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="Bpg-xi-m3v" kind="relationship" relationship="rootViewController" id="DaY-P1-GMj"/>
+                        <segue destination="j96-3G-diW" kind="relationship" relationship="rootViewController" id="N40-ge-dyX"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="n5M-89-Maz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yeC-6J-Y1o" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="337.68115942028987" y="136.95652173913044"/>
+            <point key="canvasLocation" x="328.80000000000001" y="135.38230884557723"/>
         </scene>
     </scenes>
     <resources>
+        <image name="filmStrip" width="50" height="547"/>
         <image name="person" width="201" height="298"/>
         <image name="reel" width="201" height="298"/>
         <image name="settingsIcon" width="43" height="43"/>
