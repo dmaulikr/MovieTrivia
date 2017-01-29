@@ -9,9 +9,25 @@
 import UIKit
 
 class LandingPageViewController: UIViewController {
+    
+    //----------------------------------
+    // MARK: Outlets
+    //----------------------------------
+    
+    @IBOutlet weak var topCellView: UIView!
+    @IBOutlet weak var middleCellView: UIView!
+    @IBOutlet weak var bottomCellView: UIView!
+    
+    //----------------------------------
+    // MARK: Lifecycle
+    //----------------------------------
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        topCellView.layer.cornerRadius = 10.0
+        middleCellView.layer.cornerRadius = 10.0
+        bottomCellView.layer.cornerRadius = 10.0
     }
     
     override func viewWillAppear(_ animated: Bool) {
