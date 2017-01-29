@@ -26,11 +26,11 @@ class ColorPickerViewController: UIViewController {
     var blue = UIColor(red:0.27, green:0.42, blue:0.70, alpha:1.0)
     var green = UIColor(red:0.15, green:0.65, blue:0.36, alpha:1.0)
     var orange = UIColor(red:0.98, green:0.41, blue:0.1, alpha:1.0)
-    var purple = UIColor(red:0.60, green:0.07, blue:0.70, alpha:1.0)
-    var grey = UIColor(red:0.17, green:0.24, blue:0.31, alpha:1.0)
+    var purple = UIColor(red:0.40, green:0.25, blue:0.45, alpha:1.0)
+    var black = UIColor.black
     var turquoise = UIColor(red:0.01, green:0.79, blue:0.66, alpha:1.0)
     
-    var colorArray: [UIColor] {return [red, pink, blue, green, orange, purple, grey, turquoise]}
+    var colorArray: [UIColor] {return [pink, red, orange, green, turquoise, blue, purple, black]}
     
     //----------------------------------
     // MARK: Outlets

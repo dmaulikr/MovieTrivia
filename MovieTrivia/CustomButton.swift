@@ -20,7 +20,7 @@ class CustomButton: UIButton {
         self.layer.backgroundColor = UIColor.clear.cgColor
         self.titleLabel!.font = UIFont(name: "Futura", size: 17)
         self.setBackgroundImage(backgroundHighlighted, for: UIControlState.highlighted)
-        self.setTitleColor(titleHighlighted, for: UIControlState.highlighted)
+        self.setTitleColor(UIColor.black, for: UIControlState.highlighted)
         self.setTitleColor(UIColor.lightGray, for: UIControlState.disabled)
     }
     
@@ -44,6 +44,4 @@ class CustomButton: UIButton {
         UIGraphicsEndImageContext()
         return image
     }()
-    
-    let titleHighlighted = UIColor(red:0.40, green:0.25, blue:0.45, alpha:1.0)
 }
