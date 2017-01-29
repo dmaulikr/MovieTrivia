@@ -15,8 +15,6 @@ class LandingPageViewController: UIViewController {
     //----------------------------------
     
     @IBOutlet weak var topCellView: UIView!
-    @IBOutlet weak var middleCellView: UIView!
-    @IBOutlet weak var bottomCellView: UIView!
     
     //----------------------------------
     // MARK: Lifecycle
@@ -25,14 +23,7 @@ class LandingPageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let views: [UIView] = [topCellView, middleCellView, bottomCellView]
-        
-        for view in views {
-            view.layer.borderColor = UIColor.white.cgColor
-            view.layer.borderWidth = 4.0
-            view.layer.cornerRadius = 10.0
-            
-        }
+        topCellView.layer.cornerRadius = 10.0
     }
     
     override func viewWillAppear(_ animated: Bool) {
