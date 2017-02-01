@@ -472,33 +472,52 @@ class GameplayViewController: UIViewController {
     func updateCurrentPlayer() {
         
         let indexOfCurrentPlayer = self.activePlayers.index(of: self.currentPlayer!)!
-        var playerEliminated = false
         
         if self.currentPlayer!.score == UserDefaults.standard.integer(forKey: "strikeMax") {
+            
             self.activePlayers = self.activePlayers.filter() {$0 != self.currentPlayer!}
-            playerEliminated = true
+
+            if self.activePlayers.count == 1 {
+                
+                // TODO: Handle game over situation.
+                
+                return
+                
+            } else {
+                
+                // A player has been eliminated.
+                
+                let alert = UIAlertController(title: "Take five", message: "\(self.currentPlayer!.name) has been eliminated.", preferredStyle: .alert)
+                
+                if indexOfCurrentPlayer == self.activePlayers.count {
+                    self.currentPlayer = self.activePlayers[0]
+                } else {
+                    self.currentPlayer = self.activePlayers[indexOfCurrentPlayer]
+                }
+                
+                alert.addAction(UIAlertAction(title: "OK", style: .default) { action in
+                    
+                    // Give alert dismissal animation a moment to complete before updating UI.
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        self.updateUIForCurrentPlayer(clearPreviousAnswers: true)
+                    }
+                })
+                
+                self.present(alert, animated: true, completion: nil)
+                return
+            }
         }
         
-        if playerEliminated {
-            
-            let alert = UIAlertController(title: "\(self.currentPlayer!.name) has been eliminated.", message: nil, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-            
-            if indexOfCurrentPlayer == self.activePlayers.count {
-                self.currentPlayer = self.activePlayers[0]
-            } else {
-                self.currentPlayer = self.activePlayers[indexOfCurrentPlayer]
-            }
-            
+        // Play continues.
+        
+        if indexOfCurrentPlayer < self.activePlayers.count - 1 {
+            self.currentPlayer = self.activePlayers[indexOfCurrentPlayer + 1]
         } else {
-            
-            if indexOfCurrentPlayer < self.activePlayers.count - 1 {
-                self.currentPlayer = self.activePlayers[indexOfCurrentPlayer + 1]
-            } else {
-                self.currentPlayer = self.activePlayers[0]
-            }
+            self.currentPlayer = self.activePlayers[0]
         }
+        
+        updateUIForCurrentPlayer(clearPreviousAnswers: false)
     }
     
     func saveTurn(correct: Bool) {
@@ -726,8 +745,6 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                 
                 // Show success/error HUD.
                 
-                var clearPreviousAnswers = false
-                
                 if self.isInitialPick {
                     
                     // Initial pick.
@@ -735,8 +752,6 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                     self.isInitialPick = false
                     PKHUD.sharedHUD.hide(true)
                     self.updateCurrentPlayer()
-                    self.updateUIForCurrentPlayer(clearPreviousAnswers: false)
-                    return
                     
                 } else if correct {
                     
@@ -752,16 +767,14 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                     self.currentPlayer?.score += 1
                     self.scoreCollectionView.reloadData()
                     self.isInitialPick = true
-                    clearPreviousAnswers = true
                     self.currentRound += 1
                 }
                 
                 // Update UI for the next player.
                 
-                PKHUD.sharedHUD.hide(afterDelay: 1.0) { (timerAction) in
+                PKHUD.sharedHUD.hide(afterDelay: 1.0) { _ in
                     
                     self.updateCurrentPlayer()
-                    self.updateUIForCurrentPlayer(clearPreviousAnswers: clearPreviousAnswers)
                 }
             }
         }
