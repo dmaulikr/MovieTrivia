@@ -184,7 +184,7 @@ class GameplayViewController: UIViewController {
         MDBClient().searchDatabase(queryInput: searchText, queryType: queryType) { (movies, actors, errorMessage) in
             
             if let errorMessage = errorMessage {
-                self.displayErrorAlert(errorMessage: errorMessage)
+                self.displayAlert(type: errorMessage)
                 return
             }
             
@@ -235,12 +235,12 @@ class GameplayViewController: UIViewController {
         })
     }
     
-    func displayErrorAlert(errorMessage: String) {
+    func displayAlert(type: String) {
         
         var alertTitle = String()
         var alertMessage = String()
         
-        switch errorMessage {
+        switch type {
             
         case "Query failed.":
             alertTitle = "Unable to connect"
@@ -256,6 +256,14 @@ class GameplayViewController: UIViewController {
             alertTitle = "Uh-oh"
             alertMessage = "We were unable to process your selection. Please try again or make a different selection."
             break
+            
+        case "Repeat selection":
+            alertTitle = "Not so fast"
+            alertMessage = "Your selection has already been used this round. Pick a different movie or actor."
+            
+        case "Use dropdown menu":
+            alertTitle = "Tap your selection"
+            alertMessage = "Please use the dropdown menu to make your selection. If the movie or actor you're searching for doesn't appear in the list, check your spelling or try a different selection."
             
         default:
             break
@@ -286,7 +294,7 @@ class GameplayViewController: UIViewController {
             MDBClient().getMovieImage(movie: currentMovie!) { (image, errorMessage) in
                 
                 if errorMessage != nil {
-                    // TODO: Set 'Image Unavailable' image.
+                    self.moviePosterImage.image = #imageLiteral(resourceName: "reel")
                     completionHandler()
                     return
                 }
@@ -306,7 +314,7 @@ class GameplayViewController: UIViewController {
             MDBClient().getActorImage(actor: currentActor!) { (image, errorMessage) in
                 
                 if errorMessage != nil {
-                    // TODO: Set 'Image Unavailable' image.
+                    self.actorImage.image = #imageLiteral(resourceName: "person")
                     completionHandler()
                     return
                 }
@@ -335,7 +343,7 @@ class GameplayViewController: UIViewController {
             MDBClient().getCast(movie: movie) { (cast, errorMessage) in
                 
                 if let errorMessage = errorMessage {
-                    self.displayErrorAlert(errorMessage: errorMessage)
+                    self.displayAlert(type: errorMessage)
                     completionHandler(nil)
                     return
                 }
@@ -377,7 +385,7 @@ class GameplayViewController: UIViewController {
             MDBClient().getFilmography(actor: actor) { (filmography, errorMessage) in
                 
                 if let errorMessage = errorMessage {
-                    self.displayErrorAlert(errorMessage: errorMessage)
+                    self.displayAlert(type: errorMessage)
                     completionHandler(nil)
                     return
                 }
@@ -473,15 +481,15 @@ class GameplayViewController: UIViewController {
         
         if playerEliminated {
             
+            let alert = UIAlertController(title: "\(self.currentPlayer!.name) has been eliminated.", message: nil, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            
             if indexOfCurrentPlayer == self.activePlayers.count {
                 self.currentPlayer = self.activePlayers[0]
             } else {
                 self.currentPlayer = self.activePlayers[indexOfCurrentPlayer]
             }
-            
-            let alert = UIAlertController(title: "\(self.currentPlayer!.name) has been eliminated.", message: nil, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
             
         } else {
             
@@ -533,24 +541,44 @@ extension GameplayViewController: UISearchBarDelegate {
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         
+        // Blur UI.
+        
         UIView.animate(withDuration: 0.5, animations: {
             self.blurView.alpha = 0.8
         })
         
         if searchBar.text != "" {
-            UIView.animate(withDuration: 0.5, animations: {
-                self.tableViewHeight.constant = 200.0
-                self.view.layoutIfNeeded()
-            })
+            
+            // Open table if necessary.
+            
+            if self.tableViewHeight.constant == 0.0 {
+                UIView.animate(withDuration: 0.5, animations: {
+                    self.tableViewHeight.constant = 200.0
+                    self.view.layoutIfNeeded()
+                })
+            }
+            
             updateTable(searchText: searchBar.text!)
+            
+            // Scroll to top of table if necessary.
+            
+            if self.tableView.numberOfRows(inSection: 0) > 0 {
+                let indexPath = IndexPath(row: 0, section: 0)
+                self.tableView.scrollToRow(at: indexPath, at: .top, animated: false)
+            }
         }
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
         if searchText == "" {
+            
+            // Clear caches.
+            
             movies = [Movie]()
             actors = [Actor]()
+            
+            // Close table.
             
             UIView.animate(withDuration: 0.5, animations: {
                 self.tableViewHeight.constant = 0
@@ -559,25 +587,33 @@ extension GameplayViewController: UISearchBarDelegate {
             
             tableView.reloadData()
             return
+            
+        } else {
+            
+            // Open table if necessary.
+            
+            if self.tableViewHeight.constant == 0.0 {
+                UIView.animate(withDuration: 0.5, animations: {
+                    self.tableViewHeight.constant = 200.0
+                    self.view.layoutIfNeeded()
+                })
+            }
+            
+            updateTable(searchText: searchBar.text!)
+            
+            // Scroll to top of table if necessary.
+            
+            if self.tableView.numberOfRows(inSection: 0) > 0 {
+                let indexPath = IndexPath(row: 0, section: 0)
+                self.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+            }
+
         }
-        
-        UIView.animate(withDuration: 0.5, animations: {
-            self.tableViewHeight.constant = 200.0
-            self.view.layoutIfNeeded()
-        })
-        
-        updateTable(searchText: searchText)
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
-        searchBar.resignFirstResponder()
-        
-        UIView.animate(withDuration: 0.5, animations: {
-            self.tableViewHeight.constant = 0.0
-            self.blurView.alpha = 0.0
-            self.view.layoutIfNeeded()
-        })
+        displayAlert(type: "Use dropdown menu")
     }
 }
 
@@ -659,12 +695,7 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
         
         if (movieButton.isSelected && moviesForRound.contains(movies[indexPath.row].title)) || (actorButton.isSelected && actorsForRound.contains(actors[indexPath.row].name)) {
             
-            let alertMessage = "Your selection has already been used this round. Pick another movie or actor."
-            let alert = UIAlertController(title: "Not so fast", message: alertMessage, preferredStyle: .alert)
-            let okayAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-            alert.addAction(okayAction)
-            self.present(alert, animated: true, completion: nil)
-            
+            displayAlert(type: "Repeat selection")
             return
         }
         
