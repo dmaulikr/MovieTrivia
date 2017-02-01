@@ -14,10 +14,14 @@ class OptionsViewController: UIViewController {
     @IBOutlet weak var strikeCountLabel: UILabel!
     @IBOutlet weak var strikeCountContainer: UIView!
     @IBOutlet weak var quitButton: CustomButton!
+    
+    var currentPlayer: Player? = nil
 
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
+        self.view.backgroundColor = currentPlayer?.color
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Apply", style: .plain, target: self, action: #selector(applyChanges))
         navigationItem.rightBarButtonItem?.isEnabled = false
@@ -29,6 +33,9 @@ class OptionsViewController: UIViewController {
         strikeStepper.maximumValue = 10.0
         strikeStepper.value = Double(UserDefaults.standard.integer(forKey: "strikeMax"))
         strikeCountLabel.text = String(Int(strikeStepper.value))
+        strikeCountLabel.textColor = currentPlayer!.color!
+        
+        quitButton.setTitleColor(currentPlayer?.color, for: .highlighted)
     }
     
     func applyChanges() {

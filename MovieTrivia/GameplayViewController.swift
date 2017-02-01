@@ -516,6 +516,11 @@ class GameplayViewController: UIViewController {
             let navigationController = segue.destination as! UISideMenuNavigationController
             let historyVC = navigationController.topViewController as! TurnHistoryViewController
             historyVC.game = self.game
+            
+        } else if segue.identifier == "showOptions" {
+            
+            let optionsVC = segue.destination as! OptionsViewController
+            optionsVC.currentPlayer = self.currentPlayer
         }
     }
 }

@@ -915,7 +915,7 @@ Production</string>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="settingsIcon" id="vbe-yC-cpa">
                             <connections>
-                                <segue destination="ldV-0E-qD6" kind="show" id="t7m-hu-xMl"/>
+                                <segue destination="ldV-0E-qD6" kind="show" identifier="showOptions" id="t7m-hu-xMl"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
