@@ -130,9 +130,9 @@ class GameplayViewController: UIViewController {
             self.currentMovie = nil
             
             UIView.transition(with: self.actorImage, duration: 0.5, options: .transitionCrossDissolve, animations: {self.actorImage.image = #imageLiteral(resourceName: "person")}, completion: nil)
-            UIView.transition(with: self.actorLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.actorLabel.isHidden = true}, completion: nil)
+            UIView.transition(with: self.actorLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.actorLabel.text = ""}, completion: nil)
             UIView.transition(with: self.moviePosterImage, duration: 0.5, options: .transitionCrossDissolve, animations: {self.moviePosterImage.image = #imageLiteral(resourceName: "reel")}, completion: nil)
-            UIView.transition(with: self.movieLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.movieLabel.isHidden = true}, completion: nil)
+            UIView.transition(with: self.movieLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.movieLabel.text = ""}, completion: nil)
             UIView.transition(with: self.newRoundLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.newRoundLabel.isHidden = false}, completion: nil)
             UIView.transition(with: self.imageTitleLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.imageTitleLabel.text = "Round \(self.currentRound)"}, completion: nil)
         }
@@ -277,6 +277,10 @@ class GameplayViewController: UIViewController {
     
     func setImageForTurn(indexOfSelectedRow: Int, completionHandler: @escaping () -> Void) {
         
+        if !self.newRoundLabel.isHidden {
+            UIView.transition(with: self.newRoundLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.newRoundLabel.isHidden = true}, completion: nil)
+        }
+        
         switch movieButton.isSelected {
             
         case true:
@@ -285,21 +289,17 @@ class GameplayViewController: UIViewController {
             
             // Set movie label and image.
             
-            if !self.newRoundLabel.isHidden {
-                self.newRoundLabel.isHidden = true
-            }
-            
-            self.movieLabel.text = self.currentMovie?.title
-            
             MDBClient().getMovieImage(movie: currentMovie!) { (image, errorMessage) in
                 
+                UIView.transition(with: self.movieLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.movieLabel.text = self.currentMovie?.title}, completion: nil)
+                
                 if errorMessage != nil {
-                    self.moviePosterImage.image = #imageLiteral(resourceName: "reel")
+                    UIView.transition(with: self.moviePosterImage, duration: 0.5, options: .transitionCrossDissolve, animations: {self.moviePosterImage.image = #imageLiteral(resourceName: "reel")}, completion: nil)
                     completionHandler()
                     return
                 }
                 
-                self.moviePosterImage.image = image
+                UIView.transition(with: self.moviePosterImage, duration: 0.5, options: .transitionCrossDissolve, animations: {self.moviePosterImage.image = image}, completion: nil)
                 completionHandler()
             }
             
@@ -309,17 +309,17 @@ class GameplayViewController: UIViewController {
             
             // Set actor label and image.
             
-            self.actorLabel.text = self.currentActor?.name
-            
             MDBClient().getActorImage(actor: currentActor!) { (image, errorMessage) in
                 
+                UIView.transition(with: self.actorLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.actorLabel.text = self.currentActor?.name}, completion: nil)
+                
                 if errorMessage != nil {
-                    self.actorImage.image = #imageLiteral(resourceName: "person")
+                    UIView.transition(with: self.actorImage, duration: 0.5, options: .transitionCrossDissolve, animations: {self.actorImage.image = #imageLiteral(resourceName: "person")}, completion: nil)
                     completionHandler()
                     return
                 }
                 
-                self.actorImage.image = image
+                UIView.transition(with: self.actorImage, duration: 0.5, options: .transitionCrossDissolve, animations: {self.actorImage.image = image}, completion: nil)
                 completionHandler()
             }
         }
@@ -772,7 +772,7 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                 
                 // Update UI for the next player.
                 
-                PKHUD.sharedHUD.hide(afterDelay: 1.0) { _ in
+                PKHUD.sharedHUD.hide(afterDelay: 1.5) { _ in
                     
                     self.updateCurrentPlayer()
                 }
