@@ -56,6 +56,8 @@ class TurnDetailViewController: UIViewController {
             
             if let imageData = movie.imageData {
                 imageview.image = UIImage(data: imageData)
+            } else {
+                imageview.image = #imageLiteral(resourceName: "reel")
             }
             
             secondHeading.text = "Cast"
@@ -69,6 +71,8 @@ class TurnDetailViewController: UIViewController {
             
             if let imageData = actor.imageData {
                 imageview.image = UIImage(data: imageData)
+            } else {
+                imageview.image = #imageLiteral(resourceName: "person")
             }
             
             secondHeading.text = "Filmography"
