@@ -45,7 +45,6 @@ class GameplayViewController: UIViewController {
     @IBOutlet weak var actorImage: UIImageView!
     @IBOutlet weak var actorLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
-    @IBOutlet weak var newRoundLabel: UILabel!
     @IBOutlet weak var scoreCollectionView: UICollectionView!
     
     //----------------------------------
@@ -133,7 +132,6 @@ class GameplayViewController: UIViewController {
             UIView.transition(with: self.actorLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.actorLabel.text = ""}, completion: nil)
             UIView.transition(with: self.moviePosterImage, duration: 0.5, options: .transitionCrossDissolve, animations: {self.moviePosterImage.image = #imageLiteral(resourceName: "reel")}, completion: nil)
             UIView.transition(with: self.movieLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.movieLabel.text = ""}, completion: nil)
-            UIView.transition(with: self.newRoundLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.newRoundLabel.isHidden = false}, completion: nil)
             UIView.transition(with: self.imageTitleLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.imageTitleLabel.text = "Round \(self.currentRound)"}, completion: nil)
         }
     }
@@ -276,10 +274,6 @@ class GameplayViewController: UIViewController {
     }
     
     func setImageForTurn(indexOfSelectedRow: Int, completionHandler: @escaping () -> Void) {
-        
-        if !self.newRoundLabel.isHidden {
-            UIView.transition(with: self.newRoundLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.newRoundLabel.isHidden = true}, completion: nil)
-        }
         
         switch movieButton.isSelected {
             
