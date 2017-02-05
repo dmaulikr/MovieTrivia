@@ -30,8 +30,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Set user defaults if they are not already determined.
         
         let userDefaults = UserDefaults.standard
+        
         if userDefaults.object(forKey: "strikeMax") == nil {
             userDefaults.set(3, forKey: "strikeMax")
+        }
+        
+        if userDefaults.object(forKey: "showInstructions") == nil {
+            userDefaults.set(true, forKey: "showInstructions")
         }
         
         return true

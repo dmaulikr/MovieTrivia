@@ -26,6 +26,8 @@ class GameplayViewController: UIViewController {
     var currentRound = 1
     var game: Game? = nil
     var isInitialPick = true
+    var showingInstructions = false
+    var instructionsScenario = "Started"
     var managedObjectContext: NSManagedObjectContext {return CoreDataStackManager.sharedInstance.managedObjectContext}
     
     //----------------------------------
@@ -45,7 +47,12 @@ class GameplayViewController: UIViewController {
     @IBOutlet weak var actorImage: UIImageView!
     @IBOutlet weak var actorLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
+    @IBOutlet weak var topArrow: UIImageView!
+    @IBOutlet weak var topInstructions: UILabel!
+    @IBOutlet weak var bottomInstructions: UILabel!
+    @IBOutlet weak var bottomArrow: UIImageView!
     @IBOutlet weak var scoreCollectionView: UICollectionView!
+    @IBOutlet weak var scoreCollectionBackground: UIView!
     
     //----------------------------------
     // MARK: Lifecycle
@@ -70,6 +77,7 @@ class GameplayViewController: UIViewController {
             self.view.backgroundColor = currentPlayer.color
             self.radioButtonContainer.backgroundColor = currentPlayer.color
             self.scoreCollectionView.backgroundColor = currentPlayer.color
+            self.scoreCollectionBackground.backgroundColor = currentPlayer.color
             self.imageTitleLabel.textColor = currentPlayer.color
             self.scoreLabel.textColor = currentPlayer.color
         }
@@ -101,6 +109,24 @@ class GameplayViewController: UIViewController {
         actorImage.layer.masksToBounds = true
         
         searchBar.returnKeyType = .done
+        
+        if let arrowImage = #imageLiteral(resourceName: "arrow").cgImage {
+            bottomArrow.image = UIImage(cgImage: arrowImage, scale: 1.0, orientation: .downMirrored)
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if UserDefaults.standard.bool(forKey: "showInstructions") {
+            showingInstructions = true
+            topInstructions.text = "Player 1, use the search bar at the top of the screen to choose a movie or an actor to start the round."
+            UIView.animate(withDuration: 0.5, animations: {
+                self.topInstructions.alpha = 1.0
+                self.topArrow.alpha = 1.0
+                self.blurView.alpha = 0.85
+            })
+        }
     }
     
     //----------------------------------
@@ -116,6 +142,7 @@ class GameplayViewController: UIViewController {
             self.view.backgroundColor = playerColor
             self.radioButtonContainer.backgroundColor = playerColor
             self.scoreCollectionView.backgroundColor = playerColor
+            self.scoreCollectionBackground.backgroundColor = playerColor
         })
         
         UIView.transition(with: self.imageTitleLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.imageTitleLabel.textColor = playerColor}, completion: nil)
@@ -133,6 +160,59 @@ class GameplayViewController: UIViewController {
             UIView.transition(with: self.moviePosterImage, duration: 0.5, options: .transitionCrossDissolve, animations: {self.moviePosterImage.image = #imageLiteral(resourceName: "reel")}, completion: nil)
             UIView.transition(with: self.movieLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.movieLabel.text = ""}, completion: nil)
             UIView.transition(with: self.imageTitleLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.imageTitleLabel.text = "Round \(self.currentRound)"}, completion: nil)
+        }
+        
+        if UserDefaults.standard.bool(forKey: "showInstructions") {
+            
+            switch instructionsScenario {
+                
+            case "Started":
+                if movieLabel.text != "" {
+                    topInstructions.text = "\(currentPlayer.name), choose an actor from \"\(currentMovie!.title)\"."
+                } else {
+                    topInstructions.text = "\(currentPlayer.name), choose a movie featuring \(currentActor!.name)."
+                }
+            
+                instructionsScenario = "ThirdSelection"
+                break
+                
+            case "ThirdSelectionCorrectAnswer":
+                topInstructions.text = "Nice work! \(currentPlayer.name), you can now choose another actor from \"\(currentMovie!.title)\" or another movie featuring \(currentActor!.name)."
+                instructionsScenario = "StrikeExplanation"
+                break
+                
+            case "ThirdSelectionIncorrectAnswer":
+                topInstructions.text = "Oh no! That answer was incorrect. \(currentPlayer.name), choose a movie or an actor to start the next round."
+                instructionsScenario = "StrikeExplanation"
+                break
+                
+            case "StrikeExplanation":
+                bottomInstructions.text = "That's all there is to it! Each incorrect answer earns you a strike. Three strikes and you're out. Good luck!"
+                self.view.bringSubview(toFront: scoreCollectionBackground)
+                self.view.bringSubview(toFront: scoreLabel)
+                self.view.bringSubview(toFront: scoreCollectionView)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    UIView.animate(withDuration: 0.5, animations: {
+                        self.blurView.alpha = 0.85
+                        self.bottomInstructions.alpha = 1.0
+                        self.bottomArrow.alpha = 1.0
+                    })
+                }
+                showingInstructions = false
+                UserDefaults.standard.set(false, forKey: "showInstructions")
+                return
+                
+            default:
+                break
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                UIView.animate(withDuration: 0.5, animations: {
+                    self.blurView.alpha = 0.85
+                    self.topInstructions.alpha = 1.0
+                    self.topArrow.alpha = 1.0
+                })
+            }
         }
     }
     
@@ -157,11 +237,18 @@ class GameplayViewController: UIViewController {
         
         self.view.endEditing(true)
         
-        UIView.animate(withDuration: 0.5, animations: {
-            self.tableViewHeight.constant = 0
-            self.blurView.alpha = 0.0
-            self.view.layoutIfNeeded()
-        })
+        if !showingInstructions {
+            UIView.animate(withDuration: 0.5, animations: {
+                self.tableViewHeight.constant = 0
+                self.blurView.alpha = 0.0
+                self.bottomInstructions.alpha = 0.0
+                self.bottomArrow.alpha = 0.0
+                self.view.sendSubview(toBack: self.scoreLabel)
+                self.view.sendSubview(toBack: self.scoreCollectionView)
+                self.view.sendSubview(toBack: self.scoreCollectionBackground)
+                self.view.layoutIfNeeded()
+            })
+        }
     }
     
     func updateTable(searchText: String) {
@@ -477,7 +564,7 @@ class GameplayViewController: UIViewController {
                 
                 let alert = UIAlertController(title: "The End", message: "\(self.activePlayers[0].name) wins!", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default) { action in
-                    self.navigationController?.popToRootViewController(animated: true)
+                    let _ = self.navigationController?.popToRootViewController(animated: true)
                     CoreDataStackManager.sharedInstance.deleteGame() { error in
                         // TODO: Handle error.
                     }
@@ -567,10 +654,27 @@ extension GameplayViewController: UISearchBarDelegate {
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         
+        if topInstructions.alpha != 0 {
+            UIView.animate(withDuration: 0.5, animations: {
+                self.topInstructions.alpha = 0
+                self.topArrow.alpha = 0
+            })
+        }
+        
+        if bottomInstructions.alpha != 0 {
+            UIView.animate(withDuration: 0.5, animations: {
+                self.bottomInstructions.alpha = 0
+                self.bottomArrow.alpha = 0
+                self.view.sendSubview(toBack: self.scoreLabel)
+                self.view.sendSubview(toBack: self.scoreCollectionView)
+                self.view.sendSubview(toBack: self.scoreCollectionBackground)
+            })
+        }
+        
         // Blur UI.
         
         UIView.animate(withDuration: 0.5, animations: {
-            self.blurView.alpha = 0.8
+            self.blurView.alpha = 0.85
         })
         
         if searchBar.text != "" {
@@ -765,12 +869,18 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                     // Correct answer.
                     
                     PKHUD.sharedHUD.contentView = PKHUDSuccessView()
+                    if self.instructionsScenario == "ThirdSelection" {
+                        self.instructionsScenario = "ThirdSelectionCorrectAnswer"
+                    }
                     
                 } else {
                     
                     // Incorrect answer.
                     
                     PKHUD.sharedHUD.contentView = PKHUDErrorView()
+                    if self.instructionsScenario == "ThirdSelection" {
+                        self.instructionsScenario = "ThirdSelectionIncorrectAnswer"
+                    }
                     self.currentPlayer?.score += 1
                     self.scoreCollectionView.reloadData()
                     self.isInitialPick = true
