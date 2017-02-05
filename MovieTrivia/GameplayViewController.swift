@@ -370,7 +370,7 @@ class GameplayViewController: UIViewController {
             
             // Set movie label and image.
             
-            MDBClient().getMovieImage(movie: currentMovie!) { (image, errorMessage) in
+            MDBClient().getMovieImage(movie: currentMovie!, size: ImageSize.large) { (image, errorMessage) in
                 
                 UIView.transition(with: self.movieLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.movieLabel.text = self.currentMovie?.title}, completion: nil)
                 
@@ -390,7 +390,7 @@ class GameplayViewController: UIViewController {
             
             // Set actor label and image.
             
-            MDBClient().getActorImage(actor: currentActor!) { (image, errorMessage) in
+            MDBClient().getActorImage(actor: currentActor!, size: ImageSize.large) { (image, errorMessage) in
                 
                 UIView.transition(with: self.actorLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.actorLabel.text = self.currentActor?.name}, completion: nil)
                 

@@ -10,6 +10,13 @@ import Foundation
 import Alamofire
 import CoreData
 
+// Image Size Options
+
+enum ImageSize: String {
+    case small = "w45"
+    case large = "w342"
+}
+
 struct MDBClient {
     
     //----------------------------------
@@ -31,7 +38,7 @@ struct MDBClient {
     // Default Parameters
     
     let baseURL = "https://api.themoviedb.org/3/"
-    let baseImageURL = "https://image.tmdb.org/t/p/w500"
+    let baseImageURL = "https://image.tmdb.org/t/p/"
     let apiKeyDefault = "af7c170463ea56b4a5142fc83ba863ba"
     let languageDefault = "en-US"
     let includeAdultDefault = "false"
@@ -45,6 +52,7 @@ struct MDBClient {
     var sharedContext: NSManagedObjectContext {
         return CoreDataStackManager.sharedInstance.managedObjectContext
     }
+    
     
     //----------------------------------
     // MARK: API Methods
@@ -145,14 +153,14 @@ struct MDBClient {
         }
     }
     
-    func getMovieImage(movie: Movie, completionHandler: @escaping (_ image: UIImage?, _ errorMessage: String?) -> Void) {
+    func getMovieImage(movie: Movie, size: ImageSize, completionHandler: @escaping (_ image: UIImage?, _ errorMessage: String?) -> Void) {
         
         guard let posterPath = movie.posterPath else {
             completionHandler(nil, "Missing image path.")
             return
         }
         
-        Alamofire.request(baseImageURL + posterPath, method: .get, parameters: nil, encoding: URLEncoding.default, headers: nil).responseData { response in
+        Alamofire.request(baseImageURL + size.rawValue + posterPath, method: .get, parameters: nil, encoding: URLEncoding.default, headers: nil).responseData { response in
             
             switch response.result {
                 
@@ -178,14 +186,14 @@ struct MDBClient {
         }
     }
     
-    func getActorImage(actor: Actor, completionHandler: @escaping (_ image: UIImage?, _ errorMessage: String?) -> Void) {
+    func getActorImage(actor: Actor, size: ImageSize, completionHandler: @escaping (_ image: UIImage?, _ errorMessage: String?) -> Void) {
         
         guard let profilePath = actor.profilePath else {
             completionHandler(nil, "Missing image path.")
             return
         }
         
-        Alamofire.request(baseImageURL + profilePath, method: .get, parameters: nil, encoding: URLEncoding.default, headers: nil).responseData { response in
+        Alamofire.request(baseImageURL + size.rawValue + profilePath, method: .get, parameters: nil, encoding: URLEncoding.default, headers: nil).responseData { response in
             
             switch response.result {
                 

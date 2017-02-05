@@ -105,21 +105,38 @@ extension TurnDetailViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cellIdentifier", for: indexPath) as UITableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "turnDetailCell", for: indexPath) as! TurnDetailTableViewCell
         
-        cell.textLabel!.font = UIFont(name: "Futura", size: 17)
-        cell.textLabel!.textColor = UIColor.white
-        cell.backgroundColor = turn?.player.color
+        cell.contentView.backgroundColor = turn?.player.color
         
         if isMovieDetail {
+            
+            cell.movieLabel.isHidden = true
+            cell.activityIndicator.startAnimating()
+            
             let actor = cast[indexPath.row]
-            cell.textLabel?.text = actor.name
+            cell.actorLabel.text = actor.name
+            
+            MDBClient().getActorImage(actor: actor, size: ImageSize.small) { image, errorMessage in
+                if errorMessage != nil {
+                    cell.activityIndicator.stopAnimating()
+                    cell.actorImage.image = #imageLiteral(resourceName: "person")
+                } else {
+                    cell.activityIndicator.stopAnimating()
+                    cell.actorImage.image = image
+                }
+            }
+            
         } else {
+            
+            cell.actorImage.isHidden = true
+            cell.actorLabel.isHidden = true
+            
             let movie = filmography[indexPath.row]
             if let releaseYear = movie.releaseYear {
-                cell.textLabel?.text = "\(movie.title) (\(releaseYear))"
+                cell.movieLabel.text = "\(movie.title) (\(releaseYear))"
             } else {
-                cell.textLabel?.text = "\(movie.title)"
+                cell.movieLabel.text = "\(movie.title)"
             }
         }
         

@@ -377,7 +377,7 @@ Production</string>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" rowHeight="40" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="OxJ-jQ-GE8">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" rowHeight="80" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="OxJ-jQ-GE8">
                                 <rect key="frame" x="15" y="444" width="335" height="220"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -385,13 +385,60 @@ Production</string>
                                 </constraints>
                                 <color key="separatorColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cellIdentifier" id="6Pu-hg-S5m">
-                                        <rect key="frame" x="0.0" y="28" width="335" height="40"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="turnDetailCell" rowHeight="80" id="6Pu-hg-S5m" customClass="TurnDetailTableViewCell" customModule="MovieTrivia" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="335" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6Pu-hg-S5m" id="L3p-eE-QHx">
-                                            <rect key="frame" x="0.0" y="0.0" width="335" height="39.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="335" height="79"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yRJ-T9-RJY" userLabel="Actor Image">
+                                                    <rect key="frame" x="10" y="10" width="40" height="60"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="40" id="GgL-6m-azC"/>
+                                                        <constraint firstAttribute="height" constant="60" id="mda-E9-Tv3"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cell Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hG7-Ze-HZP" userLabel="Actor Label">
+                                                    <rect key="frame" x="70" y="29.5" width="77" height="22.5"/>
+                                                    <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="EF7-rX-uAh">
+                                                    <rect key="frame" x="20" y="30" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="20" id="kah-5M-UK0"/>
+                                                        <constraint firstAttribute="height" constant="20" id="snf-1r-wyu"/>
+                                                    </constraints>
+                                                </activityIndicatorView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Re-zR-Pfs" userLabel="Movie Label">
+                                                    <rect key="frame" x="10" y="40" width="0.0" height="0.0"/>
+                                                    <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstItem="hG7-Ze-HZP" firstAttribute="leading" secondItem="yRJ-T9-RJY" secondAttribute="trailing" constant="20" id="CZ9-jr-Iig"/>
+                                                <constraint firstItem="5Re-zR-Pfs" firstAttribute="centerY" secondItem="L3p-eE-QHx" secondAttribute="centerY" id="iuO-n4-zsO"/>
+                                                <constraint firstItem="5Re-zR-Pfs" firstAttribute="leading" secondItem="L3p-eE-QHx" secondAttribute="leadingMargin" constant="2" id="joF-Gh-9C4"/>
+                                                <constraint firstItem="EF7-rX-uAh" firstAttribute="centerY" secondItem="yRJ-T9-RJY" secondAttribute="centerY" id="oew-Jk-cqp"/>
+                                                <constraint firstItem="EF7-rX-uAh" firstAttribute="centerX" secondItem="yRJ-T9-RJY" secondAttribute="centerX" id="sM7-ME-8CB"/>
+                                            </constraints>
                                         </tableViewCellContentView>
+                                        <constraints>
+                                            <constraint firstItem="yRJ-T9-RJY" firstAttribute="leading" secondItem="6Pu-hg-S5m" secondAttribute="leading" constant="10" id="1q3-QP-XEh"/>
+                                            <constraint firstItem="hG7-Ze-HZP" firstAttribute="centerY" secondItem="6Pu-hg-S5m" secondAttribute="centerY" id="bfi-SA-9b1"/>
+                                            <constraint firstItem="yRJ-T9-RJY" firstAttribute="centerY" secondItem="6Pu-hg-S5m" secondAttribute="centerY" id="r7y-Sq-Utk"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="activityIndicator" destination="EF7-rX-uAh" id="ao1-dF-t69"/>
+                                            <outlet property="actorImage" destination="yRJ-T9-RJY" id="TQ3-0r-NZF"/>
+                                            <outlet property="actorLabel" destination="hG7-Ze-HZP" id="mll-2W-FNq"/>
+                                            <outlet property="movieLabel" destination="5Re-zR-Pfs" id="N8B-fy-XLH"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
