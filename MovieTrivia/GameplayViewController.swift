@@ -479,8 +479,17 @@ class GameplayViewController: UIViewController {
 
             if self.activePlayers.count == 1 {
                 
-                // TODO: Handle game over situation.
+                // The game is over.
                 
+                let alert = UIAlertController(title: "The End", message: "\(self.activePlayers[0].name) wins!", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default) { action in
+                    self.navigationController?.popToRootViewController(animated: true)
+                    CoreDataStackManager.sharedInstance.deleteGame() { error in
+                        // TODO: Handle error.
+                    }
+                })
+                
+                self.present(alert, animated: true, completion: nil)
                 return
                 
             } else {
@@ -517,7 +526,11 @@ class GameplayViewController: UIViewController {
             self.currentPlayer = self.activePlayers[0]
         }
         
-        updateUIForCurrentPlayer(clearPreviousAnswers: false)
+        if isInitialPick {
+            updateUIForCurrentPlayer(clearPreviousAnswers: true)
+        } else {
+            updateUIForCurrentPlayer(clearPreviousAnswers: false)
+        }
     }
     
     func saveTurn(correct: Bool) {
