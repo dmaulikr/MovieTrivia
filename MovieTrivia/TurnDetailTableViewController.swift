@@ -29,10 +29,11 @@ class TurnDetailTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("TURN: \(turn)")
-        
         self.title = "Turn Details"
         self.view.backgroundColor = turn?.player.color
+        
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 70
         
         if let movie = turn?.movie {
             
@@ -98,6 +99,7 @@ class TurnDetailTableViewController: UITableViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: "headerCell") as! HeaderTableViewCell
             cell.headerLabel.text = mainTitle
             cell.headerLabel.textColor = turn?.player.color
+            cell.backgroundColor = turn?.player.color
             return cell
             
         } else if indexPath.row == 1 {
@@ -106,6 +108,7 @@ class TurnDetailTableViewController: UITableViewController {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "posterCell") as! PosterTableViewCell
             cell.posterImage.image = mainImage
+            cell.backgroundColor = turn?.player.color
             return cell
             
         } else if indexPath.row == 2 {
@@ -115,28 +118,17 @@ class TurnDetailTableViewController: UITableViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: "headerCell") as! HeaderTableViewCell
             cell.headerLabel.text = secondaryTitle
             cell.headerLabel.textColor = turn?.player.color
+            cell.backgroundColor = turn?.player.color
             return cell
             
         } else {
             
             if isMovieDetail {
                 
-                // Movie Cells
-                
-                let cell = tableView.dequeueReusableCell(withIdentifier: "movieCell") as! MovieTableViewCell
-                let movie = filmography[indexPath.row - 3]
-                if let releaseYear = movie.releaseYear {
-                    cell.movieLabel.text = "\(movie.title) (\(releaseYear))"
-                } else {
-                    cell.movieLabel.text = "\(movie.title)"
-                }
-                return cell
-                
-            } else {
-                
                 // Actor Cells
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: "actorCell") as! ActorTableViewCell
+                cell.backgroundColor = turn?.player.color
                 cell.activityIndicator.startAnimating()
                 let actor = cast[indexPath.row - 3]
                 cell.actorLabel.text = actor.name
@@ -150,6 +142,20 @@ class TurnDetailTableViewController: UITableViewController {
                     }
                 }
                 
+                return cell
+                
+            } else {
+                
+                // Movie Cells
+                
+                let cell = tableView.dequeueReusableCell(withIdentifier: "movieCell") as! MovieTableViewCell
+                cell.backgroundColor = turn?.player.color
+                let movie = filmography[indexPath.row - 3]
+                if let releaseYear = movie.releaseYear {
+                    cell.movieLabel.text = "\(movie.title) (\(releaseYear))"
+                } else {
+                    cell.movieLabel.text = "\(movie.title)"
+                }
                 return cell
             }
         }
