@@ -10,12 +10,24 @@ import UIKit
 
 class OptionsViewController: UIViewController {
     
+    //----------------------------------
+    // MARK: Properties
+    //----------------------------------
+    
+    var currentPlayer: Player? = nil
+    
+    //----------------------------------
+    // MARK: Outlets
+    //----------------------------------
+    
     @IBOutlet weak var strikeStepper: UIStepper!
     @IBOutlet weak var strikeCountLabel: UILabel!
     @IBOutlet weak var strikeCountContainer: UIView!
     @IBOutlet weak var quitButton: CustomButton!
     
-    var currentPlayer: Player? = nil
+    //----------------------------------
+    // MARK: Lifecycle
+    //----------------------------------
 
     override func viewDidLoad() {
         
@@ -37,6 +49,10 @@ class OptionsViewController: UIViewController {
         
         quitButton.setTitleColor(currentPlayer?.color, for: .highlighted)
     }
+    
+    //----------------------------------
+    // MARK: Page Methods
+    //----------------------------------
     
     func applyChanges() {
         

@@ -10,8 +10,16 @@ import UIKit
 
 class TurnHistoryViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    //----------------------------------
+    // MARK: Properties
+    //----------------------------------
+    
     var game: Game? = nil
     var selectedTurn: Turn? = nil
+    
+    //----------------------------------
+    // MARK: Outlets
+    //----------------------------------
     
     @IBOutlet weak var table: UITableView!
     @IBOutlet weak var explanationLabel: UILabel!
@@ -108,7 +116,7 @@ class TurnHistoryViewController: UIViewController, UITableViewDelegate, UITableV
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        let detailVC = segue.destination as! TurnDetailViewController
+        let detailVC = segue.destination as! TurnDetailTableViewController
         detailVC.turn = selectedTurn
     }
 }

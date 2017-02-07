@@ -1,5 +1,5 @@
 //
-//  TurnDetailTableViewCell.swift
+//  ActorTableViewCell.swift
 //  MovieTrivia
 //
 //  Created by Theodore Rothrock on 2/5/17.
@@ -8,11 +8,10 @@
 
 import UIKit
 
-class TurnDetailTableViewCell: UITableViewCell {
+class ActorTableViewCell: UITableViewCell {
     
     @IBOutlet weak var actorImage: UIImageView!
     @IBOutlet weak var actorLabel: UILabel!
-    @IBOutlet weak var movieLabel: UILabel!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
     override func awakeFromNib() {
@@ -25,9 +24,4 @@ class TurnDetailTableViewCell: UITableViewCell {
         
         activityIndicator.hidesWhenStopped = true
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-    }
-
 }

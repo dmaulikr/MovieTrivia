@@ -14,9 +14,13 @@
 		9F0EE0BB1DF15D2C002B1FB3 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0EE0BA1DF15D2C002B1FB3 /* Player.swift */; };
 		9F0EE0BD1DF15DBE002B1FB3 /* Turn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0EE0BC1DF15DBE002B1FB3 /* Turn.swift */; };
 		9F0EE0BF1DF1610A002B1FB3 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0EE0BE1DF1610A002B1FB3 /* Game.swift */; };
+		9F1A7C911E49865100110952 /* TurnDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1A7C901E49865100110952 /* TurnDetailTableViewController.swift */; };
+		9F1A7C931E498A9400110952 /* HeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1A7C921E498A9400110952 /* HeaderTableViewCell.swift */; };
+		9F1A7C951E498AA400110952 /* PosterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1A7C941E498AA400110952 /* PosterTableViewCell.swift */; };
+		9F1A7C971E498AB200110952 /* MovieTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1A7C961E498AB200110952 /* MovieTableViewCell.swift */; };
 		9F1F88081DFFDF3D003492D7 /* ColorPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1F88071DFFDF3D003492D7 /* ColorPickerViewController.swift */; };
 		9F1F880A1DFFE337003492D7 /* ColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1F88091DFFE337003492D7 /* ColorCell.swift */; };
-		9F44D70C1E4721D600C2B327 /* TurnDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F44D70B1E4721D600C2B327 /* TurnDetailTableViewCell.swift */; };
+		9F44D70C1E4721D600C2B327 /* ActorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F44D70B1E4721D600C2B327 /* ActorTableViewCell.swift */; };
 		9F50EF7A1DD958A100D0F602 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 9F50EF791DD958A100D0F602 /* .gitignore */; };
 		9F5E74B91E1B0036009F82EB /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F5E74B81E1B0036009F82EB /* OptionsViewController.swift */; };
 		9F5E74BB1E1B1309009F82EB /* TurnDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F5E74BA1E1B1309009F82EB /* TurnDetailViewController.swift */; };
@@ -66,9 +70,13 @@
 		9F0EE0BA1DF15D2C002B1FB3 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		9F0EE0BC1DF15DBE002B1FB3 /* Turn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Turn.swift; sourceTree = "<group>"; };
 		9F0EE0BE1DF1610A002B1FB3 /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
+		9F1A7C901E49865100110952 /* TurnDetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TurnDetailTableViewController.swift; sourceTree = "<group>"; };
+		9F1A7C921E498A9400110952 /* HeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderTableViewCell.swift; sourceTree = "<group>"; };
+		9F1A7C941E498AA400110952 /* PosterTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PosterTableViewCell.swift; sourceTree = "<group>"; };
+		9F1A7C961E498AB200110952 /* MovieTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieTableViewCell.swift; sourceTree = "<group>"; };
 		9F1F88071DFFDF3D003492D7 /* ColorPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPickerViewController.swift; sourceTree = "<group>"; };
 		9F1F88091DFFE337003492D7 /* ColorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorCell.swift; sourceTree = "<group>"; };
-		9F44D70B1E4721D600C2B327 /* TurnDetailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TurnDetailTableViewCell.swift; sourceTree = "<group>"; };
+		9F44D70B1E4721D600C2B327 /* ActorTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActorTableViewCell.swift; sourceTree = "<group>"; };
 		9F50EF791DD958A100D0F602 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		9F5E74B81E1B0036009F82EB /* OptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
 		9F5E74BA1E1B1309009F82EB /* TurnDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TurnDetailViewController.swift; sourceTree = "<group>"; };
@@ -149,6 +157,7 @@
 				9FA2E46E1E19D76F0055E8B9 /* TurnHistoryViewController.swift */,
 				9F5E74B81E1B0036009F82EB /* OptionsViewController.swift */,
 				9F5E74BA1E1B1309009F82EB /* TurnDetailViewController.swift */,
+				9F1A7C901E49865100110952 /* TurnDetailTableViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -160,7 +169,10 @@
 				9FB049981DF6BD2100866868 /* CustomButton.swift */,
 				9F1F88091DFFE337003492D7 /* ColorCell.swift */,
 				9FA2E46C1E18598E0055E8B9 /* ScoreCell.swift */,
-				9F44D70B1E4721D600C2B327 /* TurnDetailTableViewCell.swift */,
+				9F44D70B1E4721D600C2B327 /* ActorTableViewCell.swift */,
+				9F1A7C921E498A9400110952 /* HeaderTableViewCell.swift */,
+				9F1A7C941E498AA400110952 /* PosterTableViewCell.swift */,
+				9F1A7C961E498AB200110952 /* MovieTableViewCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -535,16 +547,20 @@
 				9F5E74BB1E1B1309009F82EB /* TurnDetailViewController.swift in Sources */,
 				9F0EE0BD1DF15DBE002B1FB3 /* Turn.swift in Sources */,
 				9FB0499B1DF6BFD500866868 /* PlayerPickerViewController.swift in Sources */,
+				9F1A7C911E49865100110952 /* TurnDetailTableViewController.swift in Sources */,
 				9F7B23051DD9B1510032F72A /* Actor.swift in Sources */,
+				9F1A7C971E498AB200110952 /* MovieTableViewCell.swift in Sources */,
 				9F5E74B91E1B0036009F82EB /* OptionsViewController.swift in Sources */,
 				9F0EE0B71DE2F7DC002B1FB3 /* CoreDataStackManager.swift in Sources */,
 				9F0EE0B21DDD8D8C002B1FB3 /* RadioButton.swift in Sources */,
 				9F70C53D1DD6F5BC00BFF7B7 /* MDBClient.swift in Sources */,
-				9F44D70C1E4721D600C2B327 /* TurnDetailTableViewCell.swift in Sources */,
+				9F44D70C1E4721D600C2B327 /* ActorTableViewCell.swift in Sources */,
 				9FA2E46D1E18598E0055E8B9 /* ScoreCell.swift in Sources */,
 				9FE947401DD6BFA40024DBFA /* MovieTrivia.xcdatamodeld in Sources */,
+				9F1A7C951E498AA400110952 /* PosterTableViewCell.swift in Sources */,
 				9F0EE0BF1DF1610A002B1FB3 /* Game.swift in Sources */,
 				9F1F880A1DFFE337003492D7 /* ColorCell.swift in Sources */,
+				9F1A7C931E498A9400110952 /* HeaderTableViewCell.swift in Sources */,
 				9FE9473A1DD6BFA40024DBFA /* GameplayViewController.swift in Sources */,
 				9FA2E46F1E19D76F0055E8B9 /* TurnHistoryViewController.swift in Sources */,
 				9FB049991DF6BD2100866868 /* CustomButton.swift in Sources */,
