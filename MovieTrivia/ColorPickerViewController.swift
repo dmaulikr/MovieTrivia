@@ -15,7 +15,7 @@ class ColorPickerViewController: UIViewController {
     // MARK: Properties
     //----------------------------------
     
-    var game: Game? = nil
+    var game: Game!
     var currentPlayerIndex = 0
     var managedObjectContext: NSManagedObjectContext {return CoreDataStackManager.sharedInstance.managedObjectContext}
     
@@ -101,13 +101,13 @@ extension ColorPickerViewController: UIPickerViewDelegate, UIPickerViewDataSourc
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return game!.players!.count
+        return game.players.count
     }
     
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         let pickerLabel = UILabel()
         var title = NSAttributedString()
-        title = NSAttributedString(string: String(game!.players![row].name), attributes: [NSFontAttributeName: UIFont(name: "Futura", size: 17.0)!, NSForegroundColorAttributeName: UIColor.white])
+        title = NSAttributedString(string: String(game.players[row].name), attributes: [NSFontAttributeName: UIFont(name: "Futura", size: 17.0)!, NSForegroundColorAttributeName: UIColor.white])
         pickerLabel.attributedText = title
         pickerLabel.textAlignment = .center
         return pickerLabel
@@ -137,16 +137,16 @@ extension ColorPickerViewController: UICollectionViewDelegate, UICollectionViewD
         
         let cell = collectionView.cellForItem(at: indexPath) as! ColorCell
         
-        guard cell.playerLabel.isHidden && currentPlayerIndex <= game!.players!.count - 1 else {return}
+        guard cell.playerLabel.isHidden && currentPlayerIndex <= game.players.count - 1 else {return}
         
         if currentPlayerIndex == 0 {navigationItem.rightBarButtonItem?.isEnabled = true}
-        cell.playerLabel.text = "P" + "\(game!.players![currentPlayerIndex].name.components(separatedBy: " ")[1])"
+        cell.playerLabel.text = "P" + "\(game.players[currentPlayerIndex].name.components(separatedBy: " ")[1])"
         cell.playerLabel.isHidden = false
-        game!.players![currentPlayerIndex].color = colorArray[indexPath.row]
+        game.players[currentPlayerIndex].color = colorArray[indexPath.row]
         currentPlayerIndex += 1
         picker.selectRow(currentPlayerIndex, inComponent: 0, animated: true)
         
-        if currentPlayerIndex == game!.players!.count {
+        if currentPlayerIndex == game.players.count {
             continueButton.isEnabled = true
         }
     }

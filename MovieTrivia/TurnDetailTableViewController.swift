@@ -14,7 +14,7 @@ class TurnDetailTableViewController: UITableViewController {
     // MARK: Properties
     //----------------------------------
     
-    var turn: Turn? = nil
+    var turn: Turn!
     var cast = [Actor]()
     var isMovieDetail = false
     var filmography = [Movie]()
@@ -30,12 +30,12 @@ class TurnDetailTableViewController: UITableViewController {
         super.viewDidLoad()
         
         self.title = "Turn Details"
-        self.view.backgroundColor = turn?.player.color
+        self.view.backgroundColor = turn.player.color
         
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 70
         
-        if let movie = turn?.movie {
+        if let movie = turn.movie {
             
             // Show movie details.
             
@@ -48,28 +48,42 @@ class TurnDetailTableViewController: UITableViewController {
             }
             
             if let imageData = movie.imageData {
-                mainImage = UIImage(data: imageData)!
+                if let image = UIImage(data: imageData) {
+                    mainImage = image
+                } else {
+                    mainImage = #imageLiteral(resourceName: "reel")
+                }
             } else {
                 mainImage = #imageLiteral(resourceName: "reel")
             }
 
             secondaryTitle = "Cast"
-            cast = Array(movie.cast!).sorted { $0.name < $1.name}
             
-        } else if let actor = turn?.actor {
+            if let cast = movie.cast {
+                self.cast = Array(cast).sorted { $0.name < $1.name}
+            }
+            
+        } else if let actor = turn.actor {
             
             // Show actor details.
             
             mainTitle = actor.name
             
             if let imageData = actor.imageData {
-                mainImage = UIImage(data: imageData)!
+                if let image = UIImage(data: imageData) {
+                    mainImage = image
+                } else {
+                    mainImage = #imageLiteral(resourceName: "person")
+                }
             } else {
                 mainImage = #imageLiteral(resourceName: "person")
             }
             
             secondaryTitle = "Filmography"
-            filmography = Array(actor.filmography!).sorted { $0.title < $1.title}
+            
+            if let filmography = actor.filmography {
+                self.filmography = Array(filmography).sorted { $0.title < $1.title}
+            }
         }
     }
 
@@ -98,8 +112,8 @@ class TurnDetailTableViewController: UITableViewController {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "headerCell") as! HeaderTableViewCell
             cell.headerLabel.text = mainTitle
-            cell.headerLabel.textColor = turn?.player.color
-            cell.backgroundColor = turn?.player.color
+            cell.headerLabel.textColor = turn.player.color
+            cell.backgroundColor = turn.player.color
             return cell
             
         } else if indexPath.row == 1 {
@@ -108,7 +122,7 @@ class TurnDetailTableViewController: UITableViewController {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "posterCell") as! PosterTableViewCell
             cell.posterImage.image = mainImage
-            cell.backgroundColor = turn?.player.color
+            cell.backgroundColor = turn.player.color
             return cell
             
         } else if indexPath.row == 2 {
@@ -117,8 +131,8 @@ class TurnDetailTableViewController: UITableViewController {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "headerCell") as! HeaderTableViewCell
             cell.headerLabel.text = secondaryTitle
-            cell.headerLabel.textColor = turn?.player.color
-            cell.backgroundColor = turn?.player.color
+            cell.headerLabel.textColor = turn.player.color
+            cell.backgroundColor = turn.player.color
             return cell
             
         } else {
@@ -128,7 +142,7 @@ class TurnDetailTableViewController: UITableViewController {
                 // Actor Cells
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: "actorCell") as! ActorTableViewCell
-                cell.backgroundColor = turn?.player.color
+                cell.backgroundColor = turn.player.color
                 cell.activityIndicator.startAnimating()
                 let actor = cast[indexPath.row - 3]
                 cell.actorLabel.text = actor.name
@@ -149,7 +163,7 @@ class TurnDetailTableViewController: UITableViewController {
                 // Movie Cells
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: "movieCell") as! MovieTableViewCell
-                cell.backgroundColor = turn?.player.color
+                cell.backgroundColor = turn.player.color
                 let movie = filmography[indexPath.row - 3]
                 if let releaseYear = movie.releaseYear {
                     cell.movieLabel.text = "\(movie.title) (\(releaseYear))"

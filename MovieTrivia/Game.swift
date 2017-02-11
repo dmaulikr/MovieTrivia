@@ -15,8 +15,8 @@ class Game: NSManagedObject {
     // MARK: Properties
     //----------------------------------
     
-    @NSManaged var players: [Player]?
-    @NSManaged var history: [Turn]?
+    @NSManaged var players: [Player]
+    @NSManaged var history: [Turn]
     
     //----------------------------------
     // MARK: Initialization

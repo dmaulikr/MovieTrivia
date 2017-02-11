@@ -24,7 +24,6 @@
 		9F44D70C1E4721D600C2B327 /* ActorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F44D70B1E4721D600C2B327 /* ActorTableViewCell.swift */; };
 		9F50EF7A1DD958A100D0F602 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 9F50EF791DD958A100D0F602 /* .gitignore */; };
 		9F5E74B91E1B0036009F82EB /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F5E74B81E1B0036009F82EB /* OptionsViewController.swift */; };
-		9F5E74BB1E1B1309009F82EB /* TurnDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F5E74BA1E1B1309009F82EB /* TurnDetailViewController.swift */; };
 		9F70C53D1DD6F5BC00BFF7B7 /* MDBClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F70C53C1DD6F5BC00BFF7B7 /* MDBClient.swift */; };
 		9F7B23051DD9B1510032F72A /* Actor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7B23041DD9B1510032F72A /* Actor.swift */; };
 		9F8A725D1E3DCAD2009D9801 /* LandingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F8A725C1E3DCAD2009D9801 /* LandingPageViewController.swift */; };
@@ -81,7 +80,6 @@
 		9F44D70B1E4721D600C2B327 /* ActorTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActorTableViewCell.swift; sourceTree = "<group>"; };
 		9F50EF791DD958A100D0F602 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		9F5E74B81E1B0036009F82EB /* OptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
-		9F5E74BA1E1B1309009F82EB /* TurnDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TurnDetailViewController.swift; sourceTree = "<group>"; };
 		9F70C53C1DD6F5BC00BFF7B7 /* MDBClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDBClient.swift; sourceTree = "<group>"; };
 		9F7B23041DD9B1510032F72A /* Actor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Actor.swift; sourceTree = "<group>"; };
 		9F8A725C1E3DCAD2009D9801 /* LandingPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandingPageViewController.swift; sourceTree = "<group>"; };
@@ -158,7 +156,6 @@
 				9FE947391DD6BFA40024DBFA /* GameplayViewController.swift */,
 				9FA2E46E1E19D76F0055E8B9 /* TurnHistoryViewController.swift */,
 				9F5E74B81E1B0036009F82EB /* OptionsViewController.swift */,
-				9F5E74BA1E1B1309009F82EB /* TurnDetailViewController.swift */,
 				9F1A7C901E49865100110952 /* TurnDetailTableViewController.swift */,
 			);
 			name = Controller;
@@ -547,7 +544,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9F5E74BB1E1B1309009F82EB /* TurnDetailViewController.swift in Sources */,
 				9F0EE0BD1DF15DBE002B1FB3 /* Turn.swift in Sources */,
 				9FB0499B1DF6BFD500866868 /* PlayerPickerViewController.swift in Sources */,
 				9F1A7C911E49865100110952 /* TurnDetailTableViewController.swift in Sources */,

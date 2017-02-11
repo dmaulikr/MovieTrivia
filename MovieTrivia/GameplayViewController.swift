@@ -22,9 +22,9 @@ class GameplayViewController: UIViewController {
     var activePlayers = [Player]()
     var currentMovie: Movie? = nil
     var currentActor: Actor? = nil
-    var currentPlayer: Player? = nil
+    var currentPlayer: Player!
     var currentRound = 1
-    var game: Game? = nil
+    var game: Game!
     var isInitialPick = true
     var showingInstructions = false
     var instructionsScenario = "Started"
@@ -64,23 +64,20 @@ class GameplayViewController: UIViewController {
         
         // Set initial gampeplay values.
         
-        activePlayers = game!.players!
-        currentPlayer = game?.players?[0]
-        self.title = currentPlayer?.name
+        activePlayers = game.players
+        currentPlayer = game.players[0]
+        self.title = currentPlayer.name
         
         // Set up UI.
         
-        if let currentPlayer = self.currentPlayer {
-            
-            self.title = currentPlayer.name
-            
-            self.view.backgroundColor = currentPlayer.color
-            self.radioButtonContainer.backgroundColor = currentPlayer.color
-            self.scoreCollectionView.backgroundColor = currentPlayer.color
-            self.scoreCollectionBackground.backgroundColor = currentPlayer.color
-            self.imageTitleLabel.textColor = currentPlayer.color
-            self.scoreLabel.textColor = currentPlayer.color
-        }
+        self.title = currentPlayer.name
+        
+        self.view.backgroundColor = currentPlayer.color
+        self.radioButtonContainer.backgroundColor = currentPlayer.color
+        self.scoreCollectionView.backgroundColor = currentPlayer.color
+        self.scoreCollectionBackground.backgroundColor = currentPlayer.color
+        self.imageTitleLabel.textColor = currentPlayer.color
+        self.scoreLabel.textColor = currentPlayer.color
         
         navigationItem.hidesBackButton = true
         
@@ -135,20 +132,17 @@ class GameplayViewController: UIViewController {
     
     func updateUIForCurrentPlayer(clearPreviousAnswers: Bool) {
         
-        guard let currentPlayer = currentPlayer else {return}
-        guard let playerColor = currentPlayer.color else {return}
-        
         UIView.animate(withDuration: 0.5, animations: {
-            self.view.backgroundColor = playerColor
-            self.radioButtonContainer.backgroundColor = playerColor
-            self.scoreCollectionView.backgroundColor = playerColor
-            self.scoreCollectionBackground.backgroundColor = playerColor
+            self.view.backgroundColor = self.currentPlayer.color
+            self.radioButtonContainer.backgroundColor = self.currentPlayer.color
+            self.scoreCollectionView.backgroundColor = self.currentPlayer.color
+            self.scoreCollectionBackground.backgroundColor = self.currentPlayer.color
         })
         
-        UIView.transition(with: self.imageTitleLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.imageTitleLabel.textColor = playerColor}, completion: nil)
-        UIView.transition(with: self.scoreLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.scoreLabel.textColor = playerColor}, completion: nil)
+        UIView.transition(with: self.imageTitleLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.imageTitleLabel.textColor = self.currentPlayer.color}, completion: nil)
+        UIView.transition(with: self.scoreLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.scoreLabel.textColor = self.currentPlayer.color}, completion: nil)
 
-        self.title = currentPlayer.name
+        self.title = self.currentPlayer.name
         
         if clearPreviousAnswers {
             
@@ -168,16 +162,16 @@ class GameplayViewController: UIViewController {
                 
             case "Started":
                 if movieLabel.text != "" {
-                    topInstructions.text = "\(currentPlayer.name), choose an actor from \"\(currentMovie!.title)\"."
+                    topInstructions.text = "\(currentPlayer.name), choose an actor from \"\(currentMovie?.title)\"."
                 } else {
-                    topInstructions.text = "\(currentPlayer.name), choose a movie featuring \(currentActor!.name)."
+                    topInstructions.text = "\(currentPlayer.name), choose a movie featuring \(currentActor?.name)."
                 }
             
                 instructionsScenario = "ThirdSelection"
                 break
                 
             case "ThirdSelectionCorrectAnswer":
-                topInstructions.text = "Nice work! \(currentPlayer.name), you can now choose another actor from \"\(currentMovie!.title)\" or another movie featuring \(currentActor!.name)."
+                topInstructions.text = "Nice work! \(currentPlayer.name), you can now choose another actor from \"\(currentMovie?.title)\" or another movie featuring \(currentActor?.name)."
                 instructionsScenario = "StrikeExplanation"
                 break
                 
@@ -226,11 +220,13 @@ class GameplayViewController: UIViewController {
             movieButton.isSelected = false
         }
         
-        guard searchBar.text != "" else {
+        guard let searchText = searchBar.text else {
             return
         }
         
-        updateTable(searchText: searchBar.text!)
+        if searchText != "" {
+            updateTable(searchText: searchText)
+        }
     }
     
     @IBAction func backgroundTapped() {
@@ -367,10 +363,11 @@ class GameplayViewController: UIViewController {
         case true:
             
             currentMovie = movies[indexOfSelectedRow]
+            guard let movie = currentMovie else {return}
             
             // Set movie label and image.
             
-            MDBClient().getMovieImage(movie: currentMovie!, size: ImageSize.large) { (image, errorMessage) in
+            MDBClient().getMovieImage(movie: movie, size: ImageSize.large) { (image, errorMessage) in
                 
                 UIView.transition(with: self.movieLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.movieLabel.text = self.currentMovie?.title}, completion: nil)
                 
@@ -387,10 +384,11 @@ class GameplayViewController: UIViewController {
         case false:
             
             currentActor = actors[indexOfSelectedRow]
+            guard let actor = currentActor else {return}
             
             // Set actor label and image.
             
-            MDBClient().getActorImage(actor: currentActor!, size: ImageSize.large) { (image, errorMessage) in
+            MDBClient().getActorImage(actor: actor, size: ImageSize.large) { (image, errorMessage) in
                 
                 UIView.transition(with: self.actorLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.actorLabel.text = self.currentActor?.name}, completion: nil)
                 
@@ -446,7 +444,7 @@ class GameplayViewController: UIViewController {
                     return
                 }
                 
-                for castMember in movie.cast! {
+                for castMember in cast {
                     if castMember.name == actor.name {
                         completionHandler(true)
                         return
@@ -489,7 +487,7 @@ class GameplayViewController: UIViewController {
                     return
                 }
                 
-                for film in actor.filmography! {
+                for film in filmography {
                     if film.title == movie.title {
                         completionHandler(true)
                         return
@@ -506,17 +504,23 @@ class GameplayViewController: UIViewController {
         var actorsToSave = [Actor]()
         var moviesToSave = [Movie]()
         
-        for turn in game!.history! {
+        for turn in game.history {
+            
             if let actor = turn.actor {
                 actorsToSave.append(actor)
-                for movie in actor.filmography! {
-                    moviesToSave.append(movie)
+                if let filmography = actor.filmography {
+                    for movie in filmography {
+                        moviesToSave.append(movie)
+                    }
                 }
             }
+            
             if let movie = turn.movie {
                 moviesToSave.append(movie)
-                for actor in movie.cast! {
-                    actorsToSave.append(actor)
+                if let cast = movie.cast {
+                    for actor in cast {
+                        actorsToSave.append(actor)
+                    }
                 }
             }
         }
@@ -552,11 +556,11 @@ class GameplayViewController: UIViewController {
     
     func updateCurrentPlayer() {
         
-        let indexOfCurrentPlayer = self.activePlayers.index(of: self.currentPlayer!)!
+        guard let indexOfCurrentPlayer = self.activePlayers.index(of: self.currentPlayer) else {return}
         
-        if self.currentPlayer!.score == UserDefaults.standard.integer(forKey: "strikeMax") {
+        if self.currentPlayer.score == UserDefaults.standard.integer(forKey: "strikeMax") {
             
-            self.activePlayers = self.activePlayers.filter() {$0 != self.currentPlayer!}
+            self.activePlayers = self.activePlayers.filter() {$0 != self.currentPlayer}
 
             if self.activePlayers.count == 1 {
                 
@@ -577,7 +581,7 @@ class GameplayViewController: UIViewController {
                 
                 // A player has been eliminated.
                 
-                let alert = UIAlertController(title: "Take five", message: "\(self.currentPlayer!.name) has been eliminated.", preferredStyle: .alert)
+                let alert = UIAlertController(title: "Take five", message: "\(self.currentPlayer.name) has been eliminated.", preferredStyle: .alert)
                 
                 if indexOfCurrentPlayer == self.activePlayers.count {
                     self.currentPlayer = self.activePlayers[0]
@@ -618,11 +622,11 @@ class GameplayViewController: UIViewController {
         
         if self.movieButton.isSelected {
             
-            let _ = Turn(player: self.currentPlayer!, game: self.game!, success: correct, round: self.currentRound, movie: self.currentMovie, actor: nil, context: self.managedObjectContext)
+            let _ = Turn(player: self.currentPlayer, game: self.game, success: correct, round: self.currentRound, movie: self.currentMovie, actor: nil, context: self.managedObjectContext)
             
         } else {
             
-            let _ = Turn(player: self.currentPlayer!, game: self.game!, success: correct, round: self.currentRound, movie: nil, actor: self.currentActor, context: self.managedObjectContext)
+            let _ = Turn(player: self.currentPlayer, game: self.game, success: correct, round: self.currentRound, movie: nil, actor: self.currentActor, context: self.managedObjectContext)
         }
     }
     
@@ -677,7 +681,9 @@ extension GameplayViewController: UISearchBarDelegate {
             self.blurView.alpha = 0.85
         })
         
-        if searchBar.text != "" {
+        guard let text = searchBar.text else {return}
+        
+        if text != "" {
             
             // Open table if necessary.
             
@@ -688,7 +694,7 @@ extension GameplayViewController: UISearchBarDelegate {
                 })
             }
             
-            updateTable(searchText: searchBar.text!)
+            updateTable(searchText: text)
             
             // Scroll to top of table if necessary.
             
@@ -729,7 +735,9 @@ extension GameplayViewController: UISearchBarDelegate {
                 })
             }
             
-            updateTable(searchText: searchBar.text!)
+            guard let text = searchBar.text else {return}
+            
+            updateTable(searchText: text)
             
             // Scroll to top of table if necessary.
             
@@ -757,22 +765,22 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "searchCell", for: indexPath) as UITableViewCell
         
-        cell.textLabel!.font = UIFont(name: "Futura", size: 17)
+        cell.textLabel?.font = UIFont(name: "Futura", size: 17)
         
         switch movieButton.isSelected {
             
         case true:
             let movie = movies[indexPath.row]
             if let releaseYear = movie.releaseYear {
-                cell.textLabel!.text = "\(movie.title) (\(releaseYear))"
+                cell.textLabel?.text = "\(movie.title) (\(releaseYear))"
             } else {
-                cell.textLabel!.text = movie.title
+                cell.textLabel?.text = movie.title
             }
             break
             
         case false:
             let actor = actors[indexPath.row]
-            cell.textLabel!.text = actor.name
+            cell.textLabel?.text = actor.name
             break
         }
         
@@ -810,7 +818,7 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
         
         // Verify that the movie or actor selected has not already been used this round.
         
-        let turnsForRound = game!.history!.filter() {$0.round == currentRound}
+        let turnsForRound = game.history.filter() {$0.round == currentRound}
         var moviesForRound = [String]()
         var actorsForRound = [String]()
         
@@ -881,7 +889,7 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                     if self.instructionsScenario == "ThirdSelection" {
                         self.instructionsScenario = "ThirdSelectionIncorrectAnswer"
                     }
-                    self.currentPlayer?.score += 1
+                    self.currentPlayer.score += 1
                     self.scoreCollectionView.reloadData()
                     self.isInitialPick = true
                     self.currentRound += 1
@@ -905,15 +913,15 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
 extension GameplayViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return game!.players!.count
+        return game.players.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "scoreCell", for: indexPath) as! ScoreCell
         
-        cell.styleCell(color: game!.players![indexPath.row].color!)
-        cell.scoreLabel.text = String(game!.players![indexPath.row].score)
+        cell.styleCell(color: game.players[indexPath.row].color)
+        cell.scoreLabel.text = String(game.players[indexPath.row].score)
         
         return cell
     }

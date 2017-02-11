@@ -14,8 +14,8 @@ class TurnHistoryViewController: UIViewController, UITableViewDelegate, UITableV
     // MARK: Properties
     //----------------------------------
     
-    var game: Game? = nil
-    var selectedTurn: Turn? = nil
+    var game: Game!
+    var selectedTurn: Turn!
     
     //----------------------------------
     // MARK: Outlets
@@ -34,7 +34,7 @@ class TurnHistoryViewController: UIViewController, UITableViewDelegate, UITableV
         
         self.title = "Turn History"
 
-        if game!.history!.count == 0 {
+        if game.history.count == 0 {
             explanationLabel.isHidden = false
         } else {
             explanationLabel.isHidden = true
@@ -58,7 +58,7 @@ class TurnHistoryViewController: UIViewController, UITableViewDelegate, UITableV
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
-        guard let lastTurn = game?.history?.last else {
+        guard let lastTurn = game.history.last else {
             return 1
         }
         
@@ -78,7 +78,7 @@ class TurnHistoryViewController: UIViewController, UITableViewDelegate, UITableV
         
         // Filter out turns not associated with the current round/section.
         
-        let turnsForRound = self.game!.history!.filter() {$0.round == section + 1}
+        let turnsForRound = self.game.history.filter() {$0.round == section + 1}
         return turnsForRound.count
     }
 
@@ -86,27 +86,35 @@ class TurnHistoryViewController: UIViewController, UITableViewDelegate, UITableV
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "turnCell", for: indexPath) as UITableViewCell
         
-        let turnsForSection = self.game!.history!.filter() {$0.round == indexPath.section + 1}
+        let turnsForSection = self.game.history.filter() {$0.round == indexPath.section + 1}
         
         let turn = turnsForSection[indexPath.row]
         
-        cell.textLabel!.font = UIFont(name: "Futura", size: 17)
-        cell.textLabel!.textColor = UIColor.white
+        cell.textLabel?.font = UIFont(name: "Futura", size: 17)
+        cell.textLabel?.textColor = UIColor.white
         
         if turn.movie == nil {
-            cell.textLabel!.text = "\(turn.actor!.name)"
+            if let actor = turn.actor {
+                cell.textLabel?.text = "\(actor.name)"
+            }
         } else {
-            cell.textLabel!.text = "\(turn.movie!.title) (\(turn.movie!.releaseYear!))"
+            if let movie = turn.movie {
+                if let releaseYear = movie.releaseYear {
+                    cell.textLabel?.text = "\(movie.title) (\(releaseYear))"
+                } else {
+                    cell.textLabel?.text = "\(movie.title)"
+                }
+            }
         }
         
-        cell.backgroundColor = turn.player.color!
+        cell.backgroundColor = turn.player.color
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        selectedTurn = game!.history![indexPath.row]
+        selectedTurn = game.history[indexPath.row]
         self.performSegue(withIdentifier: "showDetail", sender: self)
     }
     

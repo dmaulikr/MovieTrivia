@@ -17,7 +17,7 @@ class Player: NSManagedObject {
     //----------------------------------
     
     @NSManaged var name: String
-    @NSManaged var color: UIColor?
+    @NSManaged var color: UIColor
     @NSManaged var score: Int
     @NSManaged var turns: [Turn]?
     @NSManaged var game: Game?
@@ -37,5 +37,6 @@ class Player: NSManagedObject {
         
         self.name = name
         self.score = 0
+        self.color = UIColor.black
     }
 }
