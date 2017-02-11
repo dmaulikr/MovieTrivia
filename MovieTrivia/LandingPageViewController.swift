@@ -11,7 +11,7 @@ import UIKit
 class LandingPageViewController: UIViewController {
     
     //----------------------------------
-    // MARK: Outlets
+    // MARK: Properties & Outlets
     //----------------------------------
     
     @IBOutlet weak var topCellView: UIView!
@@ -24,6 +24,8 @@ class LandingPageViewController: UIViewController {
         super.viewDidLoad()
         
         topCellView.layer.cornerRadius = 10.0
+        topCellView.layer.borderColor = UIColor.white.cgColor
+        topCellView.layer.borderWidth = 2.0
     }
     
     override func viewWillAppear(_ animated: Bool) {
