@@ -693,7 +693,11 @@ extension GameplayViewController: UISearchBarDelegate {
             
             if self.tableViewHeight.constant == 0.0 {
                 UIView.animate(withDuration: 0.5, animations: {
-                    self.tableViewHeight.constant = 200.0
+                    if UIScreen.main.bounds.height <= 568.0 {
+                        self.tableViewHeight.constant = 150.0
+                    } else {
+                        self.tableViewHeight.constant = 200.0
+                    }
                     self.view.layoutIfNeeded()
                 })
             }
@@ -734,7 +738,11 @@ extension GameplayViewController: UISearchBarDelegate {
             
             if self.tableViewHeight.constant == 0.0 {
                 UIView.animate(withDuration: 0.5, animations: {
-                    self.tableViewHeight.constant = 200.0
+                    if UIScreen.main.bounds.height <= 568.0 {
+                        self.tableViewHeight.constant = 150.0
+                    } else {
+                        self.tableViewHeight.constant = 200.0
+                    }
                     self.view.layoutIfNeeded()
                 })
             }
