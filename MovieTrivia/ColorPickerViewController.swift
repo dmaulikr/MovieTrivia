@@ -130,9 +130,8 @@ extension ColorPickerViewController: UICollectionViewDelegate, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "colorCell", for: indexPath) as! ColorCell
-        cell.styleCell(color: colorArray[indexPath.row])
-        
-        cell.colorView.layer.cornerRadius = cell.colorView.frame.width / 2
+        cell.colorView.backgroundColor = colorArray[indexPath.row]
+        cell.playerLabel.isHidden = true
         
         return cell
     }

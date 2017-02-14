@@ -13,15 +13,27 @@ class ColorCell: UICollectionViewCell {
     @IBOutlet weak var colorView: UIView!
     @IBOutlet weak var playerLabel: UILabel!
     
+    override var bounds : CGRect {
+        didSet {
+            self.layoutIfNeeded()
+        }
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    func styleCell(color: UIColor) {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        styleCell()
+    }
+    
+    func styleCell() {
 
         self.colorView.layer.borderWidth = 2.0
         self.colorView.layer.borderColor = UIColor.white.cgColor
-        self.colorView.backgroundColor = color
-        self.playerLabel.isHidden = true
+        self.colorView.layer.masksToBounds = true
+        self.colorView.layer.cornerRadius  = self.colorView.frame.width / 2
     }
 }
