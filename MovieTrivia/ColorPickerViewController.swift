@@ -132,6 +132,8 @@ extension ColorPickerViewController: UICollectionViewDelegate, UICollectionViewD
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "colorCell", for: indexPath) as! ColorCell
         cell.styleCell(color: colorArray[indexPath.row])
         
+        cell.colorView.layer.cornerRadius = cell.colorView.frame.width / 2
+        
         return cell
     }
     

@@ -78,4 +78,17 @@ class OptionsViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
+    
+    //----------------------------------
+    // MARK: Navigation
+    //----------------------------------
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "optionsToInstructions" {
+            
+            let instructionsVC = segue.destination as! InstructionsViewController
+            instructionsVC.currentPlayer = self.currentPlayer
+        }
+    }
 }

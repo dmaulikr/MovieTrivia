@@ -25,22 +25,22 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="filmStrip" translatesAutoresizingMaskIntoConstraints="NO" id="Fho-uc-CPW" userLabel="rightStrip">
-                                <rect key="frame" x="282.5" y="99" width="30" height="145"/>
+                                <rect key="frame" x="305.5" y="99" width="30" height="145"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="30" id="eZj-pl-0RE"/>
                                 </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gHb-XE-EAC" userLabel="titleView">
-                                <rect key="frame" x="97.5" y="101.5" width="180" height="140"/>
+                                <rect key="frame" x="75.5" y="101.5" width="225" height="140"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Movie" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MIW-Nw-ZBZ">
-                                        <rect key="frame" x="0.0" y="15" width="180" height="62.5"/>
+                                        <rect key="frame" x="0.5" y="15" width="225" height="62.5"/>
                                         <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="48"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Maze" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SBa-xY-hdq">
-                                        <rect key="frame" x="0.0" y="61" width="180" height="63"/>
+                                        <rect key="frame" x="0.5" y="61" width="225" height="63"/>
                                         <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="48"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -54,12 +54,11 @@
                                     <constraint firstItem="SBa-xY-hdq" firstAttribute="leading" secondItem="gHb-XE-EAC" secondAttribute="leading" id="JX6-hn-55c"/>
                                     <constraint firstItem="MIW-Nw-ZBZ" firstAttribute="top" secondItem="gHb-XE-EAC" secondAttribute="top" constant="15" id="d5h-LA-oln"/>
                                     <constraint firstItem="MIW-Nw-ZBZ" firstAttribute="leading" secondItem="gHb-XE-EAC" secondAttribute="leading" id="eRd-lc-8fg"/>
-                                    <constraint firstAttribute="width" constant="180" id="iSL-vB-5DV"/>
                                     <constraint firstAttribute="trailing" secondItem="SBa-xY-hdq" secondAttribute="trailing" id="zyH-va-JNj"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SK5-LS-WlW" customClass="CustomButton" customModule="MovieTrivia" customModuleProvider="target">
-                                <rect key="frame" x="98" y="518" width="180" height="40"/>
+                                <rect key="frame" x="76" y="518" width="225" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="XmI-mT-avM"/>
                                 </constraints>
@@ -87,16 +86,16 @@ Production</string>
                                 <rect key="frame" x="0.0" y="20" width="375" height="81.5"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D1B-xy-rFj" userLabel="spacerTwo">
-                                <rect key="frame" x="97.5" y="241.5" width="180" height="108.5"/>
+                                <rect key="frame" x="75.5" y="241.5" width="225" height="108.5"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1AX-Au-6w5" userLabel="spacerThree">
-                                <rect key="frame" x="97.5" y="410" width="180" height="108"/>
+                                <rect key="frame" x="75.5" y="410" width="225" height="108"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="He8-Mg-QzJ" userLabel="spacerFour">
-                                <rect key="frame" x="97.5" y="558" width="180" height="109"/>
+                                <rect key="frame" x="75.5" y="558" width="225" height="109"/>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="filmStrip" translatesAutoresizingMaskIntoConstraints="NO" id="Yta-Bx-4ai" userLabel="leftStrip">
-                                <rect key="frame" x="62.5" y="98.5" width="30" height="145"/>
+                                <rect key="frame" x="40.5" y="98.5" width="30" height="145"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="30" id="rBU-1f-KWA"/>
                                 </constraints>
@@ -115,6 +114,7 @@ Production</string>
                             <constraint firstItem="Fho-uc-CPW" firstAttribute="height" secondItem="gHb-XE-EAC" secondAttribute="height" constant="5" id="IfC-hM-hZx"/>
                             <constraint firstItem="7Ib-Nr-xqr" firstAttribute="centerX" secondItem="uO3-xC-Ejc" secondAttribute="centerX" id="J6B-IN-309"/>
                             <constraint firstItem="He8-Mg-QzJ" firstAttribute="top" secondItem="SK5-LS-WlW" secondAttribute="bottom" id="Lbs-Ac-kEe"/>
+                            <constraint firstItem="gHb-XE-EAC" firstAttribute="width" secondItem="uO3-xC-Ejc" secondAttribute="width" multiplier="0.6" id="Lkb-XU-Opc"/>
                             <constraint firstItem="1AX-Au-6w5" firstAttribute="top" secondItem="7Ib-Nr-xqr" secondAttribute="bottom" id="Oqa-lx-jjh"/>
                             <constraint firstItem="D1B-xy-rFj" firstAttribute="width" secondItem="gHb-XE-EAC" secondAttribute="width" id="PDl-M2-BQN"/>
                             <constraint firstItem="1AX-Au-6w5" firstAttribute="height" secondItem="D1B-xy-rFj" secondAttribute="height" id="QlZ-MA-RLs"/>
@@ -1006,7 +1006,7 @@ Production</string>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="settingsIcon" id="vbe-yC-cpa">
                             <connections>
-                                <segue destination="ldV-0E-qD6" kind="show" identifier="showOptions" id="t7m-hu-xMl"/>
+                                <segue destination="ldV-0E-qD6" kind="show" identifier="showOptions" id="Nqe-h5-YXQ"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -1137,9 +1137,23 @@ Production</string>
                                     <action selector="quit" destination="ldV-0E-qD6" eventType="touchUpInside" id="LgM-Fe-DCI"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3t4-tc-SIM" customClass="CustomButton" customModule="MovieTrivia" customModuleProvider="target">
+                                <rect key="frame" x="97" y="527" width="180" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="QMB-MX-cBx"/>
+                                    <constraint firstAttribute="width" constant="180" id="jkI-td-S5g"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
+                                <state key="normal" title="How to Play"/>
+                                <connections>
+                                    <segue destination="yvY-UK-hW8" kind="show" identifier="optionsToInstructions" id="zIU-4O-Jg1"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="k65-g1-KDJ" firstAttribute="top" secondItem="3t4-tc-SIM" secondAttribute="bottom" constant="20" id="DJW-Z4-BO9"/>
+                            <constraint firstItem="3t4-tc-SIM" firstAttribute="centerX" secondItem="vkb-gK-NfE" secondAttribute="centerX" id="Fzq-y8-1jo"/>
                             <constraint firstItem="k65-g1-KDJ" firstAttribute="centerX" secondItem="vkb-gK-NfE" secondAttribute="centerX" id="Oad-a5-Uvs"/>
                             <constraint firstItem="ChB-bL-X0R" firstAttribute="top" secondItem="k65-g1-KDJ" secondAttribute="bottom" constant="40" id="aJK-od-jHL"/>
                             <constraint firstItem="g2n-hq-sZh" firstAttribute="top" secondItem="kiA-iB-LJL" secondAttribute="bottom" constant="40" id="ceM-2O-EL7"/>
@@ -1147,6 +1161,9 @@ Production</string>
                             <constraint firstItem="g2n-hq-sZh" firstAttribute="width" secondItem="vkb-gK-NfE" secondAttribute="width" id="zeC-yk-zsa"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="Options" id="sFg-3U-br7">
+                        <barButtonItem key="backBarButtonItem" title=" " id="6jP-Ej-MwG"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="quitButton" destination="k65-g1-KDJ" id="iHr-h8-Tm8"/>
                         <outlet property="strikeCountContainer" destination="VJc-nM-7xl" id="I6T-6B-tPU"/>
@@ -1156,7 +1173,43 @@ Production</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5ut-Q4-buw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4796" y="492.50374812593708"/>
+            <point key="canvasLocation" x="4796" y="493"/>
+        </scene>
+        <!--How to Play-->
+        <scene sceneID="DCV-9g-GbX">
+            <objects>
+                <viewController title="How to Play" automaticallyAdjustsScrollViewInsets="NO" id="yvY-UK-hW8" customClass="InstructionsViewController" customModule="MovieTrivia" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="7MX-9J-xX6"/>
+                        <viewControllerLayoutGuide type="bottom" id="V8h-gz-VqY"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="9af-cU-7Ig">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Instructions text view" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a2U-1h-Vqn">
+                                <rect key="frame" x="16" y="84" width="343" height="583"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="a2U-1h-Vqn" secondAttribute="trailing" id="7lW-Do-GKp"/>
+                            <constraint firstItem="a2U-1h-Vqn" firstAttribute="leading" secondItem="9af-cU-7Ig" secondAttribute="leadingMargin" id="FfI-tl-UwA"/>
+                            <constraint firstItem="V8h-gz-VqY" firstAttribute="top" secondItem="a2U-1h-Vqn" secondAttribute="bottom" id="Izf-ra-UQc"/>
+                            <constraint firstItem="a2U-1h-Vqn" firstAttribute="top" secondItem="7MX-9J-xX6" secondAttribute="bottom" constant="20" id="M2v-8A-evu"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="instructionsTextView" destination="a2U-1h-Vqn" id="yJZ-3p-wxq"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="25x-4j-65K" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5647" y="493"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Nxd-Ok-2pC">

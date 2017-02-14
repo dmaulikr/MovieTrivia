@@ -19,6 +19,7 @@
 		9F1A7C951E498AA400110952 /* PosterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1A7C941E498AA400110952 /* PosterTableViewCell.swift */; };
 		9F1A7C971E498AB200110952 /* MovieTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1A7C961E498AB200110952 /* MovieTableViewCell.swift */; };
 		9F1A7C991E4B215D00110952 /* BackgroundGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1A7C981E4B215D00110952 /* BackgroundGradient.swift */; };
+		9F1A7C9B1E52ED6400110952 /* InstructionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1A7C9A1E52ED6400110952 /* InstructionsViewController.swift */; };
 		9F1F88081DFFDF3D003492D7 /* ColorPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1F88071DFFDF3D003492D7 /* ColorPickerViewController.swift */; };
 		9F1F880A1DFFE337003492D7 /* ColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1F88091DFFE337003492D7 /* ColorCell.swift */; };
 		9F44D70C1E4721D600C2B327 /* ActorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F44D70B1E4721D600C2B327 /* ActorTableViewCell.swift */; };
@@ -75,6 +76,7 @@
 		9F1A7C941E498AA400110952 /* PosterTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PosterTableViewCell.swift; sourceTree = "<group>"; };
 		9F1A7C961E498AB200110952 /* MovieTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieTableViewCell.swift; sourceTree = "<group>"; };
 		9F1A7C981E4B215D00110952 /* BackgroundGradient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundGradient.swift; sourceTree = "<group>"; };
+		9F1A7C9A1E52ED6400110952 /* InstructionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstructionsViewController.swift; sourceTree = "<group>"; };
 		9F1F88071DFFDF3D003492D7 /* ColorPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPickerViewController.swift; sourceTree = "<group>"; };
 		9F1F88091DFFE337003492D7 /* ColorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorCell.swift; sourceTree = "<group>"; };
 		9F44D70B1E4721D600C2B327 /* ActorTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActorTableViewCell.swift; sourceTree = "<group>"; };
@@ -157,6 +159,7 @@
 				9FA2E46E1E19D76F0055E8B9 /* TurnHistoryViewController.swift */,
 				9F5E74B81E1B0036009F82EB /* OptionsViewController.swift */,
 				9F1A7C901E49865100110952 /* TurnDetailTableViewController.swift */,
+				9F1A7C9A1E52ED6400110952 /* InstructionsViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -568,6 +571,7 @@
 				9FE947381DD6BFA40024DBFA /* AppDelegate.swift in Sources */,
 				9F1A7C991E4B215D00110952 /* BackgroundGradient.swift in Sources */,
 				9F0EE0BB1DF15D2C002B1FB3 /* Player.swift in Sources */,
+				9F1A7C9B1E52ED6400110952 /* InstructionsViewController.swift in Sources */,
 				9F99F8101DD9425A0050A40C /* Movie.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

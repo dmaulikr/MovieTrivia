@@ -19,7 +19,6 @@ class ColorCell: UICollectionViewCell {
     
     func styleCell(color: UIColor) {
 
-        self.colorView.layer.cornerRadius = 10.0
         self.colorView.layer.borderWidth = 2.0
         self.colorView.layer.borderColor = UIColor.white.cgColor
         self.colorView.backgroundColor = color
