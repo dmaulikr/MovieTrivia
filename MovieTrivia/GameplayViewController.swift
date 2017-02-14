@@ -116,6 +116,11 @@ class GameplayViewController: UIViewController {
         super.viewDidAppear(animated)
         
         if UserDefaults.standard.bool(forKey: "showInstructions") {
+            
+            // User is playing for the first time. Disable nav bar items and display instructional text.
+            
+            self.navigationItem.leftBarButtonItem?.isEnabled = false
+            self.navigationItem.rightBarButtonItem?.isEnabled = false
             showingInstructions = true
             topInstructions.text = "Player 1, use the search bar at the top of the screen to choose a movie or an actor to start the round."
             UIView.animate(withDuration: 0.5, animations: {
@@ -196,6 +201,11 @@ class GameplayViewController: UIViewController {
                         self.bottomArrow.alpha = 1.0
                     })
                 }
+                
+                // Enable nav bar items and update user defaults.
+                
+                self.navigationItem.leftBarButtonItem?.isEnabled = true
+                self.navigationItem.rightBarButtonItem?.isEnabled = true
                 showingInstructions = false
                 UserDefaults.standard.set(false, forKey: "showInstructions")
                 return
