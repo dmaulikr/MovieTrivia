@@ -35,9 +35,18 @@ class PlayerPickerViewController: UIViewController {
         
         playerCountContainer.layer.cornerRadius = playerCountContainer.frame.width / 2
         playerCountContainer.layer.masksToBounds = true
+        playerCountContainer.layer.borderColor = UIColor.white.cgColor
+        playerCountContainer.layer.borderWidth = 2.0
         
         stepper.minimumValue = 2.0
         stepper.maximumValue = 8.0
+    }
+    
+    override func viewWillLayoutSubviews() {
+        let radialGradient = RadialGradientLayer(center: self.view.center, radius: self.view.frame.height / 2, colors: [UIColor.red.cgColor, UIColor.black.cgColor])
+        radialGradient.frame = self.view.bounds
+        self.view.layer.insertSublayer(radialGradient, at: 0)
+        radialGradient.setNeedsDisplay()
     }
     
     override func viewWillAppear(_ animated: Bool) {

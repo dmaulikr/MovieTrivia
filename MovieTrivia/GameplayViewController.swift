@@ -161,17 +161,21 @@ class GameplayViewController: UIViewController {
             switch instructionsScenario {
                 
             case "Started":
-                if movieLabel.text != "" {
-                    topInstructions.text = "\(currentPlayer.name), choose an actor from \"\(currentMovie?.title)\"."
+                if let movie = currentMovie {
+                    topInstructions.text = "\(currentPlayer.name), choose an actor from \"\(movie.title)\"."
+                } else if let actor = currentActor {
+                    topInstructions.text = "\(currentPlayer.name), choose a movie featuring \(actor.name)."
                 } else {
-                    topInstructions.text = "\(currentPlayer.name), choose a movie featuring \(currentActor?.name)."
+                    // TODO: Handle error.
                 }
             
                 instructionsScenario = "ThirdSelection"
                 break
                 
             case "ThirdSelectionCorrectAnswer":
-                topInstructions.text = "Nice work! \(currentPlayer.name), you can now choose another actor from \"\(currentMovie?.title)\" or another movie featuring \(currentActor?.name)."
+                guard let movie = currentMovie else {break}
+                guard let actor = currentActor else {break}
+                topInstructions.text = "Nice work! \(currentPlayer.name), you can now choose another actor from \"\(movie.title)\" or another movie featuring \(actor.name)."
                 instructionsScenario = "StrikeExplanation"
                 break
                 
@@ -181,7 +185,7 @@ class GameplayViewController: UIViewController {
                 break
                 
             case "StrikeExplanation":
-                bottomInstructions.text = "That's all there is to it! Each incorrect answer earns you a strike. Three strikes and you're out. Good luck!"
+                bottomInstructions.text = "That's it! Each incorrect answer earns you a strike. Three strikes and you're out. Good luck!"
                 self.view.bringSubview(toFront: scoreCollectionBackground)
                 self.view.bringSubview(toFront: scoreLabel)
                 self.view.bringSubview(toFront: scoreCollectionView)
