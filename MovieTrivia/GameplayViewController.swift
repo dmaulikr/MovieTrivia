@@ -572,7 +572,7 @@ class GameplayViewController: UIViewController {
         
         guard let indexOfCurrentPlayer = self.activePlayers.index(of: self.currentPlayer) else {return}
         
-        if self.currentPlayer.score == UserDefaults.standard.integer(forKey: "strikeMax") {
+        if self.currentPlayer.score == 3 {
             
             self.activePlayers = self.activePlayers.filter() {$0 != self.currentPlayer}
 

@@ -20,9 +20,7 @@ class OptionsViewController: UIViewController {
     // MARK: Outlets
     //----------------------------------
     
-    @IBOutlet weak var strikeStepper: UIStepper!
-    @IBOutlet weak var strikeCountLabel: UILabel!
-    @IBOutlet weak var strikeCountContainer: UIView!
+    @IBOutlet weak var instructionsButton: CustomButton!
     @IBOutlet weak var quitButton: CustomButton!
     
     //----------------------------------
@@ -35,36 +33,13 @@ class OptionsViewController: UIViewController {
         
         self.view.backgroundColor = currentPlayer.color
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Apply", style: .plain, target: self, action: #selector(applyChanges))
-        navigationItem.rightBarButtonItem?.isEnabled = false
-        
-        strikeCountContainer.layer.cornerRadius = strikeCountContainer.frame.width / 2
-        strikeCountContainer.layer.masksToBounds = true
-        
-        strikeStepper.minimumValue = 1.0
-        strikeStepper.maximumValue = 10.0
-        strikeStepper.value = Double(UserDefaults.standard.integer(forKey: "strikeMax"))
-        strikeCountLabel.text = String(Int(strikeStepper.value))
-        strikeCountLabel.textColor = currentPlayer.color
-        
+        instructionsButton.setTitleColor(currentPlayer.color, for: .highlighted)
         quitButton.setTitleColor(currentPlayer.color, for: .highlighted)
     }
     
     //----------------------------------
     // MARK: Page Methods
     //----------------------------------
-    
-    func applyChanges() {
-        
-        UserDefaults.standard.set(Int(strikeStepper.value), forKey: "strikeMax")
-        _ = navigationController?.popViewController(animated: true)
-    }
-    
-    @IBAction func stepperValueChanged(sender: UIStepper) {
-        
-        strikeCountLabel.text = String(Int(strikeStepper.value))
-        navigationItem.rightBarButtonItem?.isEnabled = true
-    }
     
     @IBAction func quit() {
         
