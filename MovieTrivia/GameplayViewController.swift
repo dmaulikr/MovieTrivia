@@ -53,6 +53,7 @@ class GameplayViewController: UIViewController {
     @IBOutlet weak var bottomArrow: UIImageView!
     @IBOutlet weak var scoreCollectionView: UICollectionView!
     @IBOutlet weak var scoreCollectionBackground: UIView!
+    @IBOutlet weak var searchBarActivityIndicator: UIActivityIndicatorView!
     
     //----------------------------------
     // MARK: Lifecycle
@@ -280,9 +281,12 @@ class GameplayViewController: UIViewController {
             
             if let errorMessage = errorMessage {
                 guard errorMessage != ErrorMessage.cancelled else {return}
+                self.searchBarActivityIndicator.stopAnimating()
                 self.displayAlert(type: errorMessage)
                 return
             }
+            
+            self.searchBarActivityIndicator.stopAnimating()
             
             switch self.movieButton.isSelected {
                 
@@ -747,6 +751,11 @@ extension GameplayViewController: UISearchBarDelegate {
             
         } else {
             
+            searchBarActivityIndicator.isHidden = false
+            if !searchBarActivityIndicator.isAnimating {
+                searchBarActivityIndicator.startAnimating()
+            }
+            
             // Open table if necessary.
             
             if self.tableViewHeight.constant == 0.0 {
@@ -827,6 +836,7 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         self.dismissTable()
+        self.searchBarActivityIndicator.stopAnimating()
         
         // Verify that second player is not attempting to pick a value of the same type as the initial value, e.g. movie + movie.
         
