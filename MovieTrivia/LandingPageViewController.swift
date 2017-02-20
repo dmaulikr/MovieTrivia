@@ -14,7 +14,7 @@ class LandingPageViewController: UIViewController {
     // MARK: Properties & Outlets
     //----------------------------------
     
-    @IBOutlet weak var topCellView: UIView!
+    @IBOutlet weak var titleImageView: UIImageView!
     
     //----------------------------------
     // MARK: Lifecycle
@@ -23,9 +23,10 @@ class LandingPageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        topCellView.layer.cornerRadius = 10.0
-        topCellView.layer.borderColor = UIColor.white.cgColor
-        topCellView.layer.borderWidth = 2.0
+        titleImageView.layer.cornerRadius = 10.0
+        titleImageView.layer.borderColor = UIColor.white.cgColor
+        titleImageView.layer.borderWidth = 2.0
+        titleImageView.layer.masksToBounds = true
     }
     
     override func viewWillLayoutSubviews() {
