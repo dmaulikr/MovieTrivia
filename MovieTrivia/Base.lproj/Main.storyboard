@@ -25,7 +25,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Ib-Nr-xqr">
-                                <rect key="frame" x="16" y="359.5" width="343" height="44.5"/>
+                                <rect key="frame" x="16" y="357" width="343" height="44.5"/>
                                 <string key="text">a Rothrock Apps
 Production</string>
                                 <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
@@ -33,25 +33,29 @@ Production</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A44-Bx-XRh" userLabel="spacerOne">
-                                <rect key="frame" x="0.0" y="20" width="375" height="85.5"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="84.5"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D1B-xy-rFj" userLabel="spacerTwo">
-                                <rect key="frame" x="16" y="245.5" width="343" height="114"/>
+                                <rect key="frame" x="16" y="244.5" width="343" height="112.5"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1AX-Au-6w5" userLabel="spacerThree">
-                                <rect key="frame" x="16" y="404" width="343" height="114"/>
+                                <rect key="frame" x="16" y="401.5" width="343" height="113"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="He8-Mg-QzJ" userLabel="spacerFour">
-                                <rect key="frame" x="16" y="553" width="343" height="114"/>
+                                <rect key="frame" x="16" y="554.5" width="343" height="112.5"/>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="titleImage" translatesAutoresizingMaskIntoConstraints="NO" id="5LI-Of-l1a">
-                                <rect key="frame" x="75" y="105.5" width="225" height="140"/>
+                                <rect key="frame" x="75" y="104.5" width="225" height="140"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="5LI-Of-l1a" secondAttribute="height" multiplier="45:28" id="v77-NB-UEJ"/>
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SK5-LS-WlW" customClass="CustomButton" customModule="MovieTrivia" customModuleProvider="target">
-                                <rect key="frame" x="75" y="518" width="225" height="35"/>
+                                <rect key="frame" x="87.5" y="514.5" width="200" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="AeB-3H-t9f"/>
+                                    <constraint firstAttribute="height" constant="40" id="edp-MM-mjX"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
                                 <state key="normal" title="Start">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -61,10 +65,10 @@ Production</string>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="filmStrip" translatesAutoresizingMaskIntoConstraints="NO" id="MmB-F9-hVJ" userLabel="rightStrip">
-                                <rect key="frame" x="305" y="101.5" width="29.5" height="147"/>
+                                <rect key="frame" x="305" y="100.5" width="29.5" height="147"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="filmStrip" translatesAutoresizingMaskIntoConstraints="NO" id="SUn-NP-QT1" userLabel="leftStrip">
-                                <rect key="frame" x="41" y="101.5" width="29" height="147"/>
+                                <rect key="frame" x="41" y="100.5" width="29" height="147"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -86,7 +90,6 @@ Production</string>
                             <constraint firstItem="5LI-Of-l1a" firstAttribute="top" secondItem="A44-Bx-XRh" secondAttribute="bottom" id="WWy-lC-eQZ"/>
                             <constraint firstItem="1AX-Au-6w5" firstAttribute="trailing" secondItem="uO3-xC-Ejc" secondAttribute="trailingMargin" id="ZTD-k1-Nk0"/>
                             <constraint firstItem="A44-Bx-XRh" firstAttribute="top" secondItem="2S7-JX-dZ6" secondAttribute="bottom" id="ax9-XL-T8W"/>
-                            <constraint firstItem="SK5-LS-WlW" firstAttribute="width" secondItem="5LI-Of-l1a" secondAttribute="width" id="dVp-2P-bMV"/>
                             <constraint firstItem="1AX-Au-6w5" firstAttribute="top" secondItem="7Ib-Nr-xqr" secondAttribute="bottom" id="eGE-Yn-4S9"/>
                             <constraint firstAttribute="trailing" secondItem="A44-Bx-XRh" secondAttribute="trailing" id="eoc-vd-6Tn"/>
                             <constraint firstItem="D1B-xy-rFj" firstAttribute="trailing" secondItem="uO3-xC-Ejc" secondAttribute="trailingMargin" id="gQr-C8-qPu"/>
@@ -138,10 +141,10 @@ Production</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="49k-DB-TqL" customClass="CustomButton" customModule="MovieTrivia" customModuleProvider="target">
-                                <rect key="frame" x="113" y="453" width="150" height="40"/>
+                                <rect key="frame" x="88" y="453" width="200" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="P3F-lH-kEj"/>
-                                    <constraint firstAttribute="width" constant="150" id="drj-9z-FUQ"/>
+                                    <constraint firstAttribute="width" constant="200" id="drj-9z-FUQ"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
                                 <state key="normal" title="Continue">
@@ -537,9 +540,9 @@ Production</string>
                                         </connections>
                                     </collectionView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Dl-99-5a5" customClass="CustomButton" customModule="MovieTrivia" customModuleProvider="target">
-                                        <rect key="frame" x="97" y="393" width="150" height="40"/>
+                                        <rect key="frame" x="72" y="393" width="200" height="40"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="150" id="elV-WP-mjN"/>
+                                            <constraint firstAttribute="width" constant="200" id="elV-WP-mjN"/>
                                             <constraint firstAttribute="height" constant="40" id="wsz-Xb-6Ty"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
