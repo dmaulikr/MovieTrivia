@@ -279,6 +279,7 @@ class GameplayViewController: UIViewController {
         MDBClient().searchDatabase(queryInput: searchText, queryType: queryType) { (movies, actors, errorMessage) in
             
             if let errorMessage = errorMessage {
+                guard errorMessage != ErrorMessage.cancelled else {return}
                 self.displayAlert(type: errorMessage)
                 return
             }
@@ -330,33 +331,35 @@ class GameplayViewController: UIViewController {
         })
     }
     
-    func displayAlert(type: String) {
+    func displayAlert(type: ErrorMessage) {
+        
+        PKHUD.sharedHUD.hide()
         
         var alertTitle = String()
         var alertMessage = String()
         
         switch type {
             
-        case "Query failed.":
+        case ErrorMessage.failed:
             alertTitle = "Unable to connect"
             alertMessage = "You must be connected to the internet to play. Please check your network settings and try again."
             break
             
-        case "Unable to parse response.":
+        case ErrorMessage.unableToParse:
             alertTitle = "Uh-oh"
             alertMessage = "We were unable to process your selection. Please try again or make a different selection."
             break
             
-        case "Response did not contain expected key.":
+        case ErrorMessage.missingKey:
             alertTitle = "Uh-oh"
             alertMessage = "We were unable to process your selection. Please try again or make a different selection."
             break
             
-        case "Repeat selection":
+        case ErrorMessage.repeatSelection:
             alertTitle = "Not so fast"
             alertMessage = "Your selection has already been used this round. Pick a different movie or actor."
             
-        case "Use dropdown menu":
+        case ErrorMessage.dropdownMenu:
             alertTitle = "Tap your selection"
             alertMessage = "Please use the dropdown menu to make your selection. If the movie or actor you're searching for doesn't appear in the list, check your spelling or try a different selection."
             
@@ -773,7 +776,7 @@ extension GameplayViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
-        displayAlert(type: "Use dropdown menu")
+        displayAlert(type: ErrorMessage.dropdownMenu)
     }
 }
 
@@ -855,7 +858,7 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
         
         if (movieButton.isSelected && moviesForRound.contains(movies[indexPath.row].title)) || (actorButton.isSelected && actorsForRound.contains(actors[indexPath.row].name)) {
             
-            displayAlert(type: "Repeat selection")
+            displayAlert(type: ErrorMessage.repeatSelection)
             return
         }
         

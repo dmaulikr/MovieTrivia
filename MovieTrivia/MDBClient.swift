@@ -17,6 +17,20 @@ enum ImageSize: String {
     case large = "w342"
 }
 
+// Error Message Options
+
+enum ErrorMessage: String {
+    case cancelled
+    case failed
+    case missingKey
+    case unableToParse
+    case missingImagePath
+    case noImageData
+    case unableToRenderImage
+    case repeatSelection
+    case dropdownMenu
+}
+
 struct MDBClient {
     
     //----------------------------------
@@ -58,7 +72,19 @@ struct MDBClient {
     // MARK: API Methods
     //----------------------------------
     
-    func searchDatabase(queryInput: String, queryType: String, completionHandler: @escaping (_ movies: [Movie]?, _ actors: [Actor]?, _ errorMessage: String?) -> Void) {
+    func searchDatabase(queryInput: String, queryType: String, completionHandler: @escaping (_ movies: [Movie]?, _ actors: [Actor]?, _ errorMessage: ErrorMessage?) -> Void) {
+        
+        // Cancel any database queries still in progress.
+        
+        Alamofire.SessionManager.default.session.getAllTasks() { tasks in
+            
+            for task in tasks {
+                guard let url = task.originalRequest?.url else {continue}
+                if url.path.contains("search/") {
+                    task.cancel()
+                }
+            }
+        }
         
         var params = baseParameters
         params[query] = queryInput
@@ -67,13 +93,17 @@ struct MDBClient {
             
             switch response.result {
                 
-            case .failure:
-                completionHandler(nil, nil, "Query failed.")
+            case .failure(let error):
+                if error.localizedDescription == "cancelled" {
+                    completionHandler(nil, nil, ErrorMessage.cancelled)
+                } else {
+                    completionHandler(nil, nil, ErrorMessage.failed)
+                }
                 return
             
             case .success:
                 guard let responseJSON = response.result.value as? [String: AnyObject] else {
-                    completionHandler(nil, nil, "Unable to parse response.")
+                    completionHandler(nil, nil, ErrorMessage.unableToParse)
                     return
                 }
                 
@@ -83,7 +113,7 @@ struct MDBClient {
                         let movies = Movie.moviesFromResults(results: movieData, context: self.sharedContext)
                         completionHandler(movies, nil, nil)
                     } else {
-                        completionHandler(nil, nil, "Response did not contain expected key.")
+                        completionHandler(nil, nil, ErrorMessage.missingKey)
                     }
                     
                 } else {
@@ -92,26 +122,26 @@ struct MDBClient {
                         let actors = Actor.peopleFromResults(results: actorData, context: self.sharedContext)
                         completionHandler(nil, actors, nil)
                     } else {
-                        completionHandler(nil, nil, "Response did not contain expected key.")
+                        completionHandler(nil, nil, ErrorMessage.missingKey)
                     }
                 }
             }
         }
     }
     
-    func getCast(movie: Movie, completionHandler: @escaping (_ result: Set<Actor>?, _ errorMessage: String?) -> Void) {
+    func getCast(movie: Movie, completionHandler: @escaping (_ result: Set<Actor>?, _ errorMessage: ErrorMessage?) -> Void) {
         
         Alamofire.request(baseURL + "movie/" + String(movie.idNumber) + "/credits", method: .get, parameters: baseParameters, encoding: URLEncoding.default, headers: nil).responseJSON { response in
             
             switch response.result {
                 
             case .failure:
-                completionHandler(nil, "Query failed.")
+                completionHandler(nil, ErrorMessage.failed)
                 return
                 
             case .success:
                 guard let responseJSON = response.result.value as? [String: AnyObject] else {
-                    completionHandler(nil, "Unable to parse response.")
+                    completionHandler(nil, ErrorMessage.unableToParse)
                     return
                 }
                 
@@ -120,25 +150,25 @@ struct MDBClient {
                     let castSet = Set(cast)
                     completionHandler(castSet, nil)
                 } else {
-                    completionHandler(nil, "Response did not contain expected key.")
+                    completionHandler(nil, ErrorMessage.missingKey)
                 }
             }
         }
     }
     
-    func getFilmography(actor: Actor, completionHandler: @escaping (_ result: Set<Movie>?, _ errorMessage: String?) -> Void) {
+    func getFilmography(actor: Actor, completionHandler: @escaping (_ result: Set<Movie>?, _ errorMessage: ErrorMessage?) -> Void) {
         
         Alamofire.request(baseURL + "person/" + String(actor.idNumber) + "/movie_credits", method: .get, parameters: baseParameters, encoding: URLEncoding.default, headers: nil).responseJSON { response in
             
             switch response.result {
                 
             case .failure:
-                completionHandler(nil, "Query failed.")
+                completionHandler(nil, ErrorMessage.failed)
                 return
                 
             case .success:
                 guard let responseJSON = response.result.value as? [String: AnyObject] else {
-                    completionHandler(nil, "Unable to parse response.")
+                    completionHandler(nil, ErrorMessage.unableToParse)
                     return
                 }
                 
@@ -147,16 +177,16 @@ struct MDBClient {
                     let filmographySet = Set(filmography)
                     completionHandler(filmographySet, nil)
                 } else {
-                    completionHandler(nil, "Response did not contain expected key.")
+                    completionHandler(nil, ErrorMessage.missingKey)
                 }
             }
         }
     }
     
-    func getMovieImage(movie: Movie, size: ImageSize, completionHandler: @escaping (_ image: UIImage?, _ errorMessage: String?) -> Void) {
+    func getMovieImage(movie: Movie, size: ImageSize, completionHandler: @escaping (_ image: UIImage?, _ errorMessage: ErrorMessage?) -> Void) {
         
         guard let posterPath = movie.posterPath else {
-            completionHandler(nil, "Missing image path.")
+            completionHandler(nil, ErrorMessage.missingImagePath)
             return
         }
         
@@ -165,19 +195,19 @@ struct MDBClient {
             switch response.result {
                 
             case .failure:
-                completionHandler(nil, "Query failed.")
+                completionHandler(nil, ErrorMessage.failed)
                 return
                 
             case .success:
                 guard let data = response.result.value else {
-                    completionHandler(nil, "No image data returned.")
+                    completionHandler(nil, ErrorMessage.noImageData)
                     return
                 }
                 
                 movie.imageData = data
                 
                 guard let moviePosterImage = UIImage(data: data) else {
-                    completionHandler(nil, "Unable to render image.")
+                    completionHandler(nil, ErrorMessage.unableToRenderImage)
                     return
                 }
                 
@@ -186,10 +216,10 @@ struct MDBClient {
         }
     }
     
-    func getActorImage(actor: Actor, size: ImageSize, completionHandler: @escaping (_ image: UIImage?, _ errorMessage: String?) -> Void) {
+    func getActorImage(actor: Actor, size: ImageSize, completionHandler: @escaping (_ image: UIImage?, _ errorMessage: ErrorMessage?) -> Void) {
         
         guard let profilePath = actor.profilePath else {
-            completionHandler(nil, "Missing image path.")
+            completionHandler(nil, ErrorMessage.missingImagePath)
             return
         }
         
@@ -198,19 +228,19 @@ struct MDBClient {
             switch response.result {
                 
             case .failure:
-                completionHandler(nil, "Query failed.")
+                completionHandler(nil, ErrorMessage.failed)
                 return
                 
             case .success:
                 guard let data = response.result.value else {
-                    completionHandler(nil, "No image data returned.")
+                    completionHandler(nil, ErrorMessage.noImageData)
                     return
                 }
                 
                 actor.imageData = data
                 
                 guard let actorImage = UIImage(data: data) else {
-                    completionHandler(nil, "Unable to render image.")
+                    completionHandler(nil, ErrorMessage.unableToRenderImage)
                     return
                 }
                 
