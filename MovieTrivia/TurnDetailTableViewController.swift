@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AlamofireImage
 
 class TurnDetailTableViewController: UITableViewController {
     
@@ -143,17 +144,36 @@ class TurnDetailTableViewController: UITableViewController {
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: "actorCell") as! ActorTableViewCell
                 cell.backgroundColor = turn.player.color
+                cell.actorImage.image = nil
                 cell.activityIndicator.startAnimating()
                 let actor = cast[indexPath.row - 3]
                 cell.actorLabel.text = actor.name
-                MDBClient().getActorImage(actor: actor, size: ImageSize.small) { image, errorMessage in
-                    if errorMessage != nil {
-                        cell.activityIndicator.stopAnimating()
-                        cell.actorImage.image = #imageLiteral(resourceName: "person")
-                    } else {
+                
+                if let imageData = actor.imageData {
+                    
+                    if let image = UIImage(data: imageData) {
                         cell.activityIndicator.stopAnimating()
                         cell.actorImage.image = image
+                    } else {
+                        cell.activityIndicator.stopAnimating()
+                        cell.actorImage.image = #imageLiteral(resourceName: "person")
                     }
+                    
+                } else {
+                    
+                    guard let profilePath = actor.profilePath else {
+                        cell.activityIndicator.stopAnimating()
+                        cell.actorImage.image = #imageLiteral(resourceName: "person")
+                        return cell
+                    }
+                    
+                    guard let imageUrl = URL(string: MDBClient().baseImageURL + ImageSize.small.rawValue + profilePath) else {
+                        cell.activityIndicator.stopAnimating()
+                        cell.actorImage.image = #imageLiteral(resourceName: "person")
+                        return cell
+                    }
+                    
+                    cell.actorImage.af_setImage(withURL: imageUrl)
                 }
                 
                 return cell
