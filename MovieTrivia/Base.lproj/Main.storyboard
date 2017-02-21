@@ -1106,7 +1106,7 @@ Production</string>
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Instructions text view" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a2U-1h-Vqn">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Instructions text view" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a2U-1h-Vqn">
                                 <rect key="frame" x="16" y="84" width="343" height="583"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
