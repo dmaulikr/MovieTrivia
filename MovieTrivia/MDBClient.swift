@@ -20,7 +20,7 @@ enum ImageSize: String {
 // Error Message Options
 
 enum ErrorMessage: String {
-    case cancelled
+    case ignoreError
     case failed
     case missingKey
     case unableToParse
@@ -94,14 +94,16 @@ struct MDBClient {
             switch response.result {
                 
             case .failure(let error):
-                if error.localizedDescription == "cancelled" {
-                    completionHandler(nil, nil, ErrorMessage.cancelled)
+                
+                if error.localizedDescription == "cancelled" || error.localizedDescription.contains("JSON") {
+                    completionHandler(nil, nil, ErrorMessage.ignoreError)
                 } else {
                     completionHandler(nil, nil, ErrorMessage.failed)
                 }
                 return
             
             case .success:
+                
                 guard let responseJSON = response.result.value as? [String: AnyObject] else {
                     completionHandler(nil, nil, ErrorMessage.unableToParse)
                     return

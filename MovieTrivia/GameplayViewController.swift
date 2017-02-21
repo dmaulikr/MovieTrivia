@@ -280,7 +280,7 @@ class GameplayViewController: UIViewController {
         MDBClient().searchDatabase(queryInput: searchText, queryType: queryType) { (movies, actors, errorMessage) in
             
             if let errorMessage = errorMessage {
-                guard errorMessage != ErrorMessage.cancelled else {return}
+                guard errorMessage != ErrorMessage.ignoreError else {return}
                 self.searchBarActivityIndicator.stopAnimating()
                 self.displayAlert(type: errorMessage)
                 return
