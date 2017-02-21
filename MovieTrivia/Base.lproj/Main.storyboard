@@ -259,7 +259,7 @@ Production</string>
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ise-Du-k5E" id="E6T-Gh-P6U">
-                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -355,13 +355,15 @@ Production</string>
                                             <color key="backgroundColor" red="0.70104206650000001" green="0.73659952029999998" blue="0.92737926140000004" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="255" id="Dzl-le-Fmq"/>
+                                                <constraint firstAttribute="width" secondItem="cQY-mE-86J" secondAttribute="height" multiplier="57:85" id="GQV-OI-g9d"/>
                                             </constraints>
                                         </imageView>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="cQY-mE-86J" firstAttribute="centerX" secondItem="2OG-N1-eev" secondAttribute="centerX" id="4vy-MG-O1Y"/>
                                         <constraint firstItem="cQY-mE-86J" firstAttribute="top" secondItem="2OG-N1-eev" secondAttribute="top" constant="20" id="7Dc-4G-ATQ"/>
-                                        <constraint firstItem="cQY-mE-86J" firstAttribute="leading" secondItem="2OG-N1-eev" secondAttribute="leading" constant="102" id="9qB-4D-k9J"/>
-                                        <constraint firstAttribute="trailing" secondItem="cQY-mE-86J" secondAttribute="trailing" constant="102" id="LLL-kh-bNg"/>
+                                        <constraint firstItem="cQY-mE-86J" firstAttribute="leading" relation="lessThanOrEqual" secondItem="2OG-N1-eev" secondAttribute="leading" constant="102" id="9qB-4D-k9J"/>
+                                        <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="cQY-mE-86J" secondAttribute="trailing" constant="102" id="LLL-kh-bNg"/>
                                         <constraint firstAttribute="bottom" secondItem="cQY-mE-86J" secondAttribute="bottom" id="bEo-s0-R6t"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -905,7 +907,7 @@ Production</string>
                                         <rect key="frame" x="0.0" y="28" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="G1z-Gi-wiA" id="ptK-rr-CWP">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
