@@ -131,7 +131,7 @@ struct MDBClient {
     
     func getCast(movie: Movie, completionHandler: @escaping (_ result: Set<Actor>?, _ errorMessage: ErrorMessage?) -> Void) {
         
-        Alamofire.request(baseURL + "movie/" + String(movie.idNumber) + "/credits", method: .get, parameters: baseParameters, encoding: URLEncoding.default, headers: nil).responseJSON { response in
+        Alamofire.request(baseURL + "movie/" + String(movie.idNumber.intValue) + "/credits", method: .get, parameters: baseParameters, encoding: URLEncoding.default, headers: nil).responseJSON { response in
             
             switch response.result {
                 
@@ -158,7 +158,7 @@ struct MDBClient {
     
     func getFilmography(actor: Actor, completionHandler: @escaping (_ result: Set<Movie>?, _ errorMessage: ErrorMessage?) -> Void) {
         
-        Alamofire.request(baseURL + "person/" + String(actor.idNumber) + "/movie_credits", method: .get, parameters: baseParameters, encoding: URLEncoding.default, headers: nil).responseJSON { response in
+        Alamofire.request(baseURL + "person/" + String(actor.idNumber.intValue) + "/movie_credits", method: .get, parameters: baseParameters, encoding: URLEncoding.default, headers: nil).responseJSON { response in
             
             switch response.result {
                 

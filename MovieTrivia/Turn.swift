@@ -17,7 +17,7 @@ class Turn: NSManagedObject {
     
     @NSManaged var player: Player
     @NSManaged var success: Bool
-    @NSManaged var round: Int
+    @NSManaged var round: NSNumber
     @NSManaged var movie: Movie?
     @NSManaged var actor: Actor?
     @NSManaged var game: Game
@@ -38,7 +38,7 @@ class Turn: NSManagedObject {
         self.player = player
         self.game = game
         self.success = success
-        self.round = round
+        self.round = NSNumber(value: round)
         self.movie = movie
         self.actor = actor
     }

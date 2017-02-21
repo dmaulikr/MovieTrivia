@@ -62,7 +62,7 @@ class TurnHistoryViewController: UIViewController, UITableViewDelegate, UITableV
             return 1
         }
         
-        return lastTurn.round
+        return lastTurn.round.intValue
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -78,7 +78,7 @@ class TurnHistoryViewController: UIViewController, UITableViewDelegate, UITableV
         
         // Filter out turns not associated with the current round/section.
         
-        let turnsForRound = self.game.history.filter() {$0.round == section + 1}
+        let turnsForRound = self.game.history.filter() {$0.round.intValue == section + 1}
         return turnsForRound.count
     }
 
@@ -86,7 +86,7 @@ class TurnHistoryViewController: UIViewController, UITableViewDelegate, UITableV
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "turnCell", for: indexPath) as UITableViewCell
         
-        let turnsForSection = self.game.history.filter() {$0.round == indexPath.section + 1}
+        let turnsForSection = self.game.history.filter() {$0.round.intValue == indexPath.section + 1}
         
         let turn = turnsForSection[indexPath.row]
         

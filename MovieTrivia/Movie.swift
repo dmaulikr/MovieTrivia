@@ -19,7 +19,7 @@ class Movie: NSManagedObject {
     @NSManaged var releaseDate: String?
     @NSManaged var releaseYear: String?
     @NSManaged var posterPath: String?
-    @NSManaged var idNumber: Int
+    @NSManaged var idNumber: NSNumber
     @NSManaged var imageData: Data?
     @NSManaged var cast: Set<Actor>?
     
@@ -39,7 +39,7 @@ class Movie: NSManagedObject {
         title = dictionary["title"] as! String
         releaseDate = dictionary["release_date"] as? String
         posterPath = dictionary["poster_path"] as? String
-        idNumber = dictionary["id"] as! Int
+        idNumber = dictionary["id"] as! NSNumber
         
         if let date = releaseDate {
             guard date != "" else {return}

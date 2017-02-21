@@ -17,7 +17,7 @@ class Actor: NSManagedObject {
     
     @NSManaged var name: String
     @NSManaged var profilePath: String?
-    @NSManaged var idNumber: Int
+    @NSManaged var idNumber: NSNumber
     @NSManaged var imageData: Data?
     @NSManaged var filmography: Set<Movie>?
     
@@ -36,7 +36,7 @@ class Actor: NSManagedObject {
         
         name = dictionary["name"] as! String
         profilePath = dictionary["profile_path"] as? String
-        idNumber = dictionary["id"] as! Int
+        idNumber = dictionary["id"] as! NSNumber
     }
     
     //----------------------------------

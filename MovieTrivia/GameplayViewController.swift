@@ -853,7 +853,7 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
         
         // Verify that the movie or actor selected has not already been used this round.
         
-        let turnsForRound = game.history.filter() {$0.round == currentRound}
+        let turnsForRound = game.history.filter() {$0.round.intValue == currentRound}
         var moviesForRound = [String]()
         var actorsForRound = [String]()
         
@@ -924,7 +924,8 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                     if self.instructionsScenario == "ThirdSelection" {
                         self.instructionsScenario = "ThirdSelectionIncorrectAnswer"
                     }
-                    self.currentPlayer.score += 1
+                    let value = self.currentPlayer.score.intValue + 1
+                    self.currentPlayer.score = NSNumber(value: value)
                     self.scoreCollectionView.reloadData()
                     self.isInitialPick = true
                     self.currentRound += 1
@@ -956,7 +957,8 @@ extension GameplayViewController: UICollectionViewDelegate, UICollectionViewData
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "scoreCell", for: indexPath) as! ScoreCell
         
         cell.styleCell(color: game.players[indexPath.row].color)
-        cell.scoreLabel.text = String(game.players[indexPath.row].score)
+        let value = game.players[indexPath.row].score.intValue
+        cell.scoreLabel.text = String(value)
         
         return cell
     }
