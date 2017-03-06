@@ -40,6 +40,7 @@ class GameplayViewController: UIViewController {
     @IBOutlet weak var radioButtonContainer: UIView!
     @IBOutlet weak var movieButton: RadioButton!
     @IBOutlet weak var actorButton: RadioButton!
+    @IBOutlet weak var helpButton: CustomButton!
     @IBOutlet weak var blurView: UIView!
     @IBOutlet weak var imageTitleLabel: UILabel!
     @IBOutlet weak var moviePosterImage: UIImageView!
@@ -86,6 +87,10 @@ class GameplayViewController: UIViewController {
         
         movieButton.isSelected = true
         actorButton.isSelected = false
+        
+        helpButton.layer.cornerRadius = helpButton.frame.width / 2
+        helpButton.titleLabel!.font = UIFont(name: "Helvetica Neue Bold", size: 17.0)
+        helpButton.setTitleColor(currentPlayer.color, for: .highlighted)
         
         movieLabel.text = ""
         actorLabel.text = ""
