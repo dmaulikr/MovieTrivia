@@ -64,15 +64,17 @@ class GameplayViewController: UIViewController {
         
         super.viewDidLoad()
         
-        // Set initial gampeplay values.
+        // Initial gampeplay values
         
         activePlayers = game.players
         currentPlayer = game.players[0]
-        self.title = currentPlayer.name
         
-        // Set up UI.
+        // Navigation controller
         
         self.title = currentPlayer.name
+        navigationItem.hidesBackButton = true
+        
+        // Current player color scheme
         
         self.view.backgroundColor = currentPlayer.color
         self.radioButtonContainer.backgroundColor = currentPlayer.color
@@ -81,9 +83,22 @@ class GameplayViewController: UIViewController {
         self.imageTitleLabel.textColor = currentPlayer.color
         self.scoreLabel.textColor = currentPlayer.color
         
-        navigationItem.hidesBackButton = true
+        // Movie and actor images
         
-        self.tableViewHeight.constant = 0
+        imageTitleLabel.layer.cornerRadius = 10.0
+        imageTitleLabel.layer.masksToBounds = true
+        
+        moviePosterImage.layer.borderWidth = 2
+        moviePosterImage.layer.borderColor = UIColor.white.cgColor
+        moviePosterImage.layer.cornerRadius = 10.0
+        moviePosterImage.layer.masksToBounds = true
+        
+        actorImage.layer.borderWidth = 2
+        actorImage.layer.borderColor = UIColor.white.cgColor
+        actorImage.layer.cornerRadius = 10.0
+        actorImage.layer.masksToBounds = true
+        
+        // Search bar
         
         movieButton.isSelected = true
         actorButton.isSelected = false
@@ -92,26 +107,12 @@ class GameplayViewController: UIViewController {
         helpButton.titleLabel!.font = UIFont(name: "Helvetica Neue Bold", size: 17.0)
         helpButton.setTitleColor(currentPlayer.color, for: .highlighted)
         
-        movieLabel.text = ""
-        actorLabel.text = ""
-        
-        imageTitleLabel.layer.cornerRadius = 10.0
-        imageTitleLabel.layer.masksToBounds = true
-        
         scoreLabel.layer.cornerRadius = 10.0
         scoreLabel.layer.masksToBounds = true
         
-        moviePosterImage.layer.borderWidth = 2
-        moviePosterImage.layer.borderColor = UIColor.white.cgColor
-        moviePosterImage.layer.cornerRadius = 10.0
-        moviePosterImage.layer.masksToBounds = true
-    
-        actorImage.layer.borderWidth = 2
-        actorImage.layer.borderColor = UIColor.white.cgColor
-        actorImage.layer.cornerRadius = 10.0
-        actorImage.layer.masksToBounds = true
-        
         searchBar.returnKeyType = .done
+        
+        // Re-use arrow image for top and bottom instructions.
         
         if let arrowImage = #imageLiteral(resourceName: "arrow").cgImage {
             bottomArrow.image = UIImage(cgImage: arrowImage, scale: 1.0, orientation: .downMirrored)
@@ -123,17 +124,16 @@ class GameplayViewController: UIViewController {
         
         if UserDefaults.standard.bool(forKey: "showInstructions") {
             
-            // User is playing for the first time. Disable nav bar items and display instructional text.
+            // User is playing for the first time. Disable nav bar items and help button and display instructional text.
             
             self.navigationItem.leftBarButtonItem?.isEnabled = false
             self.navigationItem.rightBarButtonItem?.isEnabled = false
+            helpButton.isEnabled = false
             showingInstructions = true
             topInstructions.text = "Player 1, use the search bar at the top of the screen to choose a movie or an actor to start the round."
-            UIView.animate(withDuration: 0.5, animations: {
-                self.topInstructions.alpha = 1.0
-                self.topArrow.alpha = 1.0
-                self.blurView.alpha = 0.85
-            })
+            
+            revealBlurView()
+            revealTopInstructions()
         }
     }
     
@@ -201,17 +201,16 @@ class GameplayViewController: UIViewController {
                 self.view.bringSubview(toFront: scoreLabel)
                 self.view.bringSubview(toFront: scoreCollectionView)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                    UIView.animate(withDuration: 0.5, animations: {
-                        self.blurView.alpha = 0.85
-                        self.bottomInstructions.alpha = 1.0
-                        self.bottomArrow.alpha = 1.0
-                    })
+                    
+                    self.revealBlurView()
+                    self.revealBottomInstructions()
                 }
                 
-                // Enable nav bar items and update user defaults.
+                // Enable nav bar items and help button and update user defaults.
                 
                 self.navigationItem.leftBarButtonItem?.isEnabled = true
                 self.navigationItem.rightBarButtonItem?.isEnabled = true
+                helpButton.isEnabled = true
                 showingInstructions = false
                 UserDefaults.standard.set(false, forKey: "showInstructions")
                 return
@@ -221,11 +220,9 @@ class GameplayViewController: UIViewController {
             }
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                UIView.animate(withDuration: 0.5, animations: {
-                    self.blurView.alpha = 0.85
-                    self.topInstructions.alpha = 1.0
-                    self.topArrow.alpha = 1.0
-                })
+                
+                self.revealBlurView()
+                self.revealTopInstructions()
             }
         }
     }
@@ -249,16 +246,45 @@ class GameplayViewController: UIViewController {
         }
     }
     
+    @IBAction func helpButtonTapped() {
+        
+        searchBar.becomeFirstResponder()
+        revealBlurView()
+        
+        if tableViewHeight.constant != 0.0 {
+            UIView.animate(withDuration: 0.5, animations: {
+                self.tableViewHeight.constant = 0.0
+                self.view.layoutIfNeeded()
+            })
+        }
+        
+        if currentMovie != nil && currentActor != nil {
+            topInstructions.text = "\(currentPlayer.name), use the search bar at the top of the screen to choose another actor from \"\(currentMovie!.title)\" or another movie featuring \(currentActor!.name)."
+        } else if currentMovie != nil {
+            topInstructions.text = "\(currentPlayer.name), use the search bar at the top of the screen to choose an actor from \"\(currentMovie!.title)\"."
+        } else if currentActor != nil {
+            topInstructions.text = "\(currentPlayer.name), use the search bar at the top of the screen to choose a movie featuring \(currentActor!.name)."
+        } else {
+            topInstructions.text = "\(currentPlayer.name), use the search bar at the top of the screen to choose a movie or an actor to start the round."
+        }
+        
+        if topInstructions.alpha != 1.0 {
+            revealTopInstructions()
+        } else {
+            hideInstructions()
+        }
+    }
+    
     @IBAction func backgroundTapped() {
         
         self.view.endEditing(true)
         
         if !showingInstructions {
+            
+            hideBlurView()
+            hideInstructions()
+            
             UIView.animate(withDuration: 0.5, animations: {
-                self.tableViewHeight.constant = 0
-                self.blurView.alpha = 0.0
-                self.bottomInstructions.alpha = 0.0
-                self.bottomArrow.alpha = 0.0
                 self.view.sendSubview(toBack: self.scoreLabel)
                 self.view.sendSubview(toBack: self.scoreCollectionView)
                 self.view.sendSubview(toBack: self.scoreCollectionBackground)
@@ -333,9 +359,11 @@ class GameplayViewController: UIViewController {
         self.searchBar.text = ""
         self.view.endEditing(true)
         
+        hideBlurView()
+        hideInstructions()
+        
         UIView.animate(withDuration: 0.5, animations: {
             self.tableViewHeight.constant = 0.0
-            self.blurView.alpha = 0.0
             self.view.layoutIfNeeded()
         })
     }
@@ -433,6 +461,46 @@ class GameplayViewController: UIViewController {
     //----------------------------------
     // MARK: Helper Methods
     //----------------------------------
+    
+    func revealBlurView() {
+        
+        UIView.animate(withDuration: 0.5, animations: {
+            self.blurView.alpha = 0.85
+        })
+    }
+    
+    func hideBlurView() {
+        
+        UIView.animate(withDuration: 0.5, animations: {
+            self.blurView.alpha = 0.0
+        })
+    }
+    
+    func revealTopInstructions() {
+        
+        UIView.animate(withDuration: 0.5, animations: {
+            self.topInstructions.alpha = 1.0
+            self.topArrow.alpha = 1.0
+        })
+    }
+    
+    func revealBottomInstructions() {
+        
+        UIView.animate(withDuration: 0.5, animations: {
+            self.bottomInstructions.alpha = 1.0
+            self.bottomArrow.alpha = 1.0
+        })
+    }
+    
+    func hideInstructions() {
+        
+        UIView.animate(withDuration: 0.5, animations: {
+            self.topInstructions.alpha = 0.0
+            self.topArrow.alpha = 0.0
+            self.bottomInstructions.alpha = 0.0
+            self.bottomArrow.alpha = 0.0
+        })
+    }
     
     func verifyAnswer(movie: Movie?, actor: Actor?, completionHandler: @escaping (_ correct: Bool?) -> Void) {
         
@@ -684,28 +752,17 @@ extension GameplayViewController: UISearchBarDelegate {
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         
-        if topInstructions.alpha != 0 {
-            UIView.animate(withDuration: 0.5, animations: {
-                self.topInstructions.alpha = 0
-                self.topArrow.alpha = 0
-            })
-        }
+        hideInstructions()
         
         if bottomInstructions.alpha != 0 {
             UIView.animate(withDuration: 0.5, animations: {
-                self.bottomInstructions.alpha = 0
-                self.bottomArrow.alpha = 0
                 self.view.sendSubview(toBack: self.scoreLabel)
                 self.view.sendSubview(toBack: self.scoreCollectionView)
                 self.view.sendSubview(toBack: self.scoreCollectionBackground)
             })
         }
         
-        // Blur UI.
-        
-        UIView.animate(withDuration: 0.5, animations: {
-            self.blurView.alpha = 0.85
-        })
+        revealBlurView()
         
         guard let text = searchBar.text else {return}
         
@@ -736,6 +793,8 @@ extension GameplayViewController: UISearchBarDelegate {
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        hideInstructions()
         
         if searchText == "" {
             
@@ -790,6 +849,7 @@ extension GameplayViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
+        hideInstructions()
         displayAlert(type: ErrorMessage.dropdownMenu)
     }
 }
