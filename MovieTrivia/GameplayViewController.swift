@@ -141,6 +141,20 @@ class GameplayViewController: UIViewController {
     // MARK: UI Methods
     //----------------------------------
     
+    func dismissTable() {
+        
+        self.searchBar.text = ""
+        self.view.endEditing(true)
+        
+        hideBlurView()
+        hideInstructions()
+        
+        UIView.animate(withDuration: 0.5, animations: {
+            self.tableViewHeight.constant = 0.0
+            self.view.layoutIfNeeded()
+        })
+    }
+    
     func updateUIForCurrentPlayer(clearPreviousAnswers: Bool) {
         
         UIView.animate(withDuration: 0.5, animations: {
@@ -275,6 +289,19 @@ class GameplayViewController: UIViewController {
         }
     }
     
+    @IBAction func imageTapped(sender: UIButton) {
+        
+        if sender.tag == 1 {
+            movieButton.isSelected = true
+            actorButton.isSelected = false
+        } else {
+            actorButton.isSelected = true
+            movieButton.isSelected = false
+        }
+        
+        searchBar.becomeFirstResponder()
+    }
+    
     @IBAction func backgroundTapped() {
         
         self.view.endEditing(true)
@@ -291,81 +318,6 @@ class GameplayViewController: UIViewController {
                 self.view.layoutIfNeeded()
             })
         }
-    }
-    
-    func updateTable(searchText: String) {
-        
-        var queryType: String
-        
-        switch movieButton.isSelected {
-            
-        case true:
-            queryType = MDBClient.movie
-            break
-            
-        case false:
-            queryType = MDBClient.person
-            break
-        }
-        
-        MDBClient().searchDatabase(queryInput: searchText, queryType: queryType) { (movies, actors, errorMessage) in
-            
-            if let errorMessage = errorMessage {
-                guard errorMessage != ErrorMessage.ignoreError else {return}
-                self.searchBarActivityIndicator.stopAnimating()
-                self.displayAlert(type: errorMessage)
-                return
-            }
-            
-            self.searchBarActivityIndicator.stopAnimating()
-            
-            switch self.movieButton.isSelected {
-                
-            case true:
-                
-                guard let movies = movies else {
-                    return
-                }
-                
-                self.movies = [Movie]()
-                
-                for movie in movies {
-                    self.movies.append(movie)
-                }
-                
-                break
-                
-            case false:
-                
-                guard let actors = actors else {
-                    return
-                }
-                
-                self.actors = [Actor]()
-                
-                for actor in actors {
-                    self.actors.append(actor)
-                }
-                
-                break
-            }
-            
-            self.tableView.reloadData()
-        }
-    }
-    
-    func dismissTable() {
-        
-        self.searchBar.text = ""
-        self.view.endEditing(true)
-        
-        hideBlurView()
-        hideInstructions()
-        
-        UIView.animate(withDuration: 0.5, animations: {
-            self.tableViewHeight.constant = 0.0
-            self.view.layoutIfNeeded()
-        })
     }
     
     func displayAlert(type: ErrorMessage) {
@@ -464,12 +416,24 @@ class GameplayViewController: UIViewController {
     
     func revealBlurView() {
         
+        let views = [blurView, radioButtonContainer, tableView, topInstructions, topArrow, bottomInstructions, bottomArrow]
+        
+        for view in views {
+            if let view = view {
+                self.view.bringSubview(toFront: view)
+            }
+        }
+        
+        self.view.layoutSubviews()
+        
         UIView.animate(withDuration: 0.5, animations: {
             self.blurView.alpha = 0.85
         })
     }
     
     func hideBlurView() {
+        
+        self.view.sendSubview(toBack: blurView)
         
         UIView.animate(withDuration: 0.5, animations: {
             self.blurView.alpha = 0.0
@@ -1003,6 +967,67 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                     self.updateCurrentPlayer()
                 }
             }
+        }
+    }
+    
+    func updateTable(searchText: String) {
+        
+        var queryType: String
+        
+        switch movieButton.isSelected {
+            
+        case true:
+            queryType = MDBClient.movie
+            break
+            
+        case false:
+            queryType = MDBClient.person
+            break
+        }
+        
+        MDBClient().searchDatabase(queryInput: searchText, queryType: queryType) { (movies, actors, errorMessage) in
+            
+            if let errorMessage = errorMessage {
+                guard errorMessage != ErrorMessage.ignoreError else {return}
+                self.searchBarActivityIndicator.stopAnimating()
+                self.displayAlert(type: errorMessage)
+                return
+            }
+            
+            self.searchBarActivityIndicator.stopAnimating()
+            
+            switch self.movieButton.isSelected {
+                
+            case true:
+                
+                guard let movies = movies else {
+                    return
+                }
+                
+                self.movies = [Movie]()
+                
+                for movie in movies {
+                    self.movies.append(movie)
+                }
+                
+                break
+                
+            case false:
+                
+                guard let actors = actors else {
+                    return
+                }
+                
+                self.actors = [Actor]()
+                
+                for actor in actors {
+                    self.actors.append(actor)
+                }
+                
+                break
+            }
+            
+            self.tableView.reloadData()
         }
     }
 }
