@@ -22,6 +22,7 @@ class Movie: NSManagedObject {
     @NSManaged var idNumber: NSNumber
     @NSManaged var imageData: Data?
     @NSManaged var cast: Set<Actor>?
+    @NSManaged var popularity: NSNumber?
     
     //----------------------------------
     // MARK: Initialization

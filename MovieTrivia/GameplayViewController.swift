@@ -11,6 +11,11 @@ import CoreData
 import PKHUD
 import SideMenu
 
+enum TurnType: String {
+    case movie
+    case actor
+}
+
 class GameplayViewController: UIViewController {
     
     //----------------------------------
@@ -22,6 +27,7 @@ class GameplayViewController: UIViewController {
     var activePlayers = [Player]()
     var currentMovie: Movie? = nil
     var currentActor: Actor? = nil
+    var isSinglePlayerGame = false
     var currentPlayer: Player!
     var currentRound = 1
     var game: Game!
@@ -29,6 +35,27 @@ class GameplayViewController: UIViewController {
     var showingInstructions = false
     var instructionsScenario = "Started"
     var managedObjectContext: NSManagedObjectContext {return CoreDataStackManager.sharedInstance.managedObjectContext}
+    var turnsForRound: [Turn] {return game.history.filter() {$0.round.intValue == self.currentRound}}
+    
+    var actorsForRound: [String] {
+        var actors = [String]()
+        for turn in turnsForRound {
+            if let actor = turn.actor {
+                actors.append(actor.name)
+            }
+        }
+        return actors
+    }
+    
+    var moviesForRound: [String] {
+        var movies = [String]()
+        for turn in turnsForRound {
+            if let movie = turn.movie {
+                movies.append(movie.title)
+            }
+        }
+        return movies
+    }
     
     //----------------------------------
     // MARK: Outlets
@@ -68,6 +95,10 @@ class GameplayViewController: UIViewController {
         
         activePlayers = game.players
         currentPlayer = game.players[0]
+        
+        if game.players.count == 2 && game.players[1].name == "Computer 1" {
+            isSinglePlayerGame = true
+        }
         
         // Navigation controller
         
@@ -362,18 +393,19 @@ class GameplayViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
-    func setImageForTurn(indexOfSelectedRow: Int, completionHandler: @escaping () -> Void) {
+    func setImageForTurn(indexOfSelectedRow: Int?, turnType: TurnType, completionHandler: @escaping () -> Void) {
         
-        switch movieButton.isSelected {
+        switch turnType {
             
-        case true:
+        case .movie:
             
-            currentMovie = movies[indexOfSelectedRow]
-            guard let movie = currentMovie else {return}
+            if let index = indexOfSelectedRow {
+                self.currentMovie = self.movies[index]
+            }
             
             // Set movie label and image.
             
-            MDBClient().getMovieImage(movie: movie, size: ImageSize.large) { (image, errorMessage) in
+            MDBClient().getMovieImage(movie: currentMovie!, size: ImageSize.large) { (image, errorMessage) in
                 
                 UIView.transition(with: self.movieLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.movieLabel.text = self.currentMovie?.title}, completion: nil)
                 
@@ -387,14 +419,15 @@ class GameplayViewController: UIViewController {
                 completionHandler()
             }
             
-        case false:
+        case .actor:
             
-            currentActor = actors[indexOfSelectedRow]
-            guard let actor = currentActor else {return}
+            if let index = indexOfSelectedRow {
+                self.currentActor = self.actors[index]
+            }
             
             // Set actor label and image.
             
-            MDBClient().getActorImage(actor: actor, size: ImageSize.large) { (image, errorMessage) in
+            MDBClient().getActorImage(actor: currentActor!, size: ImageSize.large) { (image, errorMessage) in
                 
                 UIView.transition(with: self.actorLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.actorLabel.text = self.currentActor?.name}, completion: nil)
                 
@@ -477,7 +510,7 @@ class GameplayViewController: UIViewController {
                 return
             }
             
-            MDBClient().getCast(movie: movie) { (cast, errorMessage) in
+            MDBClient().getCast(movie: movie) { (castSet, castArray, errorMessage) in
                 
                 if let errorMessage = errorMessage {
                     self.displayAlert(type: errorMessage)
@@ -485,12 +518,12 @@ class GameplayViewController: UIViewController {
                     return
                 }
                 
-                guard let cast = cast else {
+                guard let castSet = castSet else {
                     completionHandler(nil)
                     return
                 }
                 
-                movie.cast = cast
+                movie.cast = castSet
                 
                 guard !self.isInitialPick else {
                     completionHandler(true)
@@ -502,7 +535,7 @@ class GameplayViewController: UIViewController {
                     return
                 }
                 
-                for castMember in cast {
+                for castMember in castSet {
                     if castMember.name == actor.name {
                         completionHandler(true)
                         return
@@ -676,15 +709,129 @@ class GameplayViewController: UIViewController {
         }
     }
     
-    func saveTurn(correct: Bool) {
+    func saveTurn(correct: Bool, turnType: TurnType) {
         
-        if self.movieButton.isSelected {
-            
+        if turnType == .movie {
             let _ = Turn(player: self.currentPlayer, game: self.game, success: correct, round: self.currentRound, movie: self.currentMovie, actor: nil, context: self.managedObjectContext)
-            
         } else {
-            
             let _ = Turn(player: self.currentPlayer, game: self.game, success: correct, round: self.currentRound, movie: nil, actor: self.currentActor, context: self.managedObjectContext)
+        }
+        
+        clearCache()
+        CoreDataStackManager.sharedInstance.saveContext() { error in
+            guard error == nil else {
+                // TODO: Handle error.
+                return
+            }
+        }
+    }
+
+    func performAiTurn() {
+        
+        PKHUD.sharedHUD.contentView = PKHUDProgressView()
+        PKHUD.sharedHUD.show()
+        
+        currentPlayer = game.players[1]
+        
+        var turnType: TurnType
+        
+        if currentMovie != nil && currentActor != nil {
+            turnType = Int(arc4random_uniform(2)) == 1 ? TurnType.movie : TurnType.actor
+        } else if currentMovie != nil {
+            turnType = .actor
+        } else {
+            turnType = .movie
+        }
+        
+        switch turnType {
+
+        case .movie:
+            
+            MDBClient().getFilmography(actor: self.currentActor!) { (filmSet, errorMessage) in
+            
+                if let errorMessage = errorMessage {
+                    self.displayAlert(type: errorMessage)
+                    return
+                }
+                
+                guard let filmSet = filmSet else {
+                    return
+                }
+                
+                var unusedMovies = [Movie]()
+                
+                for movie in filmSet {
+                    if !self.moviesForRound.contains(movie.title) {
+                        unusedMovies.append(movie)
+                    }
+                }
+                
+                var moviesToConsider = [Movie]()
+                
+                for _ in 1...15 {
+                    let index = Int(arc4random_uniform(UInt32(unusedMovies.count)))
+                    let movie = unusedMovies[index]
+                    if !moviesToConsider.contains(movie) {
+                        moviesToConsider.append(movie)
+                    }
+                }
+                
+                MDBClient().getMostPopularMovie(movies: moviesToConsider) { (movie, errorMessage) in
+                    
+                    if let errorMessage = errorMessage {
+                        self.displayAlert(type: errorMessage)
+                        return
+                    }
+                    
+                    guard let movie = movie else {
+                        return
+                    }
+                    
+                    self.currentMovie = movie
+                    self.saveTurn(correct: true, turnType: .movie)
+                    
+                    self.setImageForTurn(indexOfSelectedRow: nil, turnType: .movie) {
+                        
+                        PKHUD.sharedHUD.hide(afterDelay: 1.5) { _ in
+                            self.currentPlayer = self.game.players[0]
+                            print("CURRENT PLAYER: \(self.currentPlayer.name)")
+                        }
+                    }
+                }
+            }
+
+        case .actor:
+
+            MDBClient().getCast(movie: self.currentMovie!) { (castSet, castArray, errorMessage) in
+                
+                if let errorMessage = errorMessage {
+                    self.displayAlert(type: errorMessage)
+                    return
+                }
+                
+                guard let castArray = castArray else {
+                    return
+                }
+                
+                // Actors in array are sorted according to prominence in the film. Select first available actor.
+                
+                for actor in castArray {
+                    if !self.actorsForRound.contains(actor.name) {
+                        self.currentActor = actor
+                        self.saveTurn(correct: true, turnType: .actor)
+                        break
+                    }
+                }
+                
+                self.setImageForTurn(indexOfSelectedRow: nil, turnType: .actor) {
+                    
+                    PKHUD.sharedHUD.hide(afterDelay: 1.5) { _ in
+                        self.currentPlayer = self.game.players[0]
+                        print("CURRENT PLAYER: \(self.currentPlayer.name)")
+                    }
+                }
+                
+            }
         }
     }
     
@@ -871,7 +1018,14 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
         
         if !isInitialPick && ((movieButton.isSelected && currentActor == nil) || (actorButton.isSelected && currentMovie == nil)) {
             
-            let alertMessage = "You have to pick " + (movieButton.isSelected ? "an actor.": "a movie.")
+            var alertMessage = String()
+            
+            if let movie = currentMovie {
+                alertMessage = "You must pick an actor from \"\(movie.title)\"."
+            } else if let actor = currentActor {
+                alertMessage = "You must pick a movie featuring \"\(actor.name)\""
+            }
+
             let alert = UIAlertController(title: "Hold up", message: alertMessage, preferredStyle: .alert)
             let okayAction = UIAlertAction(title: "OK", style: .default, handler: nil)
             alert.addAction(okayAction)
@@ -881,19 +1035,6 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         // Verify that the movie or actor selected has not already been used this round.
-        
-        let turnsForRound = game.history.filter() {$0.round.intValue == currentRound}
-        var moviesForRound = [String]()
-        var actorsForRound = [String]()
-        
-        for turn in turnsForRound {
-            if let movie = turn.movie {
-                moviesForRound.append(movie.title)
-            }
-            if let actor = turn.actor {
-                actorsForRound.append(actor.name)
-            }
-        }
         
         if (movieButton.isSelected && moviesForRound.contains(movies[indexPath.row].title)) || (actorButton.isSelected && actorsForRound.contains(actors[indexPath.row].name)) {
             
@@ -906,7 +1047,9 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
         PKHUD.sharedHUD.contentView = PKHUDProgressView()
         PKHUD.sharedHUD.show()
         
-        setImageForTurn(indexOfSelectedRow: indexPath.row) {
+        let turnType = movieButton.isSelected ? TurnType.movie : TurnType.actor
+        
+        setImageForTurn(indexOfSelectedRow: indexPath.row, turnType: turnType) {
             
             self.verifyAnswer(movie: self.currentMovie, actor: self.currentActor) { (correct) in
                 
@@ -917,24 +1060,24 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                 
                 // Save turn and clear cache.
                 
-                self.saveTurn(correct: correct)
-                self.clearCache()
-                CoreDataStackManager.sharedInstance.saveContext() { error in
-                    guard error == nil else {
-                        // TODO: Handle error.
-                        return
-                    }
-                }
+                let turnType = self.movieButton.isSelected ? TurnType.movie : TurnType.actor
+                self.saveTurn(correct: correct, turnType: turnType)
                 
                 // Show success/error HUD.
                 
                 if self.isInitialPick {
                     
-                    // Initial pick.
+                    // Initial answer.
                     
                     self.isInitialPick = false
-                    PKHUD.sharedHUD.hide(true)
-                    self.updateCurrentPlayer()
+                    
+                    PKHUD.sharedHUD.hide(animated: true) { _ in
+                        if self.isSinglePlayerGame {
+                            self.performAiTurn()
+                        } else {
+                            self.updateCurrentPlayer()
+                        }
+                    }
                     
                 } else if correct {
                     
@@ -943,6 +1086,15 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                     PKHUD.sharedHUD.contentView = PKHUDSuccessView()
                     if self.instructionsScenario == "ThirdSelection" {
                         self.instructionsScenario = "ThirdSelectionCorrectAnswer"
+                    }
+                    
+                    PKHUD.sharedHUD.hide(afterDelay: 1.5) { _ in
+                        
+                        if self.isSinglePlayerGame {
+                            self.performAiTurn()
+                        } else {
+                            self.updateCurrentPlayer()
+                        }
                     }
                     
                 } else {
@@ -958,13 +1110,15 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                     self.scoreCollectionView.reloadData()
                     self.isInitialPick = true
                     self.currentRound += 1
-                }
-                
-                // Update UI for the next player.
-                
-                PKHUD.sharedHUD.hide(afterDelay: 1.5) { _ in
                     
-                    self.updateCurrentPlayer()
+                    PKHUD.sharedHUD.hide(afterDelay: 1.5) { _ in
+                        
+                        if self.isSinglePlayerGame {
+                            self.updateUIForCurrentPlayer(clearPreviousAnswers: true)
+                        } else {
+                            self.updateCurrentPlayer()
+                        }
+                    }
                 }
             }
         }

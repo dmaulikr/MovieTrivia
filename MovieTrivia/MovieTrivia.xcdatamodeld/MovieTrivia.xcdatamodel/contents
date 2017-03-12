@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="15F34" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="15G31" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Actor" representedClassName=".Actor" syncable="YES">
         <attribute name="idNumber" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="imageData" optional="YES" attributeType="Binary" syncable="YES"/>
@@ -14,6 +14,7 @@
     <entity name="Movie" representedClassName=".Movie" syncable="YES">
         <attribute name="idNumber" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="imageData" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="popularity" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="posterPath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="releaseDate" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="releaseYear" optional="YES" attributeType="String" syncable="YES"/>
@@ -38,7 +39,7 @@
     <elements>
         <element name="Actor" positionX="-38" positionY="-18" width="128" height="120"/>
         <element name="Game" positionX="-243" positionY="-21" width="128" height="75"/>
-        <element name="Movie" positionX="-425" positionY="18" width="128" height="150"/>
+        <element name="Movie" positionX="-425" positionY="18" width="128" height="165"/>
         <element name="Player" positionX="-360" positionY="231" width="128" height="120"/>
         <element name="Turn" positionX="-38" positionY="216" width="128" height="135"/>
     </elements>

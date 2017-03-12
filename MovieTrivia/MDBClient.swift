@@ -131,28 +131,28 @@ struct MDBClient {
         }
     }
     
-    func getCast(movie: Movie, completionHandler: @escaping (_ result: Set<Actor>?, _ errorMessage: ErrorMessage?) -> Void) {
+    func getCast(movie: Movie, completionHandler: @escaping (_ resultSet: Set<Actor>?, _ resultArray: [Actor]?, _ errorMessage: ErrorMessage?) -> Void) {
         
         Alamofire.request(baseURL + "movie/" + String(movie.idNumber.intValue) + "/credits", method: .get, parameters: baseParameters, encoding: URLEncoding.default, headers: nil).responseJSON { response in
             
             switch response.result {
                 
             case .failure:
-                completionHandler(nil, ErrorMessage.failed)
+                completionHandler(nil, nil, ErrorMessage.failed)
                 return
                 
             case .success:
                 guard let responseJSON = response.result.value as? [String: AnyObject] else {
-                    completionHandler(nil, ErrorMessage.unableToParse)
+                    completionHandler(nil, nil, ErrorMessage.unableToParse)
                     return
                 }
                 
                 if let castData = responseJSON["cast"] as? [[String: AnyObject]] {
                     let cast = Actor.peopleFromResults(results: castData, context: self.sharedContext)
                     let castSet = Set(cast)
-                    completionHandler(castSet, nil)
+                    completionHandler(castSet, cast, nil)
                 } else {
-                    completionHandler(nil, ErrorMessage.missingKey)
+                    completionHandler(nil, nil, ErrorMessage.missingKey)
                 }
             }
         }
@@ -248,6 +248,54 @@ struct MDBClient {
                 
                 completionHandler(actorImage, nil)
             }
+        }
+    }
+    
+    func getMostPopularMovie(movies: [Movie], completionHandler: @escaping (_ movie: Movie?, _ errorMessage: ErrorMessage?) -> Void) {
+        
+        let dispatchGroup = DispatchGroup()
+        
+        for movie in movies {
+            
+            dispatchGroup.enter()
+            
+            Alamofire.request(baseURL + "movie/" + String(movie.idNumber.intValue), method: .get, parameters: baseParameters, encoding: URLEncoding.default, headers: nil).responseJSON { response in
+                
+                switch response.result {
+                    
+                case .failure:
+                    completionHandler(nil, ErrorMessage.failed)
+                    return
+                    
+                case .success:
+                    guard let responseJSON = response.result.value as? [String: AnyObject] else {
+                        completionHandler(nil, ErrorMessage.unableToParse)
+                        return
+                    }
+                    
+                    if let popularity = responseJSON["popularity"] as? Float {
+                        movie.popularity = NSNumber(value: popularity)
+                    }
+                }
+                
+                dispatchGroup.leave()
+            }
+        }
+        
+        dispatchGroup.notify(queue: DispatchQueue.main) {
+            
+            var mostPopularMovie = movies[0]
+            var highestRating = 0.0
+            
+            for movie in movies {
+                guard let popularity = movie.popularity?.doubleValue else {continue}
+                if popularity > highestRating {
+                    mostPopularMovie = movie
+                    highestRating = popularity
+                }
+            }
+            
+            completionHandler(mostPopularMovie, nil)
         }
     }
 }

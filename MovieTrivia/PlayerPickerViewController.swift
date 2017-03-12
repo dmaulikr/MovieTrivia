@@ -38,7 +38,7 @@ class PlayerPickerViewController: UIViewController {
         playerCountContainer.layer.borderColor = UIColor.white.cgColor
         playerCountContainer.layer.borderWidth = 2.0
         
-        stepper.minimumValue = 2.0
+        stepper.minimumValue = 1.0
         stepper.maximumValue = 8.0
     }
     
@@ -77,6 +77,12 @@ class PlayerPickerViewController: UIViewController {
         
         for player in players {
             player.game = game
+        }
+        
+        if players.count == 1 {
+            
+            let computer = Player(name: "Computer 1", context: managedObjectContext)
+            computer.game = game
         }
         
         let colorPickerViewController = segue.destination as! ColorPickerViewController
