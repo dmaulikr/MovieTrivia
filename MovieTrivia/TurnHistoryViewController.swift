@@ -93,18 +93,14 @@ class TurnHistoryViewController: UIViewController, UITableViewDelegate, UITableV
         cell.textLabel?.font = UIFont(name: "Futura", size: 17)
         cell.textLabel?.textColor = UIColor.white
         
-        if turn.movie == nil {
-            if let actor = turn.actor {
-                cell.textLabel?.text = "\(actor.name)"
+        if let movie = turn.movie {
+            if let releaseYear = movie.releaseYear {
+                cell.textLabel?.text = "\(movie.title) (\(releaseYear))"
+            } else {
+                cell.textLabel?.text = "\(movie.title)"
             }
-        } else {
-            if let movie = turn.movie {
-                if let releaseYear = movie.releaseYear {
-                    cell.textLabel?.text = "\(movie.title) (\(releaseYear))"
-                } else {
-                    cell.textLabel?.text = "\(movie.title)"
-                }
-            }
+        } else if let actor = turn.actor {
+            cell.textLabel?.text = "\(actor.name)"
         }
         
         cell.backgroundColor = turn.player.color
@@ -114,7 +110,9 @@ class TurnHistoryViewController: UIViewController, UITableViewDelegate, UITableV
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        selectedTurn = game.history[indexPath.row]
+        let selectedRound = indexPath.section + 1
+        let turnsForRound = self.game.history.filter() {$0.round.intValue == selectedRound}
+        selectedTurn = turnsForRound[indexPath.row]
         self.performSegue(withIdentifier: "showDetail", sender: self)
     }
     

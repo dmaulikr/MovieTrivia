@@ -794,7 +794,6 @@ class GameplayViewController: UIViewController {
                         
                         PKHUD.sharedHUD.hide(afterDelay: 1.5) { _ in
                             self.currentPlayer = self.game.players[0]
-                            print("CURRENT PLAYER: \(self.currentPlayer.name)")
                         }
                     }
                 }
@@ -827,7 +826,6 @@ class GameplayViewController: UIViewController {
                     
                     PKHUD.sharedHUD.hide(afterDelay: 1.5) { _ in
                         self.currentPlayer = self.game.players[0]
-                        print("CURRENT PLAYER: \(self.currentPlayer.name)")
                     }
                 }
                 
