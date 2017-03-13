@@ -17,6 +17,7 @@ class ColorPickerViewController: UIViewController {
     
     var game: Game!
     var currentPlayerIndex = 0
+    var isSinglePlayerGame = false
     var managedObjectContext: NSManagedObjectContext {return CoreDataStackManager.sharedInstance.managedObjectContext}
     
     // Colors
@@ -36,8 +37,10 @@ class ColorPickerViewController: UIViewController {
     // MARK: Outlets
     //----------------------------------
     
-    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var instructionsLabel: UILabel!
     @IBOutlet weak var picker: UIPickerView!
+    @IBOutlet weak var pickerHeight: NSLayoutConstraint!
+    @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var continueButton: CustomButton!
     
     //----------------------------------
@@ -49,8 +52,15 @@ class ColorPickerViewController: UIViewController {
         super.viewDidLoad()
         
         continueButton.isEnabled = false
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Reset", style: .plain, target: self, action: #selector(reset))
-        navigationItem.rightBarButtonItem?.isEnabled = false
+        
+        if isSinglePlayerGame {
+            instructionsLabel.text = "Choose a color:"
+            pickerHeight.constant = 0
+            continueButton.isHidden = true
+        } else {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Reset", style: .plain, target: self, action: #selector(reset))
+            navigationItem.rightBarButtonItem?.isEnabled = false
+        }
     }
     
     override func viewWillLayoutSubviews() {
@@ -94,6 +104,11 @@ class ColorPickerViewController: UIViewController {
         }
     }
     
+    @IBAction func continueButtonTapped() {
+        
+        self.performSegue(withIdentifier: "colorsToGameplay", sender: self)
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         let gameplayViewController = segue.destination as! GameplayViewController
@@ -130,6 +145,7 @@ extension ColorPickerViewController: UICollectionViewDelegate, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "colorCell", for: indexPath) as! ColorCell
+        
         cell.colorView.backgroundColor = colorArray[indexPath.row]
         cell.playerLabel.isHidden = true
         
@@ -145,17 +161,30 @@ extension ColorPickerViewController: UICollectionViewDelegate, UICollectionViewD
         
         let cell = collectionView.cellForItem(at: indexPath) as! ColorCell
         
-        guard cell.playerLabel.isHidden && currentPlayerIndex <= game.players.count - 1 else {return}
-        
-        if currentPlayerIndex == 0 {navigationItem.rightBarButtonItem?.isEnabled = true}
-        cell.playerLabel.text = "P" + "\(game.players[currentPlayerIndex].name.components(separatedBy: " ")[1])"
-        cell.playerLabel.isHidden = false
-        game.players[currentPlayerIndex].color = colorArray[indexPath.row]
-        currentPlayerIndex += 1
-        picker.selectRow(currentPlayerIndex, inComponent: 0, animated: true)
-        
-        if currentPlayerIndex == game.players.count {
-            continueButton.isEnabled = true
+        if isSinglePlayerGame {
+            
+            game.players[0].color = colorArray[indexPath.row]
+            game.players[1].color = UIColor.gray
+            
+            cell.colorView.backgroundColor = .white
+            UIView.animate(withDuration: 0.5, animations: {cell.colorView.backgroundColor = self.colorArray[indexPath.row]}) { _ in
+                self.performSegue(withIdentifier: "colorsToGameplay", sender: self)
+            }
+            
+        } else {
+            
+            guard cell.playerLabel.isHidden && currentPlayerIndex <= game.players.count - 1 else {return}
+            
+            if currentPlayerIndex == 0 {navigationItem.rightBarButtonItem?.isEnabled = true}
+            cell.playerLabel.text = "P" + "\(game.players[currentPlayerIndex].name.components(separatedBy: " ")[1])"
+            cell.playerLabel.isHidden = false
+            game.players[currentPlayerIndex].color = colorArray[indexPath.row]
+            currentPlayerIndex += 1
+            picker.selectRow(currentPlayerIndex, inComponent: 0, animated: true)
+            
+            if currentPlayerIndex == game.players.count {
+                continueButton.isEnabled = true
+            }
         }
     }
 }

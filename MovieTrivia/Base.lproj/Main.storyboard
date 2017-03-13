@@ -550,7 +550,7 @@ Production</string>
                                         <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
                                         <state key="normal" title="Continue"/>
                                         <connections>
-                                            <segue destination="BYZ-38-t0r" kind="show" id="jlf-9B-eAu"/>
+                                            <action selector="continueButtonTapped" destination="dCV-CM-qLk" eventType="touchUpInside" id="KoE-ci-hGq"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -568,8 +568,8 @@ Production</string>
                                     <constraint firstAttribute="trailing" secondItem="gNl-Px-h1V" secondAttribute="trailing" id="xsA-FZ-KK1"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select a color for each player:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SZS-Q0-7GV">
-                                <rect key="frame" x="69.5" y="150.5" width="236" height="23"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose a color for each player:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SZS-Q0-7GV">
+                                <rect key="frame" x="63.5" y="150.5" width="248" height="23"/>
                                 <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -589,7 +589,10 @@ Production</string>
                     <connections>
                         <outlet property="collectionView" destination="gNl-Px-h1V" id="Xmz-Hk-oGu"/>
                         <outlet property="continueButton" destination="8Dl-99-5a5" id="w0a-Mi-Cba"/>
+                        <outlet property="instructionsLabel" destination="SZS-Q0-7GV" id="yVa-8b-VQ7"/>
                         <outlet property="picker" destination="40Y-pW-Saz" id="l6S-XH-Ru1"/>
+                        <outlet property="pickerHeight" destination="v99-lF-xLU" id="2XK-9e-PNr"/>
+                        <segue destination="BYZ-38-t0r" kind="show" identifier="colorsToGameplay" id="Mm3-3f-EFs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gli-U5-6M8" userLabel="First Responder" sceneMemberID="firstResponder"/>

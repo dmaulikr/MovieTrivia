@@ -15,6 +15,7 @@ class PlayerPickerViewController: UIViewController {
     // MARK: Properties
     //----------------------------------
     
+    var isSinglePlayerGame = false
     var managedObjectContext: NSManagedObjectContext {return CoreDataStackManager.sharedInstance.managedObjectContext}
     
     //----------------------------------
@@ -83,10 +84,12 @@ class PlayerPickerViewController: UIViewController {
             
             let computer = Player(name: "Computer 1", context: managedObjectContext)
             computer.game = game
+            isSinglePlayerGame = true
         }
         
         let colorPickerViewController = segue.destination as! ColorPickerViewController
         colorPickerViewController.game = game
+        colorPickerViewController.isSinglePlayerGame = isSinglePlayerGame
     }
 }
 
