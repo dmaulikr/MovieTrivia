@@ -8,6 +8,7 @@
 
 import UIKit
 import AlamofireImage
+import PKHUD
 
 class TurnDetailTableViewController: UITableViewController {
     
@@ -60,8 +61,34 @@ class TurnDetailTableViewController: UITableViewController {
 
             secondaryTitle = "Cast"
             
-            if let cast = movie.cast {
+            guard let cast = movie.cast else {return}
+            
+            if cast.count != 0 {
+                
                 self.cast = Array(cast).sorted { $0.name < $1.name}
+                
+            } else {
+                
+                PKHUD.sharedHUD.contentView = PKHUDProgressView()
+                PKHUD.sharedHUD.show()
+                
+                MDBClient().getCast(movie: movie) { (castSet, castArray, errorMessage) in
+                    
+                    guard errorMessage == nil else {
+                        // TODO: Handle error.
+                        return
+                    }
+                    
+                    guard let castSet = castSet else {
+                        // TODO: Handle error.
+                        return
+                    }
+                    
+                    movie.cast = castSet
+                    self.cast = Array(castSet).sorted { $0.name < $1.name}
+                    self.tableView.reloadData()
+                    PKHUD.sharedHUD.hide()
+                }
             }
             
         } else if let actor = turn.actor {
@@ -82,8 +109,32 @@ class TurnDetailTableViewController: UITableViewController {
             
             secondaryTitle = "Filmography"
             
-            if let filmography = actor.filmography {
+            guard let filmography = actor.filmography else {return}
+            
+            if filmography.count != 0 {
                 self.filmography = Array(filmography).sorted { $0.title < $1.title}
+            } else {
+                
+                PKHUD.sharedHUD.contentView = PKHUDProgressView()
+                PKHUD.sharedHUD.show()
+                
+                MDBClient().getFilmography(actor: actor) { (filmSet, errorMessage) in
+                    
+                    guard errorMessage == nil else {
+                        // TODO: Handle error.
+                        return
+                    }
+                    
+                    guard let filmSet = filmSet else {
+                        // TODO: Handle error.
+                        return
+                    }
+                    
+                    actor.filmography = filmSet
+                    self.filmography = Array(filmSet).sorted { $0.title < $1.title}
+                    self.tableView.reloadData()
+                    PKHUD.sharedHUD.hide()
+                }
             }
         }
     }
