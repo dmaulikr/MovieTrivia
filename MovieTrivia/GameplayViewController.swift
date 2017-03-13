@@ -100,7 +100,7 @@ class GameplayViewController: UIViewController {
         
         // Navigation controller
         
-        self.title = currentPlayer.name
+        self.title = isSinglePlayerGame ? "Single Player" : currentPlayer.name
         navigationItem.hidesBackButton = true
         
         // Current player color scheme
