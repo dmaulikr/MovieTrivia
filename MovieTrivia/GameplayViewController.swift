@@ -473,11 +473,9 @@ class GameplayViewController: UIViewController {
     
     func hideBlurView() {
         
-        self.view.sendSubview(toBack: blurView)
-        
-        UIView.animate(withDuration: 0.5, animations: {
-            self.blurView.alpha = 0.0
-        })
+        UIView.animate(withDuration: 0.5, animations: {self.blurView.alpha = 0.0}) { _ in
+            self.view.sendSubview(toBack: self.blurView)
+        }
     }
     
     func revealTopInstructions() {
