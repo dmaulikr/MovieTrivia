@@ -1124,18 +1124,7 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
     
     func updateTable(searchText: String) {
         
-        var queryType: String
-        
-        switch movieButton.isSelected {
-            
-        case true:
-            queryType = MDBClient.movie
-            break
-            
-        case false:
-            queryType = MDBClient.person
-            break
-        }
+        let queryType = movieButton.isSelected ? QueryType.movie : QueryType.person
         
         MDBClient().searchDatabase(queryInput: searchText, queryType: queryType) { (movies, actors, errorMessage) in
             

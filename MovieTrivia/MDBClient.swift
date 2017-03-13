@@ -10,6 +10,13 @@ import Foundation
 import Alamofire
 import CoreData
 
+// Query Types
+
+enum QueryType: String {
+    case movie = "movie"
+    case person = "person"
+}
+
 // Image Size Options
 
 enum ImageSize: String {
@@ -44,11 +51,6 @@ struct MDBClient {
     let includeAdult = "include_adult"
     let query = "query"
     
-    // Query Types
-    
-    static let movie = "movie"
-    static let person = "person"
-    
     // Default Parameters
     
     let baseURL = "https://api.themoviedb.org/3/"
@@ -72,7 +74,7 @@ struct MDBClient {
     // MARK: API Methods
     //----------------------------------
     
-    func searchDatabase(queryInput: String, queryType: String, completionHandler: @escaping (_ movies: [Movie]?, _ actors: [Actor]?, _ errorMessage: ErrorMessage?) -> Void) {
+    func searchDatabase(queryInput: String, queryType: QueryType, completionHandler: @escaping (_ movies: [Movie]?, _ actors: [Actor]?, _ errorMessage: ErrorMessage?) -> Void) {
         
         // Cancel any database queries still in progress.
         
@@ -89,7 +91,7 @@ struct MDBClient {
         var params = baseParameters
         params[query] = queryInput
         
-        Alamofire.request(baseURL + "search/" + queryType, method: .get, parameters: params, encoding: URLEncoding.default, headers: nil).responseJSON { response in
+        Alamofire.request(baseURL + "search/" + queryType.rawValue, method: .get, parameters: params, encoding: URLEncoding.default, headers: nil).responseJSON { response in
             
             switch response.result {
                 
@@ -109,7 +111,7 @@ struct MDBClient {
                     return
                 }
                 
-                if queryType == MDBClient.movie {
+                if queryType == .movie {
                     
                     if let movieData = responseJSON["results"] as? [[String: AnyObject]] {
                         let movies = Movie.moviesFromResults(results: movieData, context: self.sharedContext)
