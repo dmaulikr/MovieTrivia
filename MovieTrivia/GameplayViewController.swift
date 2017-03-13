@@ -30,6 +30,7 @@ class GameplayViewController: UIViewController {
     var isSinglePlayerGame = false
     var currentPlayer: Player!
     var currentRound = 1
+    var currentScore = 0
     var game: Game!
     var isInitialPick = true
     var showingInstructions = false
@@ -64,6 +65,7 @@ class GameplayViewController: UIViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var collectionViewHeight: NSLayoutConstraint!
     @IBOutlet weak var radioButtonContainer: UIView!
     @IBOutlet weak var movieButton: RadioButton!
     @IBOutlet weak var actorButton: RadioButton!
@@ -96,10 +98,6 @@ class GameplayViewController: UIViewController {
         activePlayers = game.players
         currentPlayer = game.players[0]
         
-        if game.players.count == 2 && game.players[1].name == "Computer 1" {
-            isSinglePlayerGame = true
-        }
-        
         // Navigation controller
         
         self.title = currentPlayer.name
@@ -113,7 +111,7 @@ class GameplayViewController: UIViewController {
         self.scoreCollectionBackground.backgroundColor = currentPlayer.color
         self.imageTitleLabel.textColor = currentPlayer.color
         self.scoreLabel.textColor = currentPlayer.color
-        
+
         // Movie and actor images
         
         imageTitleLabel.layer.cornerRadius = 10.0
@@ -142,6 +140,15 @@ class GameplayViewController: UIViewController {
         scoreLabel.layer.masksToBounds = true
         
         searchBar.returnKeyType = .done
+        
+        // Score Collection View
+        
+        if isSinglePlayerGame {
+            collectionViewHeight.constant = 10.0
+            self.view.layoutIfNeeded()
+            scoreCollectionView.isHidden = true
+            scoreLabel.text = "Current Score: 0     High Score: \(UserDefaults.standard.value(forKey: "highScore")!)"
+        }
         
         // Re-use arrow image for top and bottom instructions.
         
@@ -833,6 +840,15 @@ class GameplayViewController: UIViewController {
         }
     }
     
+    func incrementScore() {
+        
+        currentScore += 1
+        if currentScore > UserDefaults.standard.value(forKey: "highScore") as! Int {
+            UserDefaults.standard.set(currentScore, forKey: "highScore")
+        }
+        scoreLabel.text = "Current Score: \(currentScore)     High Score: \(UserDefaults.standard.value(forKey: "highScore")!)"
+    }
+    
     //----------------------------------
     // MARK: Navigation
     //----------------------------------
@@ -1070,7 +1086,9 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                     self.isInitialPick = false
                     
                     PKHUD.sharedHUD.hide(animated: true) { _ in
+                        
                         if self.isSinglePlayerGame {
+                            self.incrementScore()
                             self.performAiTurn()
                         } else {
                             self.updateCurrentPlayer()
@@ -1089,6 +1107,7 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                     PKHUD.sharedHUD.hide(afterDelay: 1.5) { _ in
                         
                         if self.isSinglePlayerGame {
+                            self.incrementScore()
                             self.performAiTurn()
                         } else {
                             self.updateCurrentPlayer()
@@ -1112,6 +1131,8 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                     PKHUD.sharedHUD.hide(afterDelay: 1.5) { _ in
                         
                         if self.isSinglePlayerGame {
+                            self.currentScore = 0
+                            self.scoreLabel.text = "Current Score: 0     High Score: \(UserDefaults.standard.value(forKey: "highScore")!)"
                             self.updateUIForCurrentPlayer(clearPreviousAnswers: true)
                         } else {
                             self.updateCurrentPlayer()

@@ -35,6 +35,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             userDefaults.set(true, forKey: "showInstructions")
         }
         
+        if userDefaults.object(forKey: "highScore") == nil {
+            userDefaults.set(0, forKey: "highScore")
+        }
+        
         return true
     }
 

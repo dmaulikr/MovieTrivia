@@ -628,7 +628,7 @@ Production</string>
                                 <rect key="frame" x="0.0" y="562" width="375" height="105"/>
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="er3-Pf-InK">
-                                <rect key="frame" x="16" y="612" width="343" height="50"/>
+                                <rect key="frame" x="27.5" y="612" width="321" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="0Nw-dD-tUd"/>
                                 </constraints>
@@ -683,7 +683,7 @@ Production</string>
                                 </connections>
                             </collectionView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Strikes" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="esF-No-iN5">
-                                <rect key="frame" x="16" y="572" width="343" height="30"/>
+                                <rect key="frame" x="27.5" y="572" width="321" height="30"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="YKU-4n-yD9"/>
@@ -696,27 +696,27 @@ Production</string>
                                 <rect key="frame" x="16" y="228.5" width="343" height="257"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J0x-ca-kor" userLabel="Left Spacer">
-                                        <rect key="frame" x="0.0" y="0.0" width="11" height="257"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="11.5" height="257"/>
                                     </view>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="reel" translatesAutoresizingMaskIntoConstraints="NO" id="2q0-Xu-UN2" userLabel="Movie Image">
-                                        <rect key="frame" x="11" y="14" width="155.5" height="229.5"/>
+                                        <rect key="frame" x="11.5" y="15" width="154" height="227.5"/>
                                         <color key="backgroundColor" red="0.70104206650000001" green="0.73659952029999998" blue="0.92737926140000004" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="2q0-Xu-UN2" secondAttribute="height" multiplier="27:40" id="s08-yl-rcQ"/>
                                         </constraints>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fi4-v6-Ur8" userLabel="Center Spacer">
-                                        <rect key="frame" x="166.5" y="0.0" width="11" height="257"/>
+                                        <rect key="frame" x="165.5" y="0.0" width="11.5" height="257"/>
                                     </view>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person" translatesAutoresizingMaskIntoConstraints="NO" id="tmq-8w-rMG" userLabel="Actor Image">
-                                        <rect key="frame" x="177.5" y="15" width="154.5" height="228.5"/>
+                                        <rect key="frame" x="177" y="15" width="154.5" height="228.5"/>
                                         <color key="backgroundColor" red="0.70104206650000001" green="0.73659952029999998" blue="0.92737926140000004" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="tmq-8w-rMG" secondAttribute="height" multiplier="27:40" id="46R-QZ-dSe"/>
                                         </constraints>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Aoc-r1-Gaz" userLabel="Right Spacer">
-                                        <rect key="frame" x="332" y="0.0" width="11" height="257"/>
+                                        <rect key="frame" x="331.5" y="0.0" width="11.5" height="257"/>
                                     </view>
                                 </subviews>
                                 <constraints>
@@ -742,19 +742,19 @@ Production</string>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iam-ud-y4r" userLabel="Actor Label">
-                                <rect key="frame" x="193.5" y="485.5" width="154.5" height="0.0"/>
+                                <rect key="frame" x="193" y="485.5" width="154.5" height="0.0"/>
                                 <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3l1-oJ-3Nr" userLabel="Movie Label">
-                                <rect key="frame" x="27" y="485.5" width="155.5" height="0.0"/>
+                                <rect key="frame" x="27.5" y="485.5" width="154" height="0.0"/>
                                 <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Round 1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xQw-fU-M8a" userLabel="Image Title">
-                                <rect key="frame" x="27" y="198.5" width="322" height="30"/>
+                                <rect key="frame" x="27.5" y="198.5" width="321" height="30"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="Sxa-8y-yiu"/>
@@ -932,7 +932,7 @@ Production</string>
                                         <rect key="frame" x="0.0" y="28" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="G1z-Gi-wiA" id="ptK-rr-CWP">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -943,7 +943,7 @@ Production</string>
                                 </connections>
                             </tableView>
                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2zQ-BN-VOb" userLabel="Movie Image Button">
-                                <rect key="frame" x="27" y="242.5" width="155.5" height="229.5"/>
+                                <rect key="frame" x="27.5" y="243.5" width="154" height="227.5"/>
                                 <state key="normal">
                                     <color key="titleColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </state>
@@ -952,7 +952,7 @@ Production</string>
                                 </connections>
                             </button>
                             <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uo1-rf-VnI">
-                                <rect key="frame" x="193.5" y="243.5" width="154.5" height="228.5"/>
+                                <rect key="frame" x="193" y="243.5" width="154.5" height="228.5"/>
                                 <state key="normal">
                                     <color key="titleColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </state>
@@ -1004,6 +1004,7 @@ Production</string>
                             <constraint firstItem="esF-No-iN5" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="W3H-cy-5Qy"/>
                             <constraint firstItem="YaO-Hp-TZc" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="WY5-1m-eIA"/>
                             <constraint firstItem="krH-Ya-ysJ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="XWG-EQ-rxT"/>
+                            <constraint firstItem="esF-No-iN5" firstAttribute="width" secondItem="xQw-fU-M8a" secondAttribute="width" id="YLi-yt-5C0"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="er3-Pf-InK" secondAttribute="bottom" constant="5" id="ZSh-5v-dmC"/>
                             <constraint firstItem="2zQ-BN-VOb" firstAttribute="centerY" secondItem="2q0-Xu-UN2" secondAttribute="centerY" id="a0q-36-xBb"/>
                             <constraint firstItem="2zQ-BN-VOb" firstAttribute="centerX" secondItem="2q0-Xu-UN2" secondAttribute="centerX" id="aE2-2E-emp"/>
@@ -1020,7 +1021,6 @@ Production</string>
                             <constraint firstItem="krH-Ya-ysJ" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="kAa-GX-bXv"/>
                             <constraint firstItem="VoZ-P2-XNi" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" constant="-60" id="pnJ-94-4Yg"/>
                             <constraint firstItem="R9N-ME-Jbt" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="qcn-fe-eP9"/>
-                            <constraint firstItem="esF-No-iN5" firstAttribute="width" secondItem="ULk-Tx-JLX" secondAttribute="width" id="qjE-2l-ghy"/>
                             <constraint firstItem="VoZ-P2-XNi" firstAttribute="top" secondItem="YaO-Hp-TZc" secondAttribute="bottom" constant="15" id="ry6-1e-reZ"/>
                             <constraint firstItem="rA7-IL-qJf" firstAttribute="top" secondItem="T6g-F1-WTX" secondAttribute="bottom" constant="15" id="sGK-09-oFH"/>
                             <constraint firstItem="ckJ-mo-Vki" firstAttribute="top" secondItem="krH-Ya-ysJ" secondAttribute="bottom" id="t2r-2I-ziN"/>
@@ -1050,6 +1050,7 @@ Production</string>
                         <outlet property="blurView" destination="Yih-dv-7m9" id="w5x-EM-SLv"/>
                         <outlet property="bottomArrow" destination="T6g-F1-WTX" id="fal-ym-wXQ"/>
                         <outlet property="bottomInstructions" destination="R9N-ME-Jbt" id="ioi-fL-Jvm"/>
+                        <outlet property="collectionViewHeight" destination="0Nw-dD-tUd" id="EBv-gf-VaP"/>
                         <outlet property="helpButton" destination="DjZ-fn-Wmy" id="J4G-As-dET"/>
                         <outlet property="imageTitleLabel" destination="xQw-fU-M8a" id="MTS-Jl-8ZG"/>
                         <outlet property="movieButton" destination="nED-26-W9d" id="AfV-Nh-pPl"/>

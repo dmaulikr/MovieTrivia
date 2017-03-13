@@ -113,6 +113,7 @@ class ColorPickerViewController: UIViewController {
         
         let gameplayViewController = segue.destination as! GameplayViewController
         gameplayViewController.game = self.game
+        gameplayViewController.isSinglePlayerGame = self.isSinglePlayerGame
     }
 }
 
