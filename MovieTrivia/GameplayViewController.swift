@@ -77,6 +77,8 @@ class GameplayViewController: UIViewController {
     @IBOutlet weak var actorImage: UIImageView!
     @IBOutlet weak var actorLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
+    @IBOutlet weak var currentScoreLabel: UILabel!
+    @IBOutlet weak var highScoreLabel: UILabel!
     @IBOutlet weak var topArrow: UIImageView!
     @IBOutlet weak var topInstructions: UILabel!
     @IBOutlet weak var bottomInstructions: UILabel!
@@ -111,6 +113,8 @@ class GameplayViewController: UIViewController {
         self.scoreCollectionBackground.backgroundColor = currentPlayer.color
         self.imageTitleLabel.textColor = currentPlayer.color
         self.scoreLabel.textColor = currentPlayer.color
+        self.currentScoreLabel.textColor = currentPlayer.color
+        self.highScoreLabel.textColor = currentPlayer.color
 
         // Movie and actor images
         
@@ -147,7 +151,15 @@ class GameplayViewController: UIViewController {
             collectionViewHeight.constant = 10.0
             self.view.layoutIfNeeded()
             scoreCollectionView.isHidden = true
-            scoreLabel.text = "Current Score: 0     High Score: \(UserDefaults.standard.value(forKey: "highScore")!)"
+            scoreLabel.isHidden = true
+            currentScoreLabel.isHidden = false
+            currentScoreLabel.text = "Current: 0"
+            currentScoreLabel.layer.cornerRadius = 10.0
+            currentScoreLabel.layer.masksToBounds = true
+            highScoreLabel.isHidden = false
+            highScoreLabel.text = "Best: \(UserDefaults.standard.value(forKey: "highScore")!)"
+            highScoreLabel.layer.cornerRadius = 10.0
+            highScoreLabel.layer.masksToBounds = true
         }
         
         // Re-use arrow image for top and bottom instructions.
@@ -844,7 +856,8 @@ class GameplayViewController: UIViewController {
         if currentScore > UserDefaults.standard.value(forKey: "highScore") as! Int {
             UserDefaults.standard.set(currentScore, forKey: "highScore")
         }
-        scoreLabel.text = "Current Score: \(currentScore)     High Score: \(UserDefaults.standard.value(forKey: "highScore")!)"
+        currentScoreLabel.text = "Current: \(currentScore)"
+        highScoreLabel.text = "Best: \(UserDefaults.standard.value(forKey: "highScore")!)"
     }
     
     //----------------------------------
@@ -1130,7 +1143,8 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                         
                         if self.isSinglePlayerGame {
                             self.currentScore = 0
-                            self.scoreLabel.text = "Current Score: 0     High Score: \(UserDefaults.standard.value(forKey: "highScore")!)"
+                            self.currentScoreLabel.text = "Current: 0"
+                            self.highScoreLabel.text = "\(UserDefaults.standard.value(forKey: "highScore")!)"
                             self.updateUIForCurrentPlayer(clearPreviousAnswers: true)
                         } else {
                             self.updateCurrentPlayer()
