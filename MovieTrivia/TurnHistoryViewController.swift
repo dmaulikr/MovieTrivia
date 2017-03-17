@@ -15,7 +15,9 @@ class TurnHistoryViewController: UIViewController, UITableViewDelegate, UITableV
     //----------------------------------
     
     var game: Game!
-    var selectedTurn: Turn!
+    var selectedTurn: Turn?
+    var currentMovie: Movie?
+    var currentActor: Actor?
     
     //----------------------------------
     // MARK: Outlets
@@ -45,8 +47,18 @@ class TurnHistoryViewController: UIViewController, UITableViewDelegate, UITableV
         
         // Scroll to bottom of table.
         
-        if table.numberOfRows(inSection: 0) > 0 {
-            let indexPath = IndexPath(row: table.numberOfRows(inSection: 0) - 1, section: 0)
+        var lastRound = 1
+        
+        for turn in game.history {
+            if turn.round.intValue > lastRound {
+                lastRound = turn.round.intValue
+            }
+        }
+        
+        let currentSection = lastRound == 1 ? 0 : lastRound - 1
+        
+        if table.numberOfRows(inSection: currentSection) > 0 {
+            let indexPath = IndexPath(row: table.numberOfRows(inSection: currentSection) - 1, section: currentSection)
             table.scrollToRow(at: indexPath, at: .middle, animated: false)
         }
         
@@ -92,6 +104,7 @@ class TurnHistoryViewController: UIViewController, UITableViewDelegate, UITableV
         
         cell.textLabel?.font = UIFont(name: "Futura", size: 17)
         cell.textLabel?.textColor = UIColor.white
+        cell.textLabel?.backgroundColor = UIColor.clear
         
         if let movie = turn.movie {
             if let releaseYear = movie.releaseYear {
@@ -113,7 +126,21 @@ class TurnHistoryViewController: UIViewController, UITableViewDelegate, UITableV
         let selectedRound = indexPath.section + 1
         let turnsForRound = self.game.history.filter() {$0.round.intValue == selectedRound}
         selectedTurn = turnsForRound[indexPath.row]
-        self.performSegue(withIdentifier: "showDetail", sender: self)
+        let cell = tableView.cellForRow(at: indexPath)
+        
+        cell?.backgroundColor = .white
+        UIView.animate(withDuration: 0.2, animations: {cell?.backgroundColor = self.selectedTurn?.player.color}) { _ in
+            if self.selectedTurn?.movie == self.currentMovie || self.selectedTurn?.actor == self.currentActor {
+                let alert = UIAlertController(title: "Not so fast", message: "You can't view details for the currently selected movie or actor.", preferredStyle: .alert)
+                let okayAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                alert.addAction(okayAction)
+                self.present(alert, animated: true) { _ in
+                    cell?.isSelected = false
+                }
+            } else {
+                self.performSegue(withIdentifier: "showDetail", sender: self)
+            }
+        }
     }
     
     //----------------------------------

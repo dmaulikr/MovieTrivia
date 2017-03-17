@@ -168,7 +168,7 @@ extension ColorPickerViewController: UICollectionViewDelegate, UICollectionViewD
             game.players[1].color = UIColor.gray
             
             cell.colorView.backgroundColor = .white
-            UIView.animate(withDuration: 0.5, animations: {cell.colorView.backgroundColor = self.colorArray[indexPath.row]}) { _ in
+            UIView.animate(withDuration: 0.3, animations: {cell.colorView.backgroundColor = self.colorArray[indexPath.row]}) { _ in
                 self.performSegue(withIdentifier: "colorsToGameplay", sender: self)
             }
             

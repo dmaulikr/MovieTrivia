@@ -395,7 +395,7 @@ class GameplayViewController: UIViewController {
             break
             
         case ErrorMessage.repeatSelection:
-            alertTitle = "Not so fast"
+            alertTitle = "Oops"
             alertMessage = "Your selection has already been used this round. Pick a different movie or actor."
             
         case ErrorMessage.dropdownMenu:
@@ -871,6 +871,8 @@ class GameplayViewController: UIViewController {
             let navigationController = segue.destination as! UISideMenuNavigationController
             let historyVC = navigationController.topViewController as! TurnHistoryViewController
             historyVC.game = self.game
+            historyVC.currentMovie = self.currentMovie
+            historyVC.currentActor = self.currentActor
             
         } else if segue.identifier == "showOptions" {
             
@@ -1144,7 +1146,7 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                         if self.isSinglePlayerGame {
                             self.currentScore = 0
                             self.currentScoreLabel.text = "Current: 0"
-                            self.highScoreLabel.text = "\(UserDefaults.standard.value(forKey: "highScore")!)"
+                            self.highScoreLabel.text = "Best: \(UserDefaults.standard.value(forKey: "highScore")!)"
                             self.updateUIForCurrentPlayer(clearPreviousAnswers: true)
                         } else {
                             self.updateCurrentPlayer()
