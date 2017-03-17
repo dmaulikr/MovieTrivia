@@ -1090,6 +1090,7 @@ Production</string>
                         <outlet property="tableView" destination="ckJ-mo-Vki" id="hcv-Sn-Qq7"/>
                         <outlet property="tableViewHeight" destination="gIJ-AT-aTj" id="hKF-F0-WvQ"/>
                         <outlet property="topArrow" destination="YaO-Hp-TZc" id="Eck-Ud-ckR"/>
+                        <outlet property="topArrowHeight" destination="3fh-qc-aJU" id="A4Z-5E-JBz"/>
                         <outlet property="topInstructions" destination="VoZ-P2-XNi" id="RHC-E7-hn0"/>
                     </connections>
                 </viewController>

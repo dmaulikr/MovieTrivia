@@ -22,7 +22,7 @@ class LandingPageViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         titleImageView.layer.cornerRadius = 10.0
         titleImageView.layer.borderColor = UIColor.white.cgColor
         titleImageView.layer.borderWidth = 2.0

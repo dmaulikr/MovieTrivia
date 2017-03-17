@@ -80,6 +80,7 @@ class GameplayViewController: UIViewController {
     @IBOutlet weak var currentScoreLabel: UILabel!
     @IBOutlet weak var highScoreLabel: UILabel!
     @IBOutlet weak var topArrow: UIImageView!
+    @IBOutlet weak var topArrowHeight: NSLayoutConstraint!
     @IBOutlet weak var topInstructions: UILabel!
     @IBOutlet weak var bottomInstructions: UILabel!
     @IBOutlet weak var bottomArrow: UIImageView!
@@ -184,6 +185,7 @@ class GameplayViewController: UIViewController {
             
             revealBlurView()
             revealTopInstructions()
+            searchBar.becomeFirstResponder()
         }
     }
     
@@ -193,16 +195,26 @@ class GameplayViewController: UIViewController {
     
     func dismissTable() {
         
-        self.searchBar.text = ""
-        self.view.endEditing(true)
+        if self.tableViewHeight.constant != 0.0 {
+            UIView.animate(withDuration: 0.5, animations: {
+                self.tableViewHeight.constant = 0.0
+                self.view.layoutIfNeeded()
+            })
+        }
+    }
+    
+    func openTable() {
         
-        hideBlurView()
-        hideInstructions()
-        
-        UIView.animate(withDuration: 0.5, animations: {
-            self.tableViewHeight.constant = 0.0
-            self.view.layoutIfNeeded()
-        })
+        if self.tableViewHeight.constant == 0.0 {
+            UIView.animate(withDuration: 0.5, animations: {
+                if UIScreen.main.bounds.height <= 568.0 {
+                    self.tableViewHeight.constant = 150.0
+                } else {
+                    self.tableViewHeight.constant = 200.0
+                }
+                self.view.layoutIfNeeded()
+            })
+        }
     }
     
     func updateUIForCurrentPlayer(clearPreviousAnswers: Bool) {
@@ -238,8 +250,12 @@ class GameplayViewController: UIViewController {
             case "Started":
                 if let movie = currentMovie {
                     topInstructions.text = "\(currentPlayer.name), choose an actor from \"\(movie.title)\"."
+                    actorButton.isSelected = true
+                    movieButton.isSelected = false
                 } else if let actor = currentActor {
                     topInstructions.text = "\(currentPlayer.name), choose a movie featuring \(actor.name)."
+                    movieButton.isSelected = true
+                    actorButton.isSelected = false
                 } else {
                     // TODO: Handle error.
                 }
@@ -287,6 +303,7 @@ class GameplayViewController: UIViewController {
                 
                 self.revealBlurView()
                 self.revealTopInstructions()
+                self.searchBar.becomeFirstResponder()
             }
         }
     }
@@ -314,13 +331,7 @@ class GameplayViewController: UIViewController {
         
         searchBar.becomeFirstResponder()
         revealBlurView()
-        
-        if tableViewHeight.constant != 0.0 {
-            UIView.animate(withDuration: 0.5, animations: {
-                self.tableViewHeight.constant = 0.0
-                self.view.layoutIfNeeded()
-            })
-        }
+        dismissTable()
         
         if currentMovie != nil && currentActor != nil {
             topInstructions.text = "\(currentPlayer.name), use the search bar at the top of the screen to choose another actor from \"\(currentMovie!.title)\" or another movie featuring \(currentActor!.name)."
@@ -354,10 +365,11 @@ class GameplayViewController: UIViewController {
     
     @IBAction func backgroundTapped() {
         
-        self.view.endEditing(true)
+        dismissTable()
         
         if !showingInstructions {
             
+            self.view.endEditing(true)
             hideBlurView()
             hideInstructions()
             
@@ -491,6 +503,12 @@ class GameplayViewController: UIViewController {
     }
     
     func revealTopInstructions() {
+        
+        // Collapse top arrow for small screens.
+        
+        if self.view.frame.height <= 568.0 {
+            topArrowHeight.constant = 0
+        }
         
         UIView.animate(withDuration: 0.5, animations: {
             self.topInstructions.alpha = 1.0
@@ -890,8 +908,6 @@ extension GameplayViewController: UISearchBarDelegate {
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         
-        hideInstructions()
-        
         if bottomInstructions.alpha != 0 {
             UIView.animate(withDuration: 0.5, animations: {
                 self.view.sendSubview(toBack: self.scoreLabel)
@@ -905,20 +921,8 @@ extension GameplayViewController: UISearchBarDelegate {
         guard let text = searchBar.text else {return}
         
         if text != "" {
-            
-            // Open table if necessary.
-            
-            if self.tableViewHeight.constant == 0.0 {
-                UIView.animate(withDuration: 0.5, animations: {
-                    if UIScreen.main.bounds.height <= 568.0 {
-                        self.tableViewHeight.constant = 150.0
-                    } else {
-                        self.tableViewHeight.constant = 200.0
-                    }
-                    self.view.layoutIfNeeded()
-                })
-            }
-            
+
+            openTable()
             updateTable(searchText: text)
             
             // Scroll to top of table if necessary.
@@ -941,13 +945,7 @@ extension GameplayViewController: UISearchBarDelegate {
             movies = [Movie]()
             actors = [Actor]()
             
-            // Close table.
-            
-            UIView.animate(withDuration: 0.5, animations: {
-                self.tableViewHeight.constant = 0
-                self.view.layoutIfNeeded()
-            })
-            
+            dismissTable()
             tableView.reloadData()
             return
             
@@ -958,18 +956,7 @@ extension GameplayViewController: UISearchBarDelegate {
                 searchBarActivityIndicator.startAnimating()
             }
             
-            // Open table if necessary.
-            
-            if self.tableViewHeight.constant == 0.0 {
-                UIView.animate(withDuration: 0.5, animations: {
-                    if UIScreen.main.bounds.height <= 568.0 {
-                        self.tableViewHeight.constant = 150.0
-                    } else {
-                        self.tableViewHeight.constant = 200.0
-                    }
-                    self.view.layoutIfNeeded()
-                })
-            }
+            openTable()
             
             guard let text = searchBar.text else {return}
             
@@ -1038,6 +1025,10 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        self.searchBar.text = ""
+        self.view.endEditing(true)
+        hideBlurView()
+        hideInstructions()
         self.dismissTable()
         self.searchBarActivityIndicator.stopAnimating()
         
