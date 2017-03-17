@@ -472,7 +472,7 @@ Production</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9j8-kq-456" userLabel="ContainerView">
-                                <rect key="frame" x="16" y="150" width="343" height="433"/>
+                                <rect key="frame" x="16" y="135" width="343" height="463"/>
                                 <subviews>
                                     <pickerView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="40Y-pW-Saz">
                                         <rect key="frame" x="0.0" y="23" width="343" height="120"/>
@@ -488,10 +488,10 @@ Production</string>
                                         </connections>
                                     </pickerView>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="gNl-Px-h1V">
-                                        <rect key="frame" x="0.0" y="163" width="343" height="170"/>
+                                        <rect key="frame" x="0.0" y="163" width="343" height="200"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="170" id="8VP-PY-5gc"/>
+                                            <constraint firstAttribute="height" constant="200" id="8VP-PY-5gc"/>
                                         </constraints>
                                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="nHI-F1-mbZ">
                                             <size key="itemSize" width="85" height="85"/>
@@ -542,7 +542,7 @@ Production</string>
                                         </connections>
                                     </collectionView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Dl-99-5a5" customClass="CustomButton" customModule="MovieTrivia" customModuleProvider="target">
-                                        <rect key="frame" x="72" y="393" width="200" height="40"/>
+                                        <rect key="frame" x="72" y="423" width="200" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="200" id="elV-WP-mjN"/>
                                             <constraint firstAttribute="height" constant="40" id="wsz-Xb-6Ty"/>
@@ -569,7 +569,7 @@ Production</string>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose a color for each player:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SZS-Q0-7GV">
-                                <rect key="frame" x="64" y="150" width="248" height="23"/>
+                                <rect key="frame" x="64" y="135" width="248" height="23"/>
                                 <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -588,6 +588,7 @@ Production</string>
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="gNl-Px-h1V" id="Xmz-Hk-oGu"/>
+                        <outlet property="collectionViewHeight" destination="8VP-PY-5gc" id="8QG-x5-JUD"/>
                         <outlet property="continueButton" destination="8Dl-99-5a5" id="w0a-Mi-Cba"/>
                         <outlet property="instructionsLabel" destination="SZS-Q0-7GV" id="yVa-8b-VQ7"/>
                         <outlet property="picker" destination="40Y-pW-Saz" id="l6S-XH-Ru1"/>

@@ -40,6 +40,7 @@ class ColorPickerViewController: UIViewController {
     @IBOutlet weak var instructionsLabel: UILabel!
     @IBOutlet weak var picker: UIPickerView!
     @IBOutlet weak var pickerHeight: NSLayoutConstraint!
+    @IBOutlet weak var collectionViewHeight: NSLayoutConstraint!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var continueButton: CustomButton!
     
@@ -52,6 +53,8 @@ class ColorPickerViewController: UIViewController {
         super.viewDidLoad()
         
         continueButton.isEnabled = false
+        
+        collectionViewHeight.constant = CGFloat((self.view.frame.width / 4) * 2)
         
         if isSinglePlayerGame {
             instructionsLabel.text = "Choose a color:"

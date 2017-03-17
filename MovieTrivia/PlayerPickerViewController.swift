@@ -53,6 +53,7 @@ class PlayerPickerViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         super.viewWillAppear(animated)
+        isSinglePlayerGame = false
     }
     
     //----------------------------------
@@ -82,7 +83,7 @@ class PlayerPickerViewController: UIViewController {
         
         if players.count == 1 {
             
-            let computer = Player(name: "Computer 1", context: managedObjectContext)
+            let computer = Player(name: "Computer", context: managedObjectContext)
             computer.game = game
             isSinglePlayerGame = true
         }
