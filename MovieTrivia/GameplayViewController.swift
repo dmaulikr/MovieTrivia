@@ -16,6 +16,12 @@ enum TurnType: String {
     case actor
 }
 
+enum TurnOutcome: String {
+    case gameOver
+    case playerEliminated
+    case playContinues
+}
+
 class GameplayViewController: UIViewController {
     
     //----------------------------------
@@ -173,15 +179,18 @@ class GameplayViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if UserDefaults.standard.bool(forKey: "showInstructions") {
+        if (UserDefaults.standard.bool(forKey: "showMultiplayerInstructions") && !isSinglePlayerGame) || (UserDefaults.standard.bool(forKey: "showSinglePlayerInstructions") && isSinglePlayerGame) {
             
-            // User is playing for the first time. Disable nav bar items and help button and display instructional text.
+            // User is playing game mode for the first time.
+            
+            let multiplayerText = "Player 1, use the search bar at the top of the screen to choose a movie or an actor to start the round."
+            let singlePlayerText = "Use the search bar at the top of the screen to choose a movie or an actor to start the round."
             
             self.navigationItem.leftBarButtonItem?.isEnabled = false
             self.navigationItem.rightBarButtonItem?.isEnabled = false
             helpButton.isEnabled = false
             showingInstructions = true
-            topInstructions.text = "Player 1, use the search bar at the top of the screen to choose a movie or an actor to start the round."
+            topInstructions.text = isSinglePlayerGame ? singlePlayerText : multiplayerText
             
             revealBlurView()
             revealTopInstructions()
@@ -217,7 +226,7 @@ class GameplayViewController: UIViewController {
         }
     }
     
-    func updateUIForCurrentPlayer(clearPreviousAnswers: Bool) {
+    func updateUIForCurrentPlayer() {
         
         UIView.animate(withDuration: 0.5, animations: {
             self.view.backgroundColor = self.currentPlayer.color
@@ -230,82 +239,6 @@ class GameplayViewController: UIViewController {
         UIView.transition(with: self.scoreLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.scoreLabel.textColor = self.currentPlayer.color}, completion: nil)
 
         self.title = self.currentPlayer.name
-        
-        if clearPreviousAnswers {
-            
-            self.currentActor = nil
-            self.currentMovie = nil
-            
-            UIView.transition(with: self.actorImage, duration: 0.5, options: .transitionCrossDissolve, animations: {self.actorImage.image = #imageLiteral(resourceName: "person")}, completion: nil)
-            UIView.transition(with: self.actorLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.actorLabel.text = ""}, completion: nil)
-            UIView.transition(with: self.moviePosterImage, duration: 0.5, options: .transitionCrossDissolve, animations: {self.moviePosterImage.image = #imageLiteral(resourceName: "reel")}, completion: nil)
-            UIView.transition(with: self.movieLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.movieLabel.text = ""}, completion: nil)
-            UIView.transition(with: self.imageTitleLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.imageTitleLabel.text = "Round \(self.currentRound)"}, completion: nil)
-        }
-        
-        if UserDefaults.standard.bool(forKey: "showInstructions") {
-            
-            switch instructionsScenario {
-                
-            case "Started":
-                if let movie = currentMovie {
-                    topInstructions.text = "\(currentPlayer.name), choose an actor from \"\(movie.title)\"."
-                    actorButton.isSelected = true
-                    movieButton.isSelected = false
-                } else if let actor = currentActor {
-                    topInstructions.text = "\(currentPlayer.name), choose a movie featuring \(actor.name)."
-                    movieButton.isSelected = true
-                    actorButton.isSelected = false
-                } else {
-                    // TODO: Handle error.
-                }
-            
-                instructionsScenario = "ThirdSelection"
-                break
-                
-            case "ThirdSelectionCorrectAnswer":
-                guard let movie = currentMovie else {break}
-                guard let actor = currentActor else {break}
-                topInstructions.text = "Nice work! \(currentPlayer.name), you can now choose another actor from \"\(movie.title)\" or another movie featuring \(actor.name)."
-                instructionsScenario = "StrikeExplanation"
-                break
-                
-            case "ThirdSelectionIncorrectAnswer":
-                topInstructions.text = "Oh no! That answer was incorrect. \(currentPlayer.name), choose a movie or an actor to start the next round."
-                instructionsScenario = "StrikeExplanation"
-                break
-                
-            case "StrikeExplanation":
-                bottomInstructions.text = "That's it! Each incorrect answer earns you a strike. Three strikes and you're out. Good luck!"
-                self.view.bringSubview(toFront: scoreCollectionBackground)
-                self.view.bringSubview(toFront: scoreLabel)
-                self.view.bringSubview(toFront: scoreCollectionView)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                    
-                    self.revealBlurView()
-                    self.revealBottomInstructions()
-                }
-                
-                // Enable nav bar items and help button and update user defaults.
-                
-                self.navigationItem.leftBarButtonItem?.isEnabled = true
-                self.navigationItem.rightBarButtonItem?.isEnabled = true
-                helpButton.isEnabled = true
-                showingInstructions = false
-                UserDefaults.standard.set(false, forKey: "showInstructions")
-                return
-                
-            default:
-                break
-            }
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                
-                self.revealBlurView()
-                self.revealTopInstructions()
-                self.searchBar.becomeFirstResponder()
-            }
-        }
     }
     
     @IBAction func radioButtonTapped(sender: RadioButton) {
@@ -409,10 +342,31 @@ class GameplayViewController: UIViewController {
         case ErrorMessage.repeatSelection:
             alertTitle = "Oops"
             alertMessage = "Your selection has already been used this round. Pick a different movie or actor."
+            break
             
         case ErrorMessage.dropdownMenu:
             alertTitle = "Tap your selection"
             alertMessage = "Please use the dropdown menu to make your selection. If the movie or actor you're searching for doesn't appear in the list, check your spelling or try a different selection."
+            break
+            
+        case ErrorMessage.secondPickSameType:
+            alertTitle = "Hold up"
+            if let movie = currentMovie {
+                alertMessage = "You must pick an actor from \"\(movie.title)\"."
+            } else if let actor = currentActor {
+                alertMessage = "You must pick a movie featuring \"\(actor.name)\""
+            }
+            break
+            
+        case ErrorMessage.gameOver:
+            alertTitle = "The End"
+            alertMessage = "\(self.activePlayers[0].name) wins!"
+            break
+            
+        case ErrorMessage.playerEliminated:
+            alertTitle = "Take five"
+            alertMessage = "\(self.currentPlayer.name) has been eliminated."
+            break
             
         default:
             break
@@ -474,6 +428,18 @@ class GameplayViewController: UIViewController {
         }
     }
     
+    func clearPreviousAnswers() {
+        
+        self.currentActor = nil
+        self.currentMovie = nil
+        
+        UIView.transition(with: self.actorImage, duration: 0.5, options: .transitionCrossDissolve, animations: {self.actorImage.image = #imageLiteral(resourceName: "person")}, completion: nil)
+        UIView.transition(with: self.actorLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.actorLabel.text = ""}, completion: nil)
+        UIView.transition(with: self.moviePosterImage, duration: 0.5, options: .transitionCrossDissolve, animations: {self.moviePosterImage.image = #imageLiteral(resourceName: "reel")}, completion: nil)
+        UIView.transition(with: self.movieLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.movieLabel.text = ""}, completion: nil)
+        UIView.transition(with: self.imageTitleLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.imageTitleLabel.text = "Round \(self.currentRound)"}, completion: nil)
+    }
+    
     //----------------------------------
     // MARK: Helper Methods
     //----------------------------------
@@ -499,6 +465,73 @@ class GameplayViewController: UIViewController {
         
         UIView.animate(withDuration: 0.5, animations: {self.blurView.alpha = 0.0}) { _ in
             self.view.sendSubview(toBack: self.blurView)
+        }
+    }
+    
+    func showInstructionsIfRequired() {
+        
+        if UserDefaults.standard.bool(forKey: "showMultiplayerInstructions") {
+            
+            switch instructionsScenario {
+                
+            case "Started":
+                if let movie = currentMovie {
+                    topInstructions.text = "\(currentPlayer.name), choose an actor from \"\(movie.title)\"."
+                    actorButton.isSelected = true
+                    movieButton.isSelected = false
+                } else if let actor = currentActor {
+                    topInstructions.text = "\(currentPlayer.name), choose a movie featuring \(actor.name)."
+                    movieButton.isSelected = true
+                    actorButton.isSelected = false
+                } else {
+                    // TODO: Handle error.
+                }
+                
+                instructionsScenario = "ThirdSelection"
+                break
+                
+            case "ThirdSelectionCorrectAnswer":
+                guard let movie = currentMovie else {break}
+                guard let actor = currentActor else {break}
+                topInstructions.text = "Nice work! \(currentPlayer.name), you can now choose another actor from \"\(movie.title)\" or another movie featuring \(actor.name)."
+                instructionsScenario = "StrikeExplanation"
+                break
+                
+            case "ThirdSelectionIncorrectAnswer":
+                topInstructions.text = "Oh no! That answer was incorrect. \(currentPlayer.name), choose a movie or an actor to start the next round."
+                instructionsScenario = "StrikeExplanation"
+                break
+                
+            case "StrikeExplanation":
+                bottomInstructions.text = "That's it! Each incorrect answer earns you a strike. Three strikes and you're out. Good luck!"
+                self.view.bringSubview(toFront: scoreCollectionBackground)
+                self.view.bringSubview(toFront: scoreLabel)
+                self.view.bringSubview(toFront: scoreCollectionView)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    
+                    self.revealBlurView()
+                    self.revealBottomInstructions()
+                }
+                
+                // Enable nav bar items and help button and update user defaults.
+                
+                self.navigationItem.leftBarButtonItem?.isEnabled = true
+                self.navigationItem.rightBarButtonItem?.isEnabled = true
+                helpButton.isEnabled = true
+                showingInstructions = false
+                UserDefaults.standard.set(false, forKey: "showMultiplayerInstructions")
+                return
+                
+            default:
+                break
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                
+                self.revealBlurView()
+                self.revealTopInstructions()
+                self.searchBar.becomeFirstResponder()
+            }
         }
     }
     
@@ -625,6 +658,26 @@ class GameplayViewController: UIViewController {
         }
     }
     
+    func verifySelectionIsValid(indexOfSelectedRow: Int) -> Bool {
+        
+        if !isInitialPick && ((movieButton.isSelected && currentActor == nil) || (actorButton.isSelected && currentMovie == nil)) {
+            
+            // The second player is attempting to pick a value of the same type as the initial value, e.g. movie + movie.
+            
+            displayAlert(type: .secondPickSameType)
+            return false
+            
+        } else if (movieButton.isSelected && moviesForRound.contains(movies[indexOfSelectedRow].title)) || (actorButton.isSelected && actorsForRound.contains(actors[indexOfSelectedRow].name)) {
+            
+            // The movie or actor selected has already been used this round.
+            
+            displayAlert(type: ErrorMessage.repeatSelection)
+            return false
+        }
+        
+        return true
+    }
+    
     func clearCache() {
         
         var actorsToSave = [Actor]()
@@ -680,71 +733,40 @@ class GameplayViewController: UIViewController {
         }
     }
     
-    func updateCurrentPlayer() {
+    func determineTurnOutcome() -> TurnOutcome {
+        
+        if self.currentPlayer.score == 3 {
+            if self.activePlayers.count == 1 {
+                return TurnOutcome.gameOver
+            } else {
+                return TurnOutcome.playerEliminated
+            }
+        }
+        return TurnOutcome.playContinues
+    }
+    
+    func updateCurrentPlayer(previousPlayerEliminated: Bool) {
         
         guard let indexOfCurrentPlayer = self.activePlayers.index(of: self.currentPlayer) else {return}
         
-        if self.currentPlayer.score == 3 {
-            
+        if previousPlayerEliminated {
             self.activePlayers = self.activePlayers.filter() {$0 != self.currentPlayer}
-
-            if self.activePlayers.count == 1 {
-                
-                // The game is over.
-                
-                let alert = UIAlertController(title: "The End", message: "\(self.activePlayers[0].name) wins!", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .default) { action in
-                    let _ = self.navigationController?.popToRootViewController(animated: true)
-                    CoreDataStackManager.sharedInstance.deleteGame() { error in
-                        // TODO: Handle error.
-                    }
-                })
-                
-                self.present(alert, animated: true, completion: nil)
-                return
-                
+            if indexOfCurrentPlayer == self.activePlayers.count {
+                self.currentPlayer = self.activePlayers[0]
             } else {
-                
-                // A player has been eliminated.
-                
-                let alert = UIAlertController(title: "Take five", message: "\(self.currentPlayer.name) has been eliminated.", preferredStyle: .alert)
-                
-                if indexOfCurrentPlayer == self.activePlayers.count {
-                    self.currentPlayer = self.activePlayers[0]
-                } else {
-                    self.currentPlayer = self.activePlayers[indexOfCurrentPlayer]
-                }
-                
-                alert.addAction(UIAlertAction(title: "OK", style: .default) { action in
-                    
-                    // Give alert dismissal animation a moment to complete before updating UI.
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                        self.updateUIForCurrentPlayer(clearPreviousAnswers: true)
-                    }
-                })
-                
-                self.present(alert, animated: true, completion: nil)
-                return
+                self.currentPlayer = self.activePlayers[indexOfCurrentPlayer]
+            }
+        } else {
+            if indexOfCurrentPlayer < self.activePlayers.count - 1 {
+                self.currentPlayer = self.activePlayers[indexOfCurrentPlayer + 1]
+            } else {
+                self.currentPlayer = self.activePlayers[0]
             }
         }
         
-        // Play continues.
-        
-        if indexOfCurrentPlayer < self.activePlayers.count - 1 {
-            self.currentPlayer = self.activePlayers[indexOfCurrentPlayer + 1]
-        } else {
-            self.currentPlayer = self.activePlayers[0]
-        }
-        
-        if isInitialPick {
-            updateUIForCurrentPlayer(clearPreviousAnswers: true)
-        } else {
-            updateUIForCurrentPlayer(clearPreviousAnswers: false)
-        }
     }
     
-    func saveTurn(correct: Bool, turnType: TurnType) {
+    func saveTurnAndClearCache(correct: Bool, turnType: TurnType) {
         
         if turnType == .movie {
             let _ = Turn(player: self.currentPlayer, game: self.game, success: correct, round: self.currentRound, movie: self.currentMovie, actor: nil, context: self.managedObjectContext)
@@ -823,7 +845,7 @@ class GameplayViewController: UIViewController {
                     }
                     
                     self.currentMovie = movie
-                    self.saveTurn(correct: true, turnType: .movie)
+                    self.saveTurnAndClearCache(correct: true, turnType: .movie)
                     
                     self.setImageForTurn(indexOfSelectedRow: nil, turnType: .movie) {
                         
@@ -852,7 +874,7 @@ class GameplayViewController: UIViewController {
                 for actor in castArray {
                     if !self.actorsForRound.contains(actor.name) {
                         self.currentActor = actor
-                        self.saveTurn(correct: true, turnType: .actor)
+                        self.saveTurnAndClearCache(correct: true, turnType: .actor)
                         break
                     }
                 }
@@ -1025,40 +1047,14 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        self.searchBar.text = ""
+        searchBar.text = ""
         self.view.endEditing(true)
         hideBlurView()
         hideInstructions()
-        self.dismissTable()
-        self.searchBarActivityIndicator.stopAnimating()
+        dismissTable()
+        searchBarActivityIndicator.stopAnimating()
         
-        // Verify that second player is not attempting to pick a value of the same type as the initial value, e.g. movie + movie.
-        
-        if !isInitialPick && ((movieButton.isSelected && currentActor == nil) || (actorButton.isSelected && currentMovie == nil)) {
-            
-            var alertMessage = String()
-            
-            if let movie = currentMovie {
-                alertMessage = "You must pick an actor from \"\(movie.title)\"."
-            } else if let actor = currentActor {
-                alertMessage = "You must pick a movie featuring \"\(actor.name)\""
-            }
-
-            let alert = UIAlertController(title: "Hold up", message: alertMessage, preferredStyle: .alert)
-            let okayAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-            alert.addAction(okayAction)
-            self.present(alert, animated: true, completion: nil)
-            
-            return
-        }
-        
-        // Verify that the movie or actor selected has not already been used this round.
-        
-        if (movieButton.isSelected && moviesForRound.contains(movies[indexPath.row].title)) || (actorButton.isSelected && actorsForRound.contains(actors[indexPath.row].name)) {
-            
-            displayAlert(type: ErrorMessage.repeatSelection)
-            return
-        }
+        guard verifySelectionIsValid(indexOfSelectedRow: indexPath.row) else {return}
         
         // Show progress HUD.
         
@@ -1067,19 +1063,23 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
         
         let turnType = movieButton.isSelected ? TurnType.movie : TurnType.actor
         
+        // Download and display the movie or actor image.
+        
         setImageForTurn(indexOfSelectedRow: indexPath.row, turnType: turnType) {
+            
+            // Determine whether or not the selection was correct.
             
             self.verifyAnswer(movie: self.currentMovie, actor: self.currentActor) { (correct) in
                 
                 guard let correct = correct else {
-                    // TODO: Handle error.
+                
                     return
                 }
                 
                 // Save turn and clear cache.
                 
                 let turnType = self.movieButton.isSelected ? TurnType.movie : TurnType.actor
-                self.saveTurn(correct: correct, turnType: turnType)
+                self.saveTurnAndClearCache(correct: correct, turnType: turnType)
                 
                 // Show success/error HUD.
                 
@@ -1092,10 +1092,15 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                     PKHUD.sharedHUD.hide(animated: true) { _ in
                         
                         if self.isSinglePlayerGame {
+                            
                             self.incrementScore()
+                            self.showInstructionsIfRequired()
                             self.performAiTurn()
+                            
                         } else {
-                            self.updateCurrentPlayer()
+                            
+                            self.updateCurrentPlayer(previousPlayerEliminated: false)
+                            self.updateUIForCurrentPlayer()
                         }
                     }
                     
@@ -1111,10 +1116,14 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                     PKHUD.sharedHUD.hide(afterDelay: 1.5) { _ in
                         
                         if self.isSinglePlayerGame {
+                            
                             self.incrementScore()
                             self.performAiTurn()
+                            
                         } else {
-                            self.updateCurrentPlayer()
+                            
+                            self.updateCurrentPlayer(previousPlayerEliminated: false)
+                            self.updateUIForCurrentPlayer()
                         }
                     }
                     
@@ -1135,12 +1144,33 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                     PKHUD.sharedHUD.hide(afterDelay: 1.5) { _ in
                         
                         if self.isSinglePlayerGame {
+                            
                             self.currentScore = 0
                             self.currentScoreLabel.text = "Current: 0"
                             self.highScoreLabel.text = "Best: \(UserDefaults.standard.value(forKey: "highScore")!)"
-                            self.updateUIForCurrentPlayer(clearPreviousAnswers: true)
+                            self.clearPreviousAnswers()
+                            
                         } else {
-                            self.updateCurrentPlayer()
+                            
+                            switch self.determineTurnOutcome() {
+                                
+                            case .gameOver:
+                                self.displayAlert(type: .gameOver)
+                                break
+                                
+                            case .playerEliminated:
+                                self.displayAlert(type: .playerEliminated)
+                                self.updateCurrentPlayer(previousPlayerEliminated: true)
+                                self.updateUIForCurrentPlayer()
+                                self.clearPreviousAnswers()
+                                break
+                                
+                            case .playContinues:
+                                self.updateCurrentPlayer(previousPlayerEliminated: false)
+                                self.updateUIForCurrentPlayer()
+                                self.clearPreviousAnswers()
+                                break
+                            }
                         }
                     }
                 }

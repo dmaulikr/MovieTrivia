@@ -36,6 +36,9 @@ enum ErrorMessage: String {
     case unableToRenderImage
     case repeatSelection
     case dropdownMenu
+    case secondPickSameType
+    case gameOver
+    case playerEliminated
 }
 
 struct MDBClient {

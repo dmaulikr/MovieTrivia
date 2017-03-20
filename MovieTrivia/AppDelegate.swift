@@ -31,8 +31,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let userDefaults = UserDefaults.standard
         
-        if userDefaults.object(forKey: "showInstructions") == nil {
-            userDefaults.set(true, forKey: "showInstructions")
+        if userDefaults.object(forKey: "showMultiplayerInstructions") == nil {
+            userDefaults.set(true, forKey: "showMultiplayerInstructions")
+        }
+        
+        if userDefaults.object(forKey: "showSinglePlayerInstructions") == nil {
+            userDefaults.set(true, forKey: "showSinglePlayerInstructions")
         }
         
         if userDefaults.object(forKey: "highScore") == nil {
