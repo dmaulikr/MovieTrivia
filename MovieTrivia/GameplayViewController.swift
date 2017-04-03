@@ -102,6 +102,9 @@ class GameplayViewController: UIViewController {
     @IBOutlet weak var scoreCollectionBackground: UIView!
     @IBOutlet weak var searchBarActivityIndicator: UIActivityIndicatorView!
     
+    @IBOutlet weak var topArrowCenteredOnSearchBar: NSLayoutConstraint!
+    @IBOutlet weak var topArrowCenteredOnHelpbutton: NSLayoutConstraint!
+    
     //----------------------------------
     // MARK: Lifecycle
     //----------------------------------
@@ -182,6 +185,8 @@ class GameplayViewController: UIViewController {
         if let arrowImage = #imageLiteral(resourceName: "arrow").cgImage {
             bottomArrow.image = UIImage(cgImage: arrowImage, scale: 1.0, orientation: .downMirrored)
         }
+        
+        topArrowCenteredOnSearchBar.isActive = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -273,6 +278,12 @@ class GameplayViewController: UIViewController {
         }
         
         topInstructions.text = (isSinglePlayerGame ? singlePlayerStringStart : multiplayerStringStart) + stringFinish
+        
+        if topArrowCenteredOnSearchBar.isActive == false {
+            topArrowCenteredOnSearchBar.isActive = true
+            topArrowCenteredOnHelpbutton.isActive = false
+            self.view.layoutIfNeeded()
+        }
         
         revealTopInstructions()
         hideBottomInstructions()
@@ -504,7 +515,6 @@ class GameplayViewController: UIViewController {
                     
                     topInstructions.text = opponentTurnExplanation + "Now you must choose another actor from \"\(currentMovie!.title)\" or another movie featuring \(currentActor!.name)."
                     
-                    instructionsScenario = .scoreExplanation
                     break
                     
                 } else {
@@ -525,17 +535,36 @@ class GameplayViewController: UIViewController {
                 
                 guard let movie = currentMovie else {break}
                 guard let actor = currentActor else {break}
-                topInstructions.text = "Nice work! \(currentPlayer.name), you can now choose another actor from \"\(movie.title)\" or another movie featuring \(actor.name)."
+                
+                var gameModeSpecificText = String()
+                if isSinglePlayerGame {
+                    gameModeSpecificText = "You"
+                } else {
+                    gameModeSpecificText = "\(currentPlayer.name), you"
+                }
+                
+                topInstructions.text = "Nice work! \(gameModeSpecificText) can now choose another actor from \"\(movie.title)\" or another movie featuring \(actor.name)."
                 instructionsScenario = .scoreExplanation
                 break
                 
             case .thirdTurnIncorrect:
                 
-                topInstructions.text = "Oh no! That answer was incorrect. \(currentPlayer.name), choose a movie or an actor to start the next round."
+                var gameModeSpecificText = String()
+                if isSinglePlayerGame {
+                    gameModeSpecificText = "\(currentPlayer.name), choose"
+                } else {
+                    gameModeSpecificText = "Choose"
+                }
+                
+                topInstructions.text = "Oh no! That answer was incorrect. \(gameModeSpecificText) a movie or an actor to start the next round."
                 instructionsScenario = .scoreExplanation
                 break
                 
             case .scoreExplanation:
+                
+                topArrowCenteredOnSearchBar.isActive = false
+                topArrowCenteredOnHelpbutton.isActive = true
+                self.view.layoutIfNeeded()
                 
                 topInstructions.text = "That's it! If you need a reminder of how the game works, tap the help button under the search bar."
                 
