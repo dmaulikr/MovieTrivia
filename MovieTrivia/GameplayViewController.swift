@@ -504,13 +504,14 @@ class GameplayViewController: UIViewController {
                 
                 if isSinglePlayerGame {
                     
-                    let opponentTurn = game.history.filter() {$0.player.name == "Computer"}[0]
+                    let opponentTurns = game.history.filter() {$0.player.name == "Computer"}
+                    let lastTurn = opponentTurns.filter() {$0.round.intValue == currentRound}[0]
                     var opponentTurnExplanation = String()
                     
-                    if opponentTurn.movie != nil {
-                        opponentTurnExplanation = "Your opponent selected \"\(currentMovie!.title)\" because it features \(currentActor!.name). "
+                    if lastTurn.movie != nil {
+                        opponentTurnExplanation = "Your opponent chose \"\(currentMovie!.title)\" because it features \(currentActor!.name). "
                     } else {
-                        opponentTurnExplanation = "Your opponent selected \(currentActor!.name) because they appeared in \"\(currentMovie!.title).\" "
+                        opponentTurnExplanation = "Your opponent chose \(currentActor!.name) because they appeared in \"\(currentMovie!.title).\" "
                     }
                     
                     topInstructions.text = opponentTurnExplanation + "Now you must choose another actor from \"\(currentMovie!.title)\" or another movie featuring \(currentActor!.name)."
@@ -520,11 +521,11 @@ class GameplayViewController: UIViewController {
                 } else {
                     
                     if let movie = currentMovie {
-                        topInstructions.text = "\(currentPlayer.name), choose an actor from \"\(movie.title).\""
+                        topInstructions.text = "\(currentPlayer.name), use the search bar to choose an actor from \"\(movie.title).\""
                         actorButton.isSelected = true
                         movieButton.isSelected = false
                     } else if let actor = currentActor {
-                        topInstructions.text = "\(currentPlayer.name), choose a movie featuring \(actor.name)."
+                        topInstructions.text = "\(currentPlayer.name), use the search bar to choose a movie featuring \(actor.name)."
                         movieButton.isSelected = true
                         actorButton.isSelected = false
                     }
@@ -537,13 +538,19 @@ class GameplayViewController: UIViewController {
                 guard let actor = currentActor else {break}
                 
                 var gameModeSpecificText = String()
+                let lastTurn = game.history.last
+                
                 if isSinglePlayerGame {
-                    gameModeSpecificText = "You"
+                    if let movie = lastTurn?.movie {
+                        gameModeSpecificText = "Your opponent chose \"\(movie.title)\" because it features \(currentActor!.name). Now you can"
+                    } else if let actor = lastTurn?.actor {
+                        gameModeSpecificText = "Your opponent chose \(actor.name) because they appeared in \"\(currentMovie!.title).\" Now you can"
+                    }
                 } else {
-                    gameModeSpecificText = "\(currentPlayer.name), you"
+                    gameModeSpecificText = "\(currentPlayer.name), you can now"
                 }
                 
-                topInstructions.text = "Nice work! \(gameModeSpecificText) can now choose another actor from \"\(movie.title)\" or another movie featuring \(actor.name)."
+                topInstructions.text = "Nice work! \(gameModeSpecificText) choose another actor from \"\(movie.title)\" or another movie featuring \(actor.name)."
                 instructionsScenario = .scoreExplanation
                 break
                 
@@ -551,13 +558,13 @@ class GameplayViewController: UIViewController {
                 
                 var gameModeSpecificText = String()
                 if isSinglePlayerGame {
-                    gameModeSpecificText = "\(currentPlayer.name), choose"
-                } else {
                     gameModeSpecificText = "Choose"
+                } else {
+                    gameModeSpecificText = "\(currentPlayer.name), choose"
                 }
                 
                 topInstructions.text = "Oh no! That answer was incorrect. \(gameModeSpecificText) a movie or an actor to start the next round."
-                instructionsScenario = .scoreExplanation
+                instructionsScenario = .secondTurn
                 break
                 
             case .scoreExplanation:
@@ -1201,7 +1208,7 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                     if self.instructionsScenario == .secondTurn {
                         self.instructionsScenario = .thirdTurnCorrect
                     }
-                    
+                
                     PKHUD.sharedHUD.hide(afterDelay: 1.5) { _ in
                         
                         if self.isSinglePlayerGame {
@@ -1224,9 +1231,7 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                     // Incorrect answer.
                     
                     PKHUD.sharedHUD.contentView = PKHUDErrorView()
-                    if self.instructionsScenario == .secondTurn {
-                        self.instructionsScenario = .thirdTurnIncorrect
-                    }
+                    self.instructionsScenario = .thirdTurnIncorrect
                     let value = self.currentPlayer.score.intValue + 1
                     self.currentPlayer.score = NSNumber(value: value)
                     self.scoreCollectionView.reloadData()
@@ -1241,6 +1246,7 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                             self.currentScoreLabel.text = "Current: 0"
                             self.highScoreLabel.text = "Best: \(UserDefaults.standard.value(forKey: "highScore")!)"
                             self.clearPreviousAnswers()
+                            self.showInstructionsIfRequired()
                             
                         } else {
                             
