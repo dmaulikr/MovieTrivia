@@ -17,6 +17,7 @@ class Game: NSManagedObject {
     
     @NSManaged var players: [Player]
     @NSManaged var history: [Turn]
+    @NSManaged var isSinglePlayerGame: Bool
     
     //----------------------------------
     // MARK: Initialization

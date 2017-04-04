@@ -15,6 +15,7 @@ class OptionsViewController: UIViewController {
     //----------------------------------
     
     var currentPlayer: Player!
+    var game: Game!
     
     //----------------------------------
     // MARK: Outlets
@@ -64,6 +65,7 @@ class OptionsViewController: UIViewController {
             
             let instructionsVC = segue.destination as! InstructionsViewController
             instructionsVC.currentPlayer = self.currentPlayer
+            instructionsVC.game = self.game
         }
     }
 }

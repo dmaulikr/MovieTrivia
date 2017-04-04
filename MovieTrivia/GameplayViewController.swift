@@ -41,7 +41,6 @@ class GameplayViewController: UIViewController {
     var activePlayers = [Player]()
     var currentMovie: Movie? = nil
     var currentActor: Actor? = nil
-    var isSinglePlayerGame = false
     var currentPlayer: Player!
     var currentRound = 1
     var currentScore = 0
@@ -120,7 +119,7 @@ class GameplayViewController: UIViewController {
         
         // Navigation controller
         
-        self.title = isSinglePlayerGame ? "Single Player" : currentPlayer.name
+        self.title = game.isSinglePlayerGame ? "Single Player" : currentPlayer.name
         navigationItem.hidesBackButton = true
         
         // Current player color scheme
@@ -165,7 +164,7 @@ class GameplayViewController: UIViewController {
         
         // Score Collection View
         
-        if isSinglePlayerGame {
+        if game.isSinglePlayerGame {
             collectionViewHeight.constant = 10.0
             self.view.layoutIfNeeded()
             scoreCollectionView.isHidden = true
@@ -277,7 +276,7 @@ class GameplayViewController: UIViewController {
             stringFinish = "a movie or an actor to start the round."
         }
         
-        topInstructions.text = (isSinglePlayerGame ? singlePlayerStringStart : multiplayerStringStart) + stringFinish
+        topInstructions.text = (game.isSinglePlayerGame ? singlePlayerStringStart : multiplayerStringStart) + stringFinish
         
         if topArrowCenteredOnSearchBar.isActive == false {
             topArrowCenteredOnSearchBar.isActive = true
@@ -478,7 +477,7 @@ class GameplayViewController: UIViewController {
     
     func showInstructionsIfRequired() {
         
-        if (UserDefaults.standard.bool(forKey: "showMultiplayerInstructions") && !isSinglePlayerGame) || (UserDefaults.standard.bool(forKey: "showSinglePlayerInstructions") && isSinglePlayerGame) {
+        if (UserDefaults.standard.bool(forKey: "showMultiplayerInstructions") && !game.isSinglePlayerGame) || (UserDefaults.standard.bool(forKey: "showSinglePlayerInstructions") && game.isSinglePlayerGame) {
             
             switch instructionsScenario {
                 
@@ -491,7 +490,7 @@ class GameplayViewController: UIViewController {
                 self.navigationItem.rightBarButtonItem?.isEnabled = false
                 helpButton.isEnabled = false
                 showingInstructions = true
-                topInstructions.text = (isSinglePlayerGame ? singlePlayerInitialString : multiplayerInitialString) + "the search bar at the top of the screen to choose a movie or an actor to start the round."
+                topInstructions.text = (game.isSinglePlayerGame ? singlePlayerInitialString : multiplayerInitialString) + "the search bar at the top of the screen to choose a movie or an actor to start the round."
                 
                 revealBlurView()
                 revealTopInstructions()
@@ -502,7 +501,7 @@ class GameplayViewController: UIViewController {
                 
             case .secondTurn:
                 
-                if isSinglePlayerGame {
+                if game.isSinglePlayerGame {
                     
                     let opponentTurns = game.history.filter() {$0.player.name == "Computer"}
                     let lastTurn = opponentTurns.filter() {$0.round.intValue == currentRound}[0]
@@ -540,7 +539,7 @@ class GameplayViewController: UIViewController {
                 var gameModeSpecificText = String()
                 let lastTurn = game.history.last
                 
-                if isSinglePlayerGame {
+                if game.isSinglePlayerGame {
                     if let movie = lastTurn?.movie {
                         gameModeSpecificText = "Your opponent chose \"\(movie.title)\" because it features \(currentActor!.name). Now you can"
                     } else if let actor = lastTurn?.actor {
@@ -557,7 +556,7 @@ class GameplayViewController: UIViewController {
             case .thirdTurnIncorrect:
                 
                 var gameModeSpecificText = String()
-                if isSinglePlayerGame {
+                if game.isSinglePlayerGame {
                     gameModeSpecificText = "Choose"
                 } else {
                     gameModeSpecificText = "\(currentPlayer.name), choose"
@@ -578,7 +577,7 @@ class GameplayViewController: UIViewController {
                 let singlePlayerScoreExplanation = "Your current score and your all-time best are displayed here. Good luck!"
                 let multiplayerScoreExplanation = "Each incorrect answer earns you a strike. Three strikes and you're out. Good luck!"
                 
-                bottomInstructions.text = isSinglePlayerGame ? singlePlayerScoreExplanation : multiplayerScoreExplanation
+                bottomInstructions.text = game.isSinglePlayerGame ? singlePlayerScoreExplanation : multiplayerScoreExplanation
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                     
@@ -586,7 +585,7 @@ class GameplayViewController: UIViewController {
                     self.revealTopInstructions()
                     self.revealBottomInstructions()
                     
-                    if self.isSinglePlayerGame {
+                    if self.game.isSinglePlayerGame {
                         self.view.bringSubview(toFront: self.currentScoreLabel)
                         self.view.bringSubview(toFront: self.highScoreLabel)
                         UserDefaults.standard.set(false, forKey: "showSinglePlayerInstructions")
@@ -1007,6 +1006,7 @@ class GameplayViewController: UIViewController {
             
             let optionsVC = segue.destination as! OptionsViewController
             optionsVC.currentPlayer = self.currentPlayer
+            optionsVC.game = self.game
         }
     }
 }
@@ -1184,7 +1184,7 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                     
                     PKHUD.sharedHUD.hide(animated: true) { _ in
                         
-                        if self.isSinglePlayerGame {
+                        if self.game.isSinglePlayerGame {
                             
                             self.incrementScore()
                             self.performAiTurn() {
@@ -1211,7 +1211,7 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                 
                     PKHUD.sharedHUD.hide(afterDelay: 1.5) { _ in
                         
-                        if self.isSinglePlayerGame {
+                        if self.game.isSinglePlayerGame {
                             
                             self.incrementScore()
                             self.performAiTurn() {
@@ -1240,7 +1240,7 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                     
                     PKHUD.sharedHUD.hide(afterDelay: 1.5) { _ in
                         
-                        if self.isSinglePlayerGame {
+                        if self.game.isSinglePlayerGame {
                             
                             self.currentScore = 0
                             self.currentScoreLabel.text = "Current: 0"

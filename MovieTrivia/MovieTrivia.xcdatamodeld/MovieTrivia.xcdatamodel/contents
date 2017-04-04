@@ -8,6 +8,7 @@
         <relationship name="filmography" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Movie" inverseName="cast" inverseEntity="Movie" syncable="YES"/>
     </entity>
     <entity name="Game" representedClassName=".Game" syncable="YES">
+        <attribute name="isSinglePlayerGame" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="history" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Turn" inverseName="game" inverseEntity="Turn" syncable="YES"/>
         <relationship name="players" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Player" inverseName="game" inverseEntity="Player" syncable="YES"/>
     </entity>
@@ -38,7 +39,7 @@
     </entity>
     <elements>
         <element name="Actor" positionX="-38" positionY="-18" width="128" height="120"/>
-        <element name="Game" positionX="-243" positionY="-21" width="128" height="75"/>
+        <element name="Game" positionX="-243" positionY="-21" width="128" height="90"/>
         <element name="Movie" positionX="-425" positionY="18" width="128" height="165"/>
         <element name="Player" positionX="-360" positionY="231" width="128" height="120"/>
         <element name="Turn" positionX="-38" positionY="216" width="128" height="135"/>

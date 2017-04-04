@@ -17,7 +17,6 @@ class ColorPickerViewController: UIViewController {
     
     var game: Game!
     var currentPlayerIndex = 0
-    var isSinglePlayerGame = false
     var managedObjectContext: NSManagedObjectContext {return CoreDataStackManager.sharedInstance.managedObjectContext}
     
     // Colors
@@ -56,7 +55,7 @@ class ColorPickerViewController: UIViewController {
         
         collectionViewHeight.constant = CGFloat((self.view.frame.width / 4) * 2)
         
-        if isSinglePlayerGame {
+        if game.isSinglePlayerGame {
             instructionsLabel.text = "Choose a color:"
             pickerHeight.constant = 0
             continueButton.isHidden = true
@@ -116,7 +115,6 @@ class ColorPickerViewController: UIViewController {
         
         let gameplayViewController = segue.destination as! GameplayViewController
         gameplayViewController.game = self.game
-        gameplayViewController.isSinglePlayerGame = self.isSinglePlayerGame
     }
 }
 
@@ -165,7 +163,7 @@ extension ColorPickerViewController: UICollectionViewDelegate, UICollectionViewD
         
         let cell = collectionView.cellForItem(at: indexPath) as! ColorCell
         
-        if isSinglePlayerGame {
+        if game.isSinglePlayerGame {
             
             game.players[0].color = colorArray[indexPath.row]
             game.players[1].color = UIColor.gray

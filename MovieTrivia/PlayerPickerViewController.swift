@@ -15,7 +15,6 @@ class PlayerPickerViewController: UIViewController {
     // MARK: Properties
     //----------------------------------
     
-    var isSinglePlayerGame = false
     var managedObjectContext: NSManagedObjectContext {return CoreDataStackManager.sharedInstance.managedObjectContext}
     
     //----------------------------------
@@ -53,7 +52,6 @@ class PlayerPickerViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         super.viewWillAppear(animated)
-        isSinglePlayerGame = false
     }
     
     //----------------------------------
@@ -82,15 +80,15 @@ class PlayerPickerViewController: UIViewController {
         }
         
         if players.count == 1 {
-            
             let computer = Player(name: "Computer", context: managedObjectContext)
             computer.game = game
-            isSinglePlayerGame = true
+            game.isSinglePlayerGame = true
+        } else {
+            game.isSinglePlayerGame = false
         }
         
         let colorPickerViewController = segue.destination as! ColorPickerViewController
         colorPickerViewController.game = game
-        colorPickerViewController.isSinglePlayerGame = isSinglePlayerGame
     }
 }
 
