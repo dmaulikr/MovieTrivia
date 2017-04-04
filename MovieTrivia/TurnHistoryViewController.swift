@@ -130,7 +130,8 @@ class TurnHistoryViewController: UIViewController, UITableViewDelegate, UITableV
         
         cell?.backgroundColor = .white
         UIView.animate(withDuration: 0.2, animations: {cell?.backgroundColor = self.selectedTurn?.player.color}) { _ in
-            if self.selectedTurn?.movie == self.currentMovie || self.selectedTurn?.actor == self.currentActor {
+            
+            if (self.selectedTurn?.movie != nil && self.selectedTurn?.movie == self.currentMovie) || (self.selectedTurn?.actor != nil && self.selectedTurn?.actor == self.currentActor) {
                 let alert = UIAlertController(title: "Not so fast", message: "You can't view details for the currently selected movie or actor.", preferredStyle: .alert)
                 let okayAction = UIAlertAction(title: "OK", style: .default, handler: nil)
                 alert.addAction(okayAction)
