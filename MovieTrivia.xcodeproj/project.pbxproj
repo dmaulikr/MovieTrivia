@@ -726,7 +726,7 @@
 				DEVELOPMENT_TEAM = LK79F2T443;
 				INFOPLIST_FILE = MovieTrivia/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.TheodoreRothrock.MovieTrivia;
+				PRODUCT_BUNDLE_IDENTIFIER = com.TheodoreRothrock.MovieMaze;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -741,7 +741,7 @@
 				DEVELOPMENT_TEAM = LK79F2T443;
 				INFOPLIST_FILE = MovieTrivia/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.TheodoreRothrock.MovieTrivia;
+				PRODUCT_BUNDLE_IDENTIFIER = com.TheodoreRothrock.MovieMaze;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
