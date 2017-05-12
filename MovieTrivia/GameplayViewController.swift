@@ -100,7 +100,6 @@ class GameplayViewController: UIViewController {
     @IBOutlet weak var scoreCollectionView: UICollectionView!
     @IBOutlet weak var scoreCollectionBackground: UIView!
     @IBOutlet weak var searchBarActivityIndicator: UIActivityIndicatorView!
-    
     @IBOutlet weak var topArrowCenteredOnSearchBar: NSLayoutConstraint!
     @IBOutlet weak var topArrowCenteredOnHelpbutton: NSLayoutConstraint!
     
@@ -447,10 +446,6 @@ class GameplayViewController: UIViewController {
         UIView.transition(with: self.imageTitleLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {self.imageTitleLabel.text = "Round \(self.currentRound)"}, completion: nil)
     }
     
-    //----------------------------------
-    // MARK: Helper Methods
-    //----------------------------------
-    
     func revealBlurView() {
         
         let views = [blurView, radioButtonContainer, tableView, topInstructions, topArrow, bottomInstructions, bottomArrow]
@@ -652,6 +647,10 @@ class GameplayViewController: UIViewController {
             self.bottomArrow.alpha = 0.0
         })
     }
+    
+    //----------------------------------
+    // MARK: Helper Methods
+    //----------------------------------
     
     func verifyAnswer(movie: Movie?, actor: Actor?, completionHandler: @escaping (_ correct: Bool?) -> Void) {
         
@@ -863,7 +862,6 @@ class GameplayViewController: UIViewController {
         clearCache()
         CoreDataStackManager.sharedInstance.saveContext() { error in
             guard error == nil else {
-                // TODO: Handle error.
                 return
             }
         }
