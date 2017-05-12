@@ -39,7 +39,7 @@
 		9FE947401DD6BFA40024DBFA /* MovieTrivia.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9FE9473E1DD6BFA40024DBFA /* MovieTrivia.xcdatamodeld */; };
 		9FE947421DD6BFA40024DBFA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9FE947411DD6BFA40024DBFA /* Assets.xcassets */; };
 		9FE947451DD6BFA40024DBFA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9FE947431DD6BFA40024DBFA /* LaunchScreen.storyboard */; };
-		9FE947501DD6BFA40024DBFA /* MovieTriviaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FE9474F1DD6BFA40024DBFA /* MovieTriviaTests.swift */; };
+		9FE947501DD6BFA40024DBFA /* MDBClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FE9474F1DD6BFA40024DBFA /* MDBClientTests.swift */; };
 		9FE9475B1DD6BFA40024DBFA /* MovieTriviaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FE9475A1DD6BFA40024DBFA /* MovieTriviaUITests.swift */; };
 		F1CBA41581A865842B9D1D24 /* Pods_MovieTrivia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD57F12B9C224406616BBAB /* Pods_MovieTrivia.framework */; };
 /* End PBXBuildFile section */
@@ -99,7 +99,7 @@
 		9FE947441DD6BFA40024DBFA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9FE947461DD6BFA40024DBFA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9FE9474B1DD6BFA40024DBFA /* MovieTriviaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MovieTriviaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		9FE9474F1DD6BFA40024DBFA /* MovieTriviaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTriviaTests.swift; sourceTree = "<group>"; };
+		9FE9474F1DD6BFA40024DBFA /* MDBClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDBClientTests.swift; sourceTree = "<group>"; };
 		9FE947511DD6BFA40024DBFA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9FE947561DD6BFA40024DBFA /* MovieTriviaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MovieTriviaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FE9475A1DD6BFA40024DBFA /* MovieTriviaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTriviaUITests.swift; sourceTree = "<group>"; };
@@ -236,7 +236,7 @@
 		9FE9474E1DD6BFA40024DBFA /* MovieTriviaTests */ = {
 			isa = PBXGroup;
 			children = (
-				9FE9474F1DD6BFA40024DBFA /* MovieTriviaTests.swift */,
+				9FE9474F1DD6BFA40024DBFA /* MDBClientTests.swift */,
 				9FE947511DD6BFA40024DBFA /* Info.plist */,
 			);
 			path = MovieTriviaTests;
@@ -580,7 +580,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9FE947501DD6BFA40024DBFA /* MovieTriviaTests.swift in Sources */,
+				9FE947501DD6BFA40024DBFA /* MDBClientTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1292,9 +1292,9 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
             
             self.searchBarActivityIndicator.stopAnimating()
             
-            switch self.movieButton.isSelected {
+            switch queryType {
                 
-            case true:
+            case .movie:
                 
                 guard let movies = movies else {
                     return
@@ -1308,7 +1308,7 @@ extension GameplayViewController: UITableViewDelegate, UITableViewDataSource {
                 
                 break
                 
-            case false:
+            case .person:
                 
                 guard let actors = actors else {
                     return
